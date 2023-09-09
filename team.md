@@ -8,3 +8,10 @@ academic and professional development experience has been with Java and Spring B
 have limited experience with Javascript, React, and Vue. Up until now, most of my projects
 have been focused primarily on coding. I'm looking forward to growing my skills in other
 critical aspects of the software engineering process through this course!
+
+### Jisoo Lee
+My name is Jisoo Lee, and this is my last semester in the MSCS program. I began my journey as
+a Biomedical Science student with master's degree in Public Health. 
+I have worked for 3 years as a Genomic data analysis researcher in R&D before starting CS degree. 
+This summer, I have worked as a software engineer in Biotech, and will be starting full-time position next year.
+I am thrilled to learn a lot from this course with our team.
