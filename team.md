@@ -1,4 +1,6 @@
 # BU CS MET673 Team1
+### Clyde Yeung
+My name is Ching and I go by Clyde. I am half way through MSSD and I am excited. I graduatd with a BS and MS in Chemical Engineering and worked in a fintech start up as DevOps. I am familiar with Python and Java. Definitely want to gain more experience with springboot, database and  REST API experience.
 
 ### Sean Rawson
 My name is Sean and I'm currently in my second to last class for the MSSD program at
@@ -19,4 +21,5 @@ I am thrilled to learn a lot from this course with our team.
 ### Mali Rivera
 My name is Mali Rivera and this is my last core class in the MSSD program. I got my undergraduate degree 
 in biology and worked as a Research Associate in R&D before starting the MSSD program. I am looking forward 
-to transition to a Software Development position and am excited to gain experience throughout this project!   
+to transition to a Software Development position and am excited to gain experience throughout this project!
+ 
