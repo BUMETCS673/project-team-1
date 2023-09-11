@@ -13,7 +13,7 @@ critical aspects of the software engineering process through this course!
 My name is Jisoo Lee, and this is my last semester in the MSCS program. I began my journey as
 a Biomedical Science student with master's degree in Public Health. 
 I have worked for 3 years as a Genomic data analysis researcher in R&D before starting CS degree. 
-This summer, I have worked as a software engineer in Biotech, and will be startinggit  full-time position next year.
+This summer, I have worked as a software engineer in Biotech, and will be starting full-time position next year.
 I am thrilled to learn a lot from this course with our team.
 
 ### Mali Rivera
