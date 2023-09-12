@@ -29,3 +29,5 @@ and have been exposed to front end development there, languages like HTML, CSS, 
 the world of development and that's what led me to go back for my masters! I feel as though I've already learned
 a ton from our team and I look forward to continuing this project and building a great product at the end.
  
+## Chaitanya Saraogi
+My name is Chaitanya Saraogi, I am a student in the MSSD program. I currently work as a program manager and have experience in project management, stakeholder management, requirements and scrum leadership. I am interested in expanding my technical profeciency so i can transition to a technical product manager. I am excited to work with my team and learn more about the software development lifecycle.
