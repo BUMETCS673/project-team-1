@@ -22,4 +22,10 @@ I am thrilled to learn a lot from this course with our team.
 My name is Mali Rivera and this is my last core class in the MSSD program. I got my undergraduate degree 
 in biology and worked as a Research Associate in R&D before starting the MSSD program. I am looking forward 
 to transition to a Software Development position and am excited to gain experience throughout this project!
+
+## Brian Fenstermacher
+My name is Brian Fenstermacher, this is my final class in the MSSD program. I currently work as a web designer
+and have been exposed to front end development there, languages like HTML, CSS, and PHP got me interested in
+the world of development and that's what led me to go back for my masters! I feel as though I've already learned
+a ton from our team and I look forward to continuing this project and building a great product at the end.
  
