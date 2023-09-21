@@ -12,7 +12,7 @@ on:
   push:
     branches: [ "KAN-13" ]
   pull_request:
-    branches: [ "KAN-13" ]
+    branches: [ "dev", "main" ]
 
 jobs:
   build:
