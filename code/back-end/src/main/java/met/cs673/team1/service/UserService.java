@@ -1,18 +1,19 @@
 package met.cs673.team1.service;
 
 import jakarta.transaction.Transactional;
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
-import met.cs673.team1.domain.Role;
-import met.cs673.team1.domain.User;
+import met.cs673.team1.domain.dto.UserGetDto;
+import met.cs673.team1.domain.dto.UserPostDto;
+import met.cs673.team1.domain.entity.User;
 import met.cs673.team1.exception.UserNotFoundException;
+import met.cs673.team1.mapper.UserMapper;
 import met.cs673.team1.repository.RoleRepository;
 import met.cs673.team1.repository.UserRepository;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,34 +22,36 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final UserMapper userMapper;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository) {
+    public UserService(final UserRepository userRepository,
+                       final RoleRepository roleRepository,
+                       final UserMapper userMapper,
+                       final BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.userMapper = userMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    public User findById(Integer id) throws UserNotFoundException {
+    public UserGetDto findById(Integer id) throws UserNotFoundException {
         Optional<User> result = userRepository.findById(id);
         if (result.isPresent()) {
-            return result.get();
+            return userMapper.userToUserGetDto(result.get());
         } else {
             throw new UserNotFoundException("No user found");
         }
     }
 
-    public void save(User user) {
-        Set<Role> roles = new HashSet<>();
-        user.getRoleList()
-                .forEach(
-                        roleName -> {
-                            Optional<Role> role = roleRepository.findByName(roleName);
-                            if (role.isPresent()) {
-                                roles.add(role.get());
-                            }
-                        });
-
-        user.setUserRoles(roles);
-
+    /**
+     * Save user to the database, with password hash in place of password.
+     * @param userPostDto
+     */
+    public void save(UserPostDto userPostDto) {
+        String encodedPassword = passwordEncoder.encode(userPostDto.getPassword());
+        userPostDto.setPassword(encodedPassword);
+        User user = userMapper.userPostDtoToUser(userPostDto);
         userRepository.save(user);
     }
 
@@ -63,7 +66,7 @@ public class UserService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(
                 username,
                 user.getPassword(),
-                user.getUserRoles().stream()
+                user.getRoles().stream()
                         .map(role -> new SimpleGrantedAuthority(role.getName()))
                         .toList());
     }

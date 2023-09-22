@@ -1,7 +1,8 @@
 package met.cs673.team1.controller;
 
 import jakarta.validation.Valid;
-import met.cs673.team1.domain.User;
+import met.cs673.team1.domain.dto.UserGetDto;
+import met.cs673.team1.domain.dto.UserPostDto;
 import met.cs673.team1.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,16 +19,16 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping(value = "/user/{id}")
-    public ResponseEntity<User> retrieveUserById(@PathVariable Integer id) {
-        User user = userService.findById(id);
+    @GetMapping(value = "/user/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserGetDto> retrieveUserById(@PathVariable Integer id) {
+        UserGetDto user = userService.findById(id);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @PostMapping(value = "/createUser", consumes = MediaType.APPLICATION_JSON_VALUE)
     @Secured("ROLE_ADMIN")
-    public ResponseEntity<Void> createNewUser(@Valid @RequestBody User user) {
-        userService.save(user);
+    public ResponseEntity<Void> createNewUser(@Valid @RequestBody UserPostDto userPostDto) {
+        userService.save(userPostDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
