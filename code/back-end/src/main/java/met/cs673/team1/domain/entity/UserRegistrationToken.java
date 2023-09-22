@@ -1,4 +1,4 @@
-package met.cs673.team1.domain;
+package met.cs673.team1.domain.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;

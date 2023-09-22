@@ -1,7 +1,7 @@
 package met.cs673.team1.repository;
 
 import java.util.Optional;
-import met.cs673.team1.domain.User;
+import met.cs673.team1.domain.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

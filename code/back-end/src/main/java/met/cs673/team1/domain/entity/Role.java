@@ -1,6 +1,5 @@
-package met.cs673.team1.domain;
+package met.cs673.team1.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -25,7 +24,7 @@ public class Role {
     @NotBlank
     private String name;
 
-    @ManyToMany(mappedBy = "userRoles")
+    @ManyToMany(mappedBy = "roles")
     @JsonIgnore
     private Set<User> roleUsers = new HashSet<>();
 }

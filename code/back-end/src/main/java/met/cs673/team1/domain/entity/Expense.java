@@ -1,50 +1,33 @@
-package met.cs673.team1.domain;
+package met.cs673.team1.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import java.sql.Date;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Date;
-
 @Entity
-@Table(name = "User")
+@Table(name = "Expense")
 @Getter
 @Setter
 @NoArgsConstructor
 public class Expense {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "expense_id")
     private Integer expenseId;
 
-    @JsonProperty
-    @NotBlank
     private String name;
 
-    @JsonProperty
-    @NotNull
     private Double amount;
 
-    @JsonProperty
-    @NotNull
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "category_id")
     private ExpenseCategory category;
 
-    @JsonProperty
-    @NotBlank
     private Date date;
 
-    @JsonProperty
-    @Transient
-    private Integer userId;
-
-    @JsonProperty
-    @NotBlank
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;

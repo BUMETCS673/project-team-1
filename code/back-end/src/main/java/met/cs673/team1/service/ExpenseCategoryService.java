@@ -1,11 +1,10 @@
 package met.cs673.team1.service;
 
 import jakarta.persistence.EntityNotFoundException;
-import met.cs673.team1.domain.ExpenseCategory;
+import java.util.Optional;
+import met.cs673.team1.domain.entity.ExpenseCategory;
 import met.cs673.team1.repository.ExpenseCategoryRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class ExpenseCategoryService {

@@ -6,7 +6,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 
 import java.util.Optional;
-import met.cs673.team1.domain.User;
+import met.cs673.team1.domain.dto.UserGetDto;
+import met.cs673.team1.domain.entity.User;
 import met.cs673.team1.exception.UserNotFoundException;
 import met.cs673.team1.repository.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -26,7 +27,7 @@ class UserServiceTest {
     void testFindByIdSuccess() {
         Optional<User> optUser = Optional.of(new User());
         doReturn(optUser).when(userRepository).findById(any(Integer.class));
-        User user = userService.findById(Integer.valueOf(1));
+        UserGetDto user = userService.findById(Integer.valueOf(1));
 
         assertNotNull(user);
     }

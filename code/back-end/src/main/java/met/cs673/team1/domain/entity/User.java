@@ -1,11 +1,6 @@
-package met.cs673.team1.domain;
+package met.cs673.team1.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,40 +20,25 @@ public class User {
     @Column(name = "user_id")
     private Integer userId;
 
-    @JsonProperty
-    @NotBlank
     private String username;
 
-    @JsonProperty
-    @NotBlank
     private String password;
 
-    @JsonProperty
-    @Email
     private String email;
 
-    @JsonProperty
-    @NotBlank
     @Column(name = "first_name")
     private String firstName;
 
-    @JsonProperty
-    @NotBlank
     @Column(name = "last_name")
     private String lastName;
-
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Transient
-    private List<String> roleList;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "User_UserRole",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> userRoles = new HashSet<>();
+    private Set<Role> roles = new HashSet<>();
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @OneToMany(mappedBy = "user")
     private List<Expense> expenses;
 }
