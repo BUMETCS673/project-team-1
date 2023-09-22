@@ -1,17 +1,13 @@
 package met.cs673.team1.controller;
 
-import com.diffplug.spotless.maven.json.Json;
-import com.nimbusds.jose.shaded.gson.JsonElement;
-import com.nimbusds.jose.shaded.gson.JsonObject;
+import java.util.HashMap;
+import java.util.Map;
 import met.cs673.team1.service.TokenService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 public class AuthController {
