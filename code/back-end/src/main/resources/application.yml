@@ -13,9 +13,3 @@ spring:
   sql:
     init:
       mode: always
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          public-key: classpath:security/team1public.pem
-          private-key: classpath:security/team1.pem
