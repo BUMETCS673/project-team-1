@@ -10,7 +10,7 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ "KAN-13" ]
+    branches: [ "KAN-13", "back-end", "back-end-1" ]
   pull_request:
     branches: [ "dev", "main" ]
 
