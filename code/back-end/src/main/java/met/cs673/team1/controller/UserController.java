@@ -7,7 +7,6 @@ import met.cs673.team1.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -26,7 +25,6 @@ public class UserController {
     }
 
     @PostMapping(value = "/createUser", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @Secured("ROLE_ADMIN")
     public ResponseEntity<Void> createNewUser(@Valid @RequestBody UserPostDto userPostDto) {
         userService.save(userPostDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
