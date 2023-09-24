@@ -31,6 +31,8 @@ jobs:
       run: mvn -B package -e -X --file ./code/back-end/pom.xml
 
     steps:
+    - uses: actions/checkout@v3
+    - uses: isbang/compose-action@v1.5.1
     - name: Launch Database
       working-directory: ./code/container
       run: docker-compose up
