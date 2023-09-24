@@ -35,7 +35,8 @@ jobs:
     - uses: isbang/compose-action@v1.5.1
     - name: Launch Database
       working-directory: ./code/container
-      run: docker-compose up
+      with:
+        compose-file: "./docker-compose.yml"
 
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
