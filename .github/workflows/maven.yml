@@ -42,7 +42,7 @@ jobs:
       #  echo --- Completed launch containers ---
 
     - name: Stop containers
-      - uses: isbang/compose-action@v1.5.1
+      uses: isbang/compose-action@v1.5.1
      compose-file: "./code/container/docker-compose.yml"
      down-flag:
      # run: |
