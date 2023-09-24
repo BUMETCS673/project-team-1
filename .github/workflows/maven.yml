@@ -30,12 +30,18 @@ jobs:
     - name: Build PennyWise with Maven
       run: mvn -B package -e -X --file ./code/back-end/pom.xml
 
-    - name: Start mariadb container
+    - name: Start containers
       # working-directory: code/container
       run: |
-        echo --- Running test cases ---
+        echo --- Launch containers ---
         docker-compose -f code/container/docker-compose.yml up --build --exit-code-from 
-        echo --- Completed test cases ---
+        echo --- Completed launch containers ---
+
+    - name: Stop containers
+      run: |
+        echo --- Stop containers ---
+        docker-compose -f code/container/docker-compose.yml down
+        echo --- Completed stop containers ---
         
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
