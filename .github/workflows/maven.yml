@@ -27,8 +27,14 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
-    - name: Build with Maven
+    - name: Build PennyWise with Maven
       run: mvn -B package -e -X --file ./code/back-end/pom.xml
+
+    steps:
+    - name: Launch Database
+      working-directory: ./code/container
+      run: docker-compose up
+
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
    # - name: Update dependency graph
