@@ -32,7 +32,10 @@ jobs:
 
     - name: Start mariadb container
       working-directory: code/container
-      run: docker-compose -f "docker-compose.yml" up
+      run: |
+        pwd
+        ls -l
+        docker-compose -f "docker-compose.yml" up
 
     - name: Stop mariadb container
       working-directory: code/container
