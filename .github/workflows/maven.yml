@@ -16,9 +16,7 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
     - name: Set up JDK 17
@@ -29,18 +27,15 @@ jobs:
         cache: maven
     - name: Build PennyWise with Maven
       run: mvn -B package -e -X --file ./code/back-end/pom.xml
-
     - name: Start containers
       uses: isbang/compose-action@v1.5.1
       with:
       compose-file: "./code/container/docker-compose.yml"
       up-flag: -d
-
       #run: |
       #  echo --- Launch containers ---
       #  docker-compose -f docker-compose.yml up -d 
       #  echo --- Completed launch containers ---
-
     - name: Stop containers
       uses: isbang/compose-action@v1.5.1
      compose-file: "./code/container/docker-compose.yml"
