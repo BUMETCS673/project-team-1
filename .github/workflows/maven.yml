@@ -31,17 +31,24 @@ jobs:
       run: mvn -B package -e -X --file ./code/back-end/pom.xml
 
     - name: Start containers
-      working-directory: ./code/container
-      run: |
-        echo --- Launch containers ---
-        docker-compose -f docker-compose.yml up -d 
-        echo --- Completed launch containers ---
+      - uses: isbang/compose-action@v1.5.1
+      with:
+      compose-file: "./code/container/docker-compose.yml"
+      up-flag: -d
+
+      #run: |
+      #  echo --- Launch containers ---
+      #  docker-compose -f docker-compose.yml up -d 
+      #  echo --- Completed launch containers ---
 
     - name: Stop containers
-      run: |
-        echo --- Stop containers ---
-        docker-compose -f code/container/docker-compose.yml down
-        echo --- Completed stop containers ---
+      - uses: isbang/compose-action@v1.5.1
+     compose-file: "./code/container/docker-compose.yml"
+     down-flag:
+     # run: |
+     #   echo --- Stop containers ---
+     #   docker-compose -f code/container/docker-compose.yml down
+     #   echo --- Completed stop containers ---
         
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
