@@ -31,7 +31,7 @@ jobs:
       run: mvn -B package -e -X --file ./code/back-end/pom.xml
 
     - name: Start containers
-      - uses: isbang/compose-action@v1.5.1
+      uses: isbang/compose-action@v1.5.1
       with:
       compose-file: "./code/container/docker-compose.yml"
       up-flag: -d
