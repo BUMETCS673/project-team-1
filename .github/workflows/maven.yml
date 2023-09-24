@@ -31,11 +31,10 @@ jobs:
       run: mvn -B package -e -X --file ./code/back-end/pom.xml
 
     - name: Start mariadb container
-      working-directory: code/container
+      # working-directory: code/container
       run: |
         echo --- Running test cases ---
-        docker-compose -f  -p  \
-        up --build --exit-code-from 
+        docker-compose -f code/container/docker-compose.yml up --build --exit-code-from 
         echo --- Completed test cases ---
         
 
