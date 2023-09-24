@@ -30,12 +30,9 @@ jobs:
     - name: Build PennyWise with Maven
       run: mvn -B package -e -X --file ./code/back-end/pom.xml
 
-    - uses: isbang/compose-action@v1.5.1
-    - name: Launch Database
+    - name: Start mariadb containers
       working-directory: ./code/container
-      with:
-        compose-file: "./docker-compose.yml"
-
+      run: docker-compose -f "docker-compose.yml" up
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
    # - name: Update dependency graph
