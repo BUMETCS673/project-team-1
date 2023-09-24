@@ -33,14 +33,11 @@ jobs:
     - name: Start mariadb container
       working-directory: code/container
       run: |
-        pwd
-        ls -l
-        docker-compose -f "docker-compose.yml" up
-
-    - name: Stop mariadb container
-      working-directory: code/container
-      if: always()
-      run: docker-compose -f "docker-compose.yml" down
+        echo --- Running test cases ---
+        docker-compose -f  -p  \
+        up --build --exit-code-from 
+        echo --- Completed test cases ---
+        
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
    # - name: Update dependency graph
