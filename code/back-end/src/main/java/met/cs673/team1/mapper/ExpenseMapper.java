@@ -21,9 +21,6 @@ public abstract class ExpenseMapper {
     @Autowired
     UserRepository userRepository;
 
-    @Autowired
-    UserMapper userMapper;
-
     public abstract Expense expenseDtoToExpense(ExpenseDto expenseDto);
 
     public ExpenseCategory mapCategoryNameToCategory(String category) {
