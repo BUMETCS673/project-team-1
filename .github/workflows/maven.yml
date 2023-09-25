@@ -28,7 +28,9 @@ jobs:
     - name: Build PennyWise with Maven
       run: mvn -B package -e -X --file ./code/back-end/pom.xml
     - name: Prep for building container
-      run: cp ./code/container/pennywise/pennywise.war ./code/container/pennywise.war
+      run: |
+        ls -la ./code/container 
+        cp ./code/container/pennywise/pennywise.war ./code/container/pennywise.war
     - name: Start containers
       uses: isbang/compose-action@v1.5.1
       with:
