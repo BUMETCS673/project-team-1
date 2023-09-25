@@ -35,7 +35,7 @@ jobs:
       uses: isbang/compose-action@v1.5.1
       with:
         compose-file: "./code/container/docker-compose.yml"
-        up-flag: "-d --build"
+        up-flags: "-d --build"
       #run: |
       #  echo --- Launch containers ---
       #  docker-compose -f docker-compose.yml up -d 
