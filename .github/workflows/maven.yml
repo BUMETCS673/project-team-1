@@ -34,8 +34,8 @@ jobs:
     - name: Start containers
       uses: isbang/compose-action@v1.5.1
       with:
-        compose-file: "./code/container/docker-compose.yml" --build
-        up-flag: -d
+        compose-file: "./code/container/docker-compose.yml"
+        up-flag: "-d --build"
       #run: |
       #  echo --- Launch containers ---
       #  docker-compose -f docker-compose.yml up -d 
@@ -44,7 +44,6 @@ jobs:
       uses: isbang/compose-action@v1.5.1
       with:
         compose-file: "./code/container/docker-compose.yml"
-        down-flag:
      # run: |
      #   echo --- Stop containers ---
      #   docker-compose -f code/container/docker-compose.yml down
