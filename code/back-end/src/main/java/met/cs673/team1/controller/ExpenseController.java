@@ -10,6 +10,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * REST endpoints for dealing with expenses
+ */
 @RestController
 public class ExpenseController {
 
@@ -19,9 +22,14 @@ public class ExpenseController {
         this.expenseService = expenseService;
     }
 
-    @GetMapping(value = "/expenses/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Expense>> getAllUserExpensesById(@PathVariable Integer id) {
-        List<Expense> expenses = expenseService.findAllExpensesByUserId(id);
+    /**
+     * Get a list of expenses by user id
+     * @param userId id of user
+     * @return list of expenses, represented as ExpenseDto objects
+     */
+    @GetMapping(value = "/expenses/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<ExpenseDto>> getAllUserExpensesById(@PathVariable Integer userId) {
+        List<ExpenseDto> expenses = expenseService.findAllExpensesByUserId(userId);
 
         HttpStatus status = HttpStatus.OK;
 
@@ -32,6 +40,11 @@ public class ExpenseController {
         return new ResponseEntity<>(expenses, status);
     }
 
+    /**
+     * Add an expense to the database, linked with the user specified in the post body
+     * @param expenseDto Data transfer object containing username and expense info
+     * @return ExpenseDto representing created Expense, with expense_id from database
+     */
     @PostMapping(value = "/addExpense", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ExpenseDto> addUserExpense(@Valid @RequestBody ExpenseDto expenseDto) {
         ExpenseDto result = expenseService.save(expenseDto);

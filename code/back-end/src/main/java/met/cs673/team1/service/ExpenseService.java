@@ -3,6 +3,8 @@ package met.cs673.team1.service;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import met.cs673.team1.domain.dto.ExpenseDto;
 import met.cs673.team1.domain.entity.Expense;
 import met.cs673.team1.domain.entity.User;
@@ -13,6 +15,9 @@ import met.cs673.team1.repository.ExpenseRepository;
 import met.cs673.team1.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service class providing processing for expense data before persistence.
+ */
 @Service
 public class ExpenseService {
 
@@ -31,11 +36,22 @@ public class ExpenseService {
         this.expenseMapper = expenseMapper;
     }
 
-    public List<Expense> findAllExpensesByUserId(Integer id) {
-        List<Expense> expenses = expenseRepository.findAllById(Collections.singleton(id));
-        return expenses;
+    /**
+     * Get all expenses by userId
+     * @param userId user id
+     * @return List of expenses
+     */
+    public List<ExpenseDto> findAllExpensesByUserId(Integer userId) {
+        List<Expense> expenses = expenseRepository.findAllByUserUserId(userId);
+        return expenses.stream().map(expenseMapper::expenseToExpenseDto).collect(Collectors.toList());
     }
 
+    /**
+     * Save an expense to the database
+     * @param expenseDto Data transfer object representing an expense
+     * @return ExpenseDto object with included expense_id on success, or error response from
+     * ExceptionHandlerControllerAdvice
+     */
     public ExpenseDto save(ExpenseDto expenseDto) {
         Expense exp = expenseMapper.expenseDtoToExpense(expenseDto);
         Optional<User> optUser = userRepository.findByUsername(expenseDto.getUsername());

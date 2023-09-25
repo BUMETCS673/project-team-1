@@ -12,6 +12,9 @@ import met.cs673.team1.repository.IncomeRepository;
 import met.cs673.team1.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service class providing processing of income data before persistence.
+ */
 @Service
 public class IncomeService {
 
@@ -29,11 +32,20 @@ public class IncomeService {
         this.incomeMapper = incomeMapper;
     }
 
+    /**
+     * Add an income to the database
+     * @param incomeDto data transfer object representing the income of a user
+     */
     public void addIncome(IncomeDto incomeDto) {
         Income income = incomeMapper.incomeDtoToIncome(incomeDto);
         incomeRepository.save(income);
     }
 
+    /**
+     * Find all expenses for a user by searching with their username
+     * @param username username used to query the database
+     * @return List of data transfer objects representing all incomes for the user
+     */
     public List<IncomeDto> findAllByUsername(String username) {
         Optional<User> optUser = userRepository.findByUsername(username);
         if (optUser.isEmpty()) {

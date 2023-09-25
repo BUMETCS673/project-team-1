@@ -6,6 +6,9 @@ import met.cs673.team1.domain.entity.ExpenseCategory;
 import met.cs673.team1.repository.ExpenseCategoryRepository;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service class providing processing for expense category data before persistence.
+ */
 @Service
 public class ExpenseCategoryService {
 
@@ -16,6 +19,11 @@ public class ExpenseCategoryService {
         this.repository = repository;
     }
 
+    /**
+     * Find an expense category by id
+     * @param id category id to search for
+     * @return ExpenseCategory object
+     */
     public ExpenseCategory findById(Integer id) {
         Optional<ExpenseCategory> optCategory = repository.findById(id);
         if (optCategory.isEmpty()) {
@@ -24,6 +32,11 @@ public class ExpenseCategoryService {
         return optCategory.get();
     }
 
+    /**
+     * Find an expense category by name
+     * @param name category name (e.g. "Dining")
+     * @return ExpenseCategory
+     */
     public ExpenseCategory findByName(String name) {
         Optional<ExpenseCategory> optCategory = repository.findByName(name);
         if (optCategory.isEmpty()) {

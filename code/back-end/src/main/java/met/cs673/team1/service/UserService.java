@@ -11,6 +11,9 @@ import met.cs673.team1.repository.RoleRepository;
 import met.cs673.team1.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service class providing processing for user data before persistence.
+ */
 @Service
 @Transactional
 public class UserService {
@@ -27,6 +30,12 @@ public class UserService {
         this.userMapper = userMapper;
     }
 
+    /**
+     * Find a user by their id
+     * @param id user id to search for
+     * @return Data transfer object representing user's information, password excluded
+     * @throws UserNotFoundException
+     */
     public UserGetDto findById(Integer id) throws UserNotFoundException {
         Optional<User> result = userRepository.findById(id);
         if (result.isPresent()) {
@@ -37,8 +46,8 @@ public class UserService {
     }
 
     /**
-     * Save user to the database, with password hash in place of password.
-     * @param userPostDto
+     * Save user to the database
+     * @param userPostDto Data transfer object representing user's information
      */
     public void save(UserPostDto userPostDto) {
         User user = userMapper.userPostDtoToUser(userPostDto);

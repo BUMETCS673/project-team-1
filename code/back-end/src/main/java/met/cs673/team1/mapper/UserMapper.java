@@ -12,6 +12,9 @@ import met.cs673.team1.repository.RoleRepository;
 import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
+/**
+ * Map between ExpenseDto and Expense objects on persistence to and retrieval from the database.
+ */
 @Mapper(componentModel = "spring")
 public abstract class UserMapper {
 

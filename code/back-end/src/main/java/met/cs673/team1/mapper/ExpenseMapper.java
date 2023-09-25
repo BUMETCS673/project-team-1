@@ -12,6 +12,9 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 
+/**
+ * Map between ExpenseDto and Expense objects before persisting to and after retrieving from the database.
+ */
 @Mapper(componentModel = "spring")
 public abstract class ExpenseMapper {
 
