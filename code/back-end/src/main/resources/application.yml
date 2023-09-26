@@ -13,3 +13,5 @@ spring:
   sql:
     init:
       mode: always
+  jackson:
+    time-zone: GMT-4
