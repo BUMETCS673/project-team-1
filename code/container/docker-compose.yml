@@ -1,0 +1,28 @@
+services:
+  db:
+    image: mariadb
+    environment:
+      MARIADB_ROOT_PASSWORD: Password123!
+      MARIADB_USER: user
+      MARIADB_PASSWORD: password
+    volumes:
+      # persist data files into `datadir` volume managed by docker
+      - /Users/clydeyeung/data1:/var/lib/mysql
+      # bind-mount any sql files that should be run while initializing
+      - /Users/clydeyeung/data/Create_DB.sql:/docker-entrypoint-initdb.d/schema.sql
+    ports:
+      - 3306:3306
+    networks:
+      - pennywise
+  pennywise:
+    image: pennywise
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+    networks:
+      - pennywise
+volumes:
+  datadiri:
+networks:
+  pennywise:

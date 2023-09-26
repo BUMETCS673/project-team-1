@@ -11,6 +11,7 @@
 	<groupId>cs673.fall23</groupId>
 	<artifactId>team1</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
 	<name>team1</name>
 	<description>Spring Boot Budgeting Application</description>
 	<properties>
@@ -68,7 +69,6 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>com.diffplug.spotless</groupId>
 			<artifactId>spotless-maven-plugin</artifactId>
@@ -83,6 +83,14 @@
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>3.4.0</version>
+				<configuration>
+					<warName>pennywise</warName>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -166,6 +174,7 @@
 				</executions>
 			</plugin>
 		</plugins>
+		<directory>../container/pennywise</directory>
 	</build>
 
 </project>
