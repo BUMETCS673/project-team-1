@@ -11,7 +11,7 @@
 	<groupId>cs673.fall23</groupId>
 	<artifactId>team1</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>team1</name>
 	<description>Spring Boot Budgeting Application</description>
 	<properties>
@@ -83,14 +83,14 @@
 
 	<build>
 		<plugins>
-			<plugin>
+			<!-- <plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<version>3.4.0</version>
 				<configuration>
 					<warName>pennywise</warName>
 				</configuration>
-			</plugin>
+			</plugin> -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
