@@ -47,14 +47,14 @@ jobs:
           docker save -o ./pennywise_container/pennywise.tar pennywise:latest
           docker save -o ./pennywise_container/mariadb.tar mariadb:latest
           cp docker-compose.yml ./pennywise_container/docker-compse.yml
-          tar -czvf  pennywise.tar ./pennywise_container
+          tar -czvf  pennywise.tar.gz ./pennywise_container
           ls -la 
 
       - name: Upload Artifacts TO Google Drive
         uses: Jodebu/upload-to-drive@master
         #uses: Jumbo810/Upload_Github_Artifacts_TO_GDrive@v1.1.1
         with:
-          target: ./code/container/pennywise.tar
+          target: ./code/container/pennywise.tar.gz
           credentials: ${{ secrets.GDRIVE }}
           folder: ${{ secrets.FOLDERID }}
 
