@@ -48,6 +48,7 @@ jobs:
     - name: Save docker container to local image file
       working-directory: ./code/container
       run: |
+        mkdir ./pennywise_container
         docker save -o ./pennywise_container/pennywise.tar pennywise:latest
         docker save -o ./pennywise_container/mariadb.tar mariadb:latest
         cp docker-compose.yml ./pennywise_container/docker-compse.yml
