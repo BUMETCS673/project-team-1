@@ -57,7 +57,6 @@ jobs:
         target: pennywise.tar
         credentials: secrets.DRIVE_CREDENTIAL
         folder: 109IaR-MRkTG3uO-DxtX2rU30Qc5DHftH
-    
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
    # - name: Update dependency graph
