@@ -40,11 +40,6 @@ jobs:
       with:
         compose-file: "./code/container/docker-compose.yml"
         up-flags: "-d"
-    - name: Stop containers
-      uses: isbang/compose-action@v1.5.1
-      with:
-        compose-file: "./code/container/docker-compose.yml"
-        down-flags: 
     - name: Save docker container to local image file
       working-directory: ./code/container
       run: |
@@ -54,6 +49,15 @@ jobs:
         cp docker-compose.yml ./pennywise_container/docker-compse.yml
         tar -czvf  pennywise.tar ./pennywise_container
         ls -la 
+
+    - name: Upload Artifacts TO Google Drive
+      working-directory: ./code/container
+      uses: Jodebu/upload-to-drive@master
+      with:
+        target: pennywise.tar
+        credentials: secrets.DRIVE_CREDENTIAL
+        folder: 109IaR-MRkTG3uO-DxtX2rU30Qc5DHftH
+    
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
    # - name: Update dependency graph
