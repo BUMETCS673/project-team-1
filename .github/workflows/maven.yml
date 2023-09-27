@@ -54,7 +54,7 @@ jobs:
         uses: Jodebu/upload-to-drive@master
         id: driveUpload
         with:
-          target: pennywise.tar
+          target: ./code/container/pennywise.tar
           credentials: ${{ secrets.DRIVE_CREDENTIAL }}
           folder: 109IaR-MRkTG3uO-DxtX2rU30Qc5DHftH
 
