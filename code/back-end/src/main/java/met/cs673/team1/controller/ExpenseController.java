@@ -30,14 +30,7 @@ public class ExpenseController {
     @GetMapping(value = "/expenses/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ExpenseDto>> getAllUserExpensesById(@PathVariable Integer userId) {
         List<ExpenseDto> expenses = expenseService.findAllExpensesByUserId(userId);
-
-        HttpStatus status = HttpStatus.OK;
-
-        if (expenses.isEmpty()) {
-            status = HttpStatus.NOT_FOUND;
-        }
-
-        return new ResponseEntity<>(expenses, status);
+        return new ResponseEntity<>(expenses, HttpStatus.OK);
     }
 
     /**
@@ -48,7 +41,6 @@ public class ExpenseController {
     @PostMapping(value = "/addExpense", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ExpenseDto> addUserExpense(@Valid @RequestBody ExpenseDto expenseDto) {
         ExpenseDto result = expenseService.save(expenseDto);
-
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 }
