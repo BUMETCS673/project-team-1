@@ -3,7 +3,6 @@ package met.cs673.team1.controller;
 import jakarta.validation.Valid;
 import java.util.List;
 import met.cs673.team1.domain.dto.ExpenseDto;
-import met.cs673.team1.domain.entity.Expense;
 import met.cs673.team1.service.ExpenseService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
