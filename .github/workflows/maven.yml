@@ -40,19 +40,16 @@ jobs:
       with:
         compose-file: "./code/container/docker-compose.yml"
         up-flags: "-d"
-      #run: |
-      #  echo --- Launch containers ---
-      #  docker-compose -f docker-compose.yml up -d 
-      #  echo --- Completed launch containers ---
     - name: Stop containers
       uses: isbang/compose-action@v1.5.1
       with:
         compose-file: "./code/container/docker-compose.yml"
-     # run: |
-     #   echo --- Stop containers ---
-     #   docker-compose -f code/container/docker-compose.yml down
-     #   echo --- Completed stop containers ---
-        
+        down-flags: 
+    - name: Save docker container to local image file
+      run: |
+        docker save -o pennywise.tar pennywise:latest
+        docker save -o mariadb.tar mariadb:latest
+        ls *.tar
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
    # - name: Update dependency graph
