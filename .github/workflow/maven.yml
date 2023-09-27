@@ -29,9 +29,8 @@ jobs:
       run: mvn -B package -e -X --file ./code/back-end/pom.xml -Dmaven.war.outputDirectory=./code/container/pennywise
     - name: Prep for building container
       run: |
-        #ls -la ./code/container
-        ls -la ./code/container/pennywise 
-        cp ./code/container/pennywise/*.jar ./code/container/pennywise.war
+        ls -la ./code/container
+        cp ./code/container/pennywise/team1*.jar ./code/container/pennywise.jar
     - name: Build pennywise container
       working-directory: ./code/container
       run: docker build . -t pennywise:latest
