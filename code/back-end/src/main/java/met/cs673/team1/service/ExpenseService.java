@@ -1,10 +1,8 @@
 package met.cs673.team1.service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import met.cs673.team1.domain.dto.ExpenseDto;
 import met.cs673.team1.domain.entity.Expense;
 import met.cs673.team1.domain.entity.User;
@@ -53,6 +51,9 @@ public class ExpenseService {
      * ExceptionHandlerControllerAdvice
      */
     public ExpenseDto save(ExpenseDto expenseDto) {
+        if (expenseDto.getUsername() == null) {
+            throw new IllegalArgumentException("Expense username cannot be null");
+        }
         Expense exp = expenseMapper.expenseDtoToExpense(expenseDto);
         Optional<User> optUser = userRepository.findByUsername(expenseDto.getUsername());
         if (optUser.isEmpty()) {
