@@ -18,46 +18,46 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up JDK 17
-      uses: actions/setup-java@v3
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        cache: maven
-    - name: Build PennyWise with Maven
-      run: mvn -B package -e -X --file ./code/back-end/pom.xml -Dmaven.war.outputDirectory=./code/container/pennywise
-    - name: Prep for building container
-      run: |
-        ls -la ./code/container 
-        cp ./code/container/pennywise/*.jar ./code/container/pennywise.jar
-        ls -la ./code/container
-    - name: Build pennywise container
-      working-directory: ./code/container
-      run: docker build . -t pennywise:latest
-    - name: Start containers
-      uses: isbang/compose-action@v1.5.1
-      with:
-        compose-file: "./code/container/docker-compose.yml"
-        up-flags: "-d"
-    - name: Save docker container to local image file
-      working-directory: ./code/container
-      run: |
-        mkdir ./pennywise_container
-        docker save -o ./pennywise_container/pennywise.tar pennywise:latest
-        docker save -o ./pennywise_container/mariadb.tar mariadb:latest
-        cp docker-compose.yml ./pennywise_container/docker-compse.yml
-        tar -czvf  pennywise.tar ./pennywise_container
-        ls -la 
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      - name: Build PennyWise with Maven
+        run: mvn -B package -e -X --file ./code/back-end/pom.xml -Dmaven.war.outputDirectory=./code/container/pennywise
+      - name: Prep for building container
+        run: |
+          ls -la ./code/container 
+          cp ./code/container/pennywise/*.jar ./code/container/pennywise.jar
+          ls -la ./code/container
+      - name: Build pennywise container
+        working-directory: ./code/container
+        run: docker build . -t pennywise:latest
+      - name: Start containers
+        uses: isbang/compose-action@v1.5.1
+        with:
+          compose-file: "./code/container/docker-compose.yml"
+          up-flags: "-d"
+      - name: Save docker container to local image file
+        working-directory: ./code/container
+        run: |
+          mkdir ./pennywise_container
+          docker save -o ./pennywise_container/pennywise.tar pennywise:latest
+          docker save -o ./pennywise_container/mariadb.tar mariadb:latest
+          cp docker-compose.yml ./pennywise_container/docker-compse.yml
+          tar -czvf  pennywise.tar ./pennywise_container
+          ls -la 
 
-    - name: Upload Artifacts TO Google Drive
-      working-directory: ./code/container
-      uses: Jodebu/upload-to-drive@master
-      id: driveUpload
-      with:
-        target: pennywise.tar
-        credentials: secrets.DRIVE_CREDENTIAL
-        folder: 109IaR-MRkTG3uO-DxtX2rU30Qc5DHftH
+      - name: Upload Artifacts TO Google Drive
+        working-directory: ./code/container
+        uses: Jodebu/upload-to-drive@master
+        id: driveUpload
+        with:
+          target: pennywise.tar
+          credentials: ${{ secrets.DRIVE_CREDENTIAL }}
+          folder: 109IaR-MRkTG3uO-DxtX2rU30Qc5DHftH
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
    # - name: Update dependency graph
