@@ -51,7 +51,6 @@ jobs:
           ls -la 
 
       - name: Upload Artifacts TO Google Drive
-        working-directory: ./code/container
         uses: Jodebu/upload-to-drive@master
         id: driveUpload
         with:
