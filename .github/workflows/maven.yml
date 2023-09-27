@@ -56,7 +56,8 @@ jobs:
         with:
           target: ./code/container/pennywise.tar
           credentials: ${{ secrets.GDRIVE }}
-          folder: 109IaR-MRkTG3uO-DxtX2rU30Qc5DHftH
+          folder: ${{ secrets.FOLDERID }}
+
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
    # - name: Update dependency graph
