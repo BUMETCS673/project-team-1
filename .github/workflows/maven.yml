@@ -46,10 +46,11 @@ jobs:
         compose-file: "./code/container/docker-compose.yml"
         down-flags: 
     - name: Save docker container to local image file
+      working-directory: ./code/container
       run: |
         docker save -o pennywise.tar pennywise:latest
         docker save -o mariadb.tar mariadb:latest
-        ls *.tar
+        zip pennywise.tar mariadb.tar docker-compose.yml
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
    # - name: Update dependency graph
