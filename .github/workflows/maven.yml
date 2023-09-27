@@ -51,12 +51,11 @@ jobs:
           ls -la 
 
       - name: Upload Artifacts TO Google Drive
-        #uses: Jodebu/upload-to-drive@master
-        uses: Jumbo810/Upload_Github_Artifacts_TO_GDrive@v1.1.1
-        id: driveUpload
+        uses: Jodebu/upload-to-drive@master
+        #uses: Jumbo810/Upload_Github_Artifacts_TO_GDrive@v1.1.1
         with:
           target: ./code/container/pennywise.tar
-          credentials: ${{ secrets.DRIVE_CREDENTIAL }}
+          credentials: secrets.DRIVE_CREDENTIAL
           folder: 109IaR-MRkTG3uO-DxtX2rU30Qc5DHftH
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
