@@ -10,15 +10,13 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ "KAN-13" ]
+    branches: [ "KAN-13", "back-end", "back-end-1" ]
   pull_request:
     branches: [ "dev", "main" ]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
     - name: Set up JDK 17
@@ -27,10 +25,34 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
+    - name: Build PennyWise with Maven
+      run: mvn -B package -e -X --file ./code/back-end/pom.xml -Dmaven.war.outputDirectory=./code/container/pennywise
+    - name: Prep for building container
+      run: |
+        ls -la ./code/container 
+        cp ./code/container/pennywise/*.jar ./code/container/pennywise.war
+    - name: Build pennywise container
+      working-directory: ./code/container
+      run: docker build . -t pennywise:latest
+    - name: Start containers
+      uses: isbang/compose-action@v1.5.1
+      with:
+        compose-file: "./code/container/docker-compose.yml"
+        up-flags: "-d"
+      #run: |
+      #  echo --- Launch containers ---
+      #  docker-compose -f docker-compose.yml up -d 
+      #  echo --- Completed launch containers ---
+    - name: Stop containers
+      uses: isbang/compose-action@v1.5.1
+      with:
+        compose-file: "./code/container/docker-compose.yml"
+     # run: |
+     #   echo --- Stop containers ---
+     #   docker-compose -f code/container/docker-compose.yml down
+     #   echo --- Completed stop containers ---
+        
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
-    - name: Update dependency graph
-      uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
-
+   # - name: Update dependency graph
+    #  uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
