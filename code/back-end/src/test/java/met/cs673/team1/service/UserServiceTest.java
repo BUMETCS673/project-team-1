@@ -6,10 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 
-import java.util.Collections;
 import java.util.Optional;
 import met.cs673.team1.domain.dto.UserGetDto;
-import met.cs673.team1.domain.entity.Role;
 import met.cs673.team1.domain.entity.User;
 import met.cs673.team1.exception.UserNotFoundException;
 import met.cs673.team1.mapper.UserMapper;
@@ -40,10 +38,6 @@ class UserServiceTest {
         User testUser = new User();
         testUser.setUsername(USERNAME);
         testUser.setEmail(EMAIL);
-        Role role = new Role();
-        role.setName("USER");
-        role.setRoleUsers(Collections.singleton(testUser));
-        testUser.setRoles(Collections.singleton(role));
 
         UserGetDto dto = new UserGetDto();
         dto.setUsername(USERNAME);

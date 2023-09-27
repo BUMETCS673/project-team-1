@@ -23,7 +23,8 @@ public class IncomeController {
     /**
      * Add a user's income to the database
      * @param incomeDto Data transfer object with username and income information
-     * @return HTTP status 201 Created
+     * @return HTTP status 201 Created or exception handled by @ControllerAdvice class
+     * ExceptionHandlerControllerAdvice
      */
     @PostMapping(value = "/addIncome", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> addUserIncome(@RequestBody IncomeDto incomeDto) {
