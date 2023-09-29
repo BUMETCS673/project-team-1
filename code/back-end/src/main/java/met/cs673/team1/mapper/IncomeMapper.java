@@ -1,11 +1,8 @@
 package met.cs673.team1.mapper;
 
-import java.util.Optional;
 import met.cs673.team1.domain.dto.IncomeDto;
 import met.cs673.team1.domain.entity.Income;
 import met.cs673.team1.domain.entity.User;
-import met.cs673.team1.exception.UserNotFoundException;
-import met.cs673.team1.repository.UserRepository;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,17 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 public abstract class IncomeMapper {
 
     @Autowired
-    UserRepository userRepository;
+    private MapperUtil mapperUtil;
 
     @Mapping(source = "username", target = "user")
     public abstract Income incomeDtoToIncome(IncomeDto incomeDto);
 
     public User mapUsernameToUser(String username) {
-        Optional<User> optUser = userRepository.findByUsername(username);
-        if (optUser.isEmpty()) {
-            throw new UserNotFoundException(String.format("User with username '%s' not found", username));
-        }
-        return optUser.get();
+        return mapperUtil.mapUsernameToUser(username);
     }
 
     @Mapping(source = "user", target = "username")

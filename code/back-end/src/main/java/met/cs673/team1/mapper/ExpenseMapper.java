@@ -7,7 +7,6 @@ import met.cs673.team1.domain.entity.Expense;
 import met.cs673.team1.domain.entity.ExpenseCategory;
 import met.cs673.team1.domain.entity.User;
 import met.cs673.team1.repository.ExpenseCategoryRepository;
-import met.cs673.team1.repository.UserRepository;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +18,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 public abstract class ExpenseMapper {
 
     @Autowired
-    ExpenseCategoryRepository categoryRepository;
+    private ExpenseCategoryRepository categoryRepository;
 
     @Autowired
-    UserRepository userRepository;
+    private MapperUtil mapperUtil;
 
     public abstract Expense expenseDtoToExpense(ExpenseDto expenseDto);
 
@@ -39,11 +38,7 @@ public abstract class ExpenseMapper {
      * Does this need to be changed? User password hash exposed?
      */
     public User mapUsernameToUser(String username) {
-        Optional<User> optUser = userRepository.findByUsername(username);
-        if (optUser.isEmpty()) {
-            throw new EntityNotFoundException(String.format("User '%s' not found", username));
-        }
-        return optUser.get();
+        return mapperUtil.mapUsernameToUser(username);
     }
 
     @Mapping(source = "user", target = "username")

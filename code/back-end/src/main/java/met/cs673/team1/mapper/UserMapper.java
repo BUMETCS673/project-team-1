@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public abstract class UserMapper {
 
     @Autowired
-    RoleRepository roleRepository;
+    private RoleRepository roleRepository;
 
     public abstract User userPostDtoToUser(UserPostDto userPostDto);
 
