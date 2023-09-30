@@ -1,0 +1,66 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ "KAN-13", "back-end", "back-end-1" ]
+  pull_request:
+    branches: [ "dev", "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      - name: Build PennyWise with Maven
+        run: mvn -B package -e -X --file ./code/back-end/pom.xml -Dmaven.war.outputDirectory=./code/container/pennywise
+      - name: Prep for building container
+        run: |
+          ls -la ./code/container 
+          cp ./code/container/pennywise/*.jar ./code/container/pennywise.jar
+          ls -la ./code/container
+      - name: Build pennywise container
+        working-directory: ./code/container
+        run: docker build . -t pennywise:latest
+      - name: Start containers
+        uses: isbang/compose-action@v1.5.1
+        with:
+          compose-file: "./code/container/docker-compose.yml"
+          up-flags: "-d"
+      - name: Save docker container to local image file
+        working-directory: ./code/container
+        run: |
+          mkdir ./pennywise_container
+          docker save -o ./pennywise_container/pennywise.tar pennywise:latest
+          docker save -o ./pennywise_container/mariadb.tar mariadb:latest
+          cp docker-compose.yml ./pennywise_container/docker-compse.yml
+          cp Create_DB.sql ./pennywise_container/Create_DB.sql
+          cp *.sh ./pennywise_container/
+          tar -czvf  pennywise.tar.gz ./pennywise_container
+          ls -la 
+
+      - name: Upload Artifacts TO Google Drive
+        uses: Jodebu/upload-to-drive@master
+        #uses: Jumbo810/Upload_Github_Artifacts_TO_GDrive@v1.1.1
+        with:
+          target: ./code/container/pennywise.tar.gz
+          credentials: ${{ secrets.GDRIVE }}
+          folder: ${{ secrets.FOLDERID }}
+
+
+    # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
+   # - name: Update dependency graph
+    #  uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
