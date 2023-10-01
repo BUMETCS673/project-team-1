@@ -41,6 +41,11 @@ public class IncomeService {
         incomeRepository.save(income);
     }
 
+    public List<IncomeDto> findAllByUserId(Integer id) {
+        List<Income> incomes = incomeRepository.findAllByUserUserId(id);
+        return incomes.stream().map(incomeMapper::incomeToIncomeDto).toList();
+    }
+
     /**
      * Find all expenses for a user by searching with their username
      * @param username username used to query the database

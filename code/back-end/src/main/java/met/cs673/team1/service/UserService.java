@@ -53,4 +53,12 @@ public class UserService {
         User user = userMapper.userPostDtoToUser(userPostDto);
         userRepository.save(user);
     }
+
+    protected User findUserEntityById(Integer id) {
+        Optional<User> optUser = userRepository.findById(id);
+        if (optUser.isEmpty()) {
+            throw new UserNotFoundException("No user found");
+        }
+        return optUser.get();
+    }
 }
