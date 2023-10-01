@@ -22,10 +22,6 @@ public class UserPostDto {
 
     @JsonProperty
     @NotBlank
-    private String password;
-
-    @JsonProperty
-    @NotBlank
     @Email
     private String email;
 
