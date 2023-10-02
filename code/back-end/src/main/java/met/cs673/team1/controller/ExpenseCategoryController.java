@@ -7,6 +7,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class ExpenseCategoryController {
 
@@ -16,9 +18,9 @@ public class ExpenseCategoryController {
         this.categoryService = categoryService;
     }
 
-    @PostMapping(value = "/addCategory", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ExpenseCategory> addCategory(@RequestBody ExpenseCategory category) {
-        ExpenseCategory categoryWithId = categoryService.save(category);
-        return new ResponseEntity<>(categoryWithId, HttpStatus.CREATED);
+    @PostMapping(value = "/addCategories", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<ExpenseCategory>> addCategories(@RequestBody List<String> categories) {
+        List<ExpenseCategory> categoriesWithIds = categoryService.saveAll(categories);
+        return new ResponseEntity<>(categoriesWithIds, HttpStatus.CREATED);
     }
 }
