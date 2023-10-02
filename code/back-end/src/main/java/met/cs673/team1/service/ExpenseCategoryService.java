@@ -44,4 +44,8 @@ public class ExpenseCategoryService {
         }
         return optCategory.get();
     }
+
+    public void save(ExpenseCategory category) {
+        repository.save(category);
+    }
 }
