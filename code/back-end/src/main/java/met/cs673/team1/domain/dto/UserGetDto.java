@@ -16,6 +16,9 @@ import met.cs673.team1.domain.entity.Role;
 public class UserGetDto {
 
     @JsonProperty
+    private Integer userId;
+
+    @JsonProperty
     private String username;
 
     @JsonProperty
@@ -29,7 +32,4 @@ public class UserGetDto {
 
     @JsonProperty
     private List<Role> roles;
-
-    @JsonProperty
-    private List<Expense> expenses;
 }
