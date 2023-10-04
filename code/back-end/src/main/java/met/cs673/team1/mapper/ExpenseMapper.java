@@ -9,6 +9,7 @@ import met.cs673.team1.domain.entity.User;
 import met.cs673.team1.repository.ExpenseCategoryRepository;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -23,6 +24,7 @@ public abstract class ExpenseMapper {
     @Autowired
     private MapperUtil mapperUtil;
 
+    @Mapping(source = "username", target = "user", qualifiedByName = "usernameToUser")
     public abstract Expense expenseDtoToExpense(ExpenseDto expenseDto);
 
     public ExpenseCategory mapCategoryNameToCategory(String category) {
@@ -37,6 +39,7 @@ public abstract class ExpenseMapper {
     /**
      * Does this need to be changed? User password hash exposed?
      */
+    @Named("usernameToUser")
     public User mapUsernameToUser(String username) {
         return mapperUtil.mapUsernameToUser(username);
     }
