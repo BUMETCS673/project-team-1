@@ -1,5 +1,5 @@
 // import Home from "./components/home/Home"
-// import Login from "./components/sign-in/Login"
+import Login from "./components/sign-in/Login"
 // import SetUp from "./components/sign-in/SetUp"
 // import AddExpense from "./components/user/AddExpense"
 // import AddIncome from "./components/user/AddIncome"
@@ -19,10 +19,11 @@ function App() {
    
     <Routes>
       {/* <Route path="/" element={<Home/>}></Route>
-      <Route path="/login" element={<Login/>}></Route>
+
       <Route path="/setUp" element={<SetUp/>}></Route>
       <Route path="/addExpense" element={<AddExpense/>}></Route>
       <Route path="/addIncome" element={<AddIncome/>}></Route> */}
+      <Route path="/login" element={<Login/>}></Route>
       <Route path="/dashboard" element={<Dashboard/>}></Route>
     
 
