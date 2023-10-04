@@ -1,7 +1,6 @@
 package met.cs673.team1.service;
 
 import jakarta.persistence.EntityNotFoundException;
-
 import java.util.List;
 import java.util.Optional;
 import met.cs673.team1.domain.entity.ExpenseCategory;
