@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
  * REST endpoints for dealing with income
  */
 @RestController
+@CrossOrigin
 public class IncomeController {
 
     private final IncomeService incomeService;

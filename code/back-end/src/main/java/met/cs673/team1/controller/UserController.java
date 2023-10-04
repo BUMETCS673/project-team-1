@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
  * REST endpoints related to user operations
  */
 @RestController
+@CrossOrigin
 public class UserController {
 
     private UserService userService;

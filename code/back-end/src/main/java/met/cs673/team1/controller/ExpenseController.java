@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
  * REST endpoints for dealing with expenses
  */
 @RestController
+@CrossOrigin
 public class ExpenseController {
 
     private ExpenseService expenseService;
