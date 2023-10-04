@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @Validated
+@CrossOrigin
 public class IncomeController {
 
     private final IncomeService incomeService;

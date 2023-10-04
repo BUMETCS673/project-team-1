@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @Validated
+@CrossOrigin
 public class ExpenseController {
 
     private ExpenseService expenseService;
