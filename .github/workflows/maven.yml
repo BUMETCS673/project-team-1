@@ -31,7 +31,7 @@ jobs:
         run: |
           ls -la ./code/container 
           cp ./code/container/pennywise/*.jar ./code/container/pennywise.jar
-          cp ./code/pennywise-ui ./code/container/pennywise-ui
+          cp -r ./code/pennywise-ui ./code/container/pennywise-ui
           ls -la ./code/container
       - name: Build pennywise backend container
         working-directory: ./code/container
