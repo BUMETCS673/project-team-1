@@ -36,7 +36,7 @@ public class ExpenseController {
     @GetMapping(value = "/expenses", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ExpenseDto>> getAllUserExpenseByUsername(@RequestParam String username) {
         List<ExpenseDto> expenses = expenseService.findAllExpensesByUsername(username);
-        return new ResponseEntity<>(results, HttpStatus.OK);
+        return new ResponseEntity<>(expenses, HttpStatus.OK);
     }
 
     /**
