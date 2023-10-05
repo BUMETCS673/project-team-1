@@ -45,6 +45,16 @@ public class UserService {
         }
     }
 
+
+    public UserGetDto findByUsername(String username) throws UserNotFoundException {
+        Optional<User> result = userRepository.findByUsername(username);
+        if (result.isPresent()) {
+            return userMapper.userToUserGetDto(result.get());
+        } else {
+            throw new UserNotFoundException("No user found");
+        }
+    }
+
     /**
      * Save user to the database
      * @param userPostDto Data transfer object representing user's information

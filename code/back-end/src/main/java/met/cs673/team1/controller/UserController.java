@@ -33,6 +33,12 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserGetDto> findUserByUsername(@RequestParam String username) {
+        UserGetDto user = userService.findByUsername(username);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
     /**
      * Create a new user
      * @param userPostDto data transfer object representing the new user's information
