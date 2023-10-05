@@ -33,6 +33,12 @@ public class ExpenseController {
         return new ResponseEntity<>(expenses, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/expenses", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<ExpenseDto>> getAllUserExpenseByUsername(@RequestParam String username) {
+        List<ExpenseDto> expenses = expenseService.findAllExpensesByUsername(username);
+        return new ResponseEntity<>(expenses, HttpStatus.OK);
+    }
+
     /**
      * Add an expense to the database, linked with the user specified in the post body
      * @param expenseDto Data transfer object containing username and expense info

@@ -44,6 +44,15 @@ public class ExpenseService {
         return expenses.stream().map(expenseMapper::expenseToExpenseDto).collect(Collectors.toList());
     }
 
+    public List<ExpenseDto> findAllExpensesByUsername(String username) {
+        Optional<User> optUser = userRepository.findByUsername(username);
+        if (optUser.isEmpty()) {
+            throw new UserNotFoundException(String.format("User with username '%s' not found", username));
+        }
+        List<Expense> expenses = expenseRepository.findAllByUserUserId(optUser.get().getUserId());
+        return expenses.stream().map(expenseMapper::expenseToExpenseDto).collect(Collectors.toList());
+    }
+    
     /**
      * Save an expense to the database
      * @param expenseDto Data transfer object representing an expense
