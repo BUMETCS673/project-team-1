@@ -28,7 +28,7 @@ import ChecklistIcon from '@mui/icons-material/Checklist';
 import { Link } from 'react-router-dom'
 import Dashboard from './Dashboard';
 
-const drawerWidth = 300;
+const drawerWidth = 240;
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -97,11 +97,11 @@ const NavBar = () => {
             main: "#fff"
           }, 
           secondary: {
-            main: "#f2f2f2"
+            main: "#A2B575"
           }
         }, 
         typography: {
-          fontSize: 16,
+          fontSize: 14,
         }
       })
         const [open, setOpen] = React.useState(true);
@@ -119,11 +119,12 @@ const NavBar = () => {
     return(
         <>
             <ThemeProvider theme={theme}>
-      <Box sx={{ display: 'flex', border: 1, width:"50px" }}>
+      <Box sx={{ display: 'flex', width:"50px"}}>
         <CssBaseline />
-        <AppBar position="absolute" open={open} sx={{ pb: "10px", pt: "10px", display: "flex", justifyContent: "center", alignItems: "space-between"}}>
+        <AppBar position="absolute" open={open} sx={{ pb: "15px", pt: "15px", display: "flex", justifyContent: "center", alignItems: "space-between"}}>
           <Toolbar   sx={{
-                pr: '24px',  // keep right padding when drawer closed
+                pr: '24px', 
+                // keep right padding when drawer closed
               }}>
             <IconButton
               color="inherit"
@@ -162,6 +163,8 @@ const NavBar = () => {
                 borderRadius: 1 
                 }}>
 
+                  
+
                   <LogoutIcon />
             </IconButton>
 
@@ -175,7 +178,7 @@ const NavBar = () => {
               display: "flex",
               alignItems: "center", 
               justifyContent: "flex-end", 
-              px: [1],
+              px: [1]
           }}
           
           >
