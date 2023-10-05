@@ -38,7 +38,7 @@ jobs:
         run: docker build . -t pennywise:latest
       - name: Build pennywise frontend container
         working-directory: ./code/container
-        run: docker build -f Dockerfile-ui  -t pennywise-ui:latest
+        run: docker build -f Dockerfile-ui .  -t pennywise-ui:latest
       - name: Start containers
         uses: isbang/compose-action@v1.5.1
         with:
