@@ -59,4 +59,5 @@ class UserServiceTest {
         Integer userId = 1;
         assertThrows(UserNotFoundException.class, () -> userService.findById(userId));
     }
+
 }

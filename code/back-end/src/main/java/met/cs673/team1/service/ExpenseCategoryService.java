@@ -2,7 +2,11 @@ package met.cs673.team1.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import java.util.Optional;
+
+import jdk.jfr.Category;
+import met.cs673.team1.domain.dto.UserPostDto;
 import met.cs673.team1.domain.entity.ExpenseCategory;
+import met.cs673.team1.domain.entity.User;
 import met.cs673.team1.repository.ExpenseCategoryRepository;
 import org.springframework.stereotype.Service;
 
@@ -44,4 +48,5 @@ public class ExpenseCategoryService {
         }
         return optCategory.get();
     }
+
 }

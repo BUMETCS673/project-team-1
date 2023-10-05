@@ -54,3 +54,9 @@ public class UserService {
         userRepository.save(user);
     }
 }
+
+// if email not exists
+// else
+// create user
+
+

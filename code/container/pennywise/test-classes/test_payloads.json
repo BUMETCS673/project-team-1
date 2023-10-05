@@ -1,0 +1,29 @@
+Add User
+{
+    "firstName": "Name",
+    "lastName": "Last",
+    "email": "team1@cs673.com",
+    "username": "pennywise",
+    "password": "theclown",
+    "roles": [
+        "USER"
+    ]
+}
+
+Add Expense
+{
+    "username": "pennywise",
+    "name": "grocery-purchase",
+    "category": "Groceries",
+    "amount": 23.50,
+    "date": "2023-07-24"
+}
+
+Add Income
+{
+    "username": "pennywise",
+    "name": "salary",
+    "amount": 1200.00,
+    "date": "2023-09-22"
+}
+
