@@ -27,11 +27,12 @@ ADD pennywise-ui/ /usr/local/pennywise-ui/
 
 # Copy start script
 ADD start_service.sh .
+RUN chmod 755 start_service.sh
 
 # Expose the default Tomcat port (8080)
 EXPOSE 8080
 
 # Start Tomcat and deploy your WAR file
 #CMD ["catalina.sh", "run"]
-#CMD ["java", "-jar", "/app/pennywise.jar"]
-CMD ["start_service.sh"]
+CMD ["java", "-jar", "/app/pennywise.jar"]
+#CMD ["start_service.sh"]
