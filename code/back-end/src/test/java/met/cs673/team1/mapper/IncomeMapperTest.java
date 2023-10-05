@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import met.cs673.team1.domain.dto.IncomeDto;
 import met.cs673.team1.domain.entity.Income;
 import met.cs673.team1.domain.entity.User;
@@ -22,7 +22,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 class IncomeMapperTest {
 
     private static String USERNAME = "username";
-    private static Date DATE = new Date(2023, 9, 12);
+    private static LocalDate DATE = LocalDate.of(2023, 9, 12);
     private static Double AMOUNT = 24.5;
     private static String NAME = "name";
 
