@@ -1,8 +1,12 @@
 package met.cs673.team1.controller;
 
 import jakarta.validation.Valid;
+import java.util.concurrent.ExecutionException;
+import lombok.extern.slf4j.Slf4j;
 import met.cs673.team1.domain.dto.UserGetDto;
+import met.cs673.team1.domain.dto.UserOverviewDto;
 import met.cs673.team1.domain.dto.UserPostDto;
+import met.cs673.team1.service.UserOverviewService;
 import met.cs673.team1.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,12 +17,22 @@ import org.springframework.web.bind.annotation.*;
  * REST endpoints related to user operations
  */
 @RestController
+@Slf4j
 public class UserController {
 
-    private UserService userService;
+    private final UserService userService;
+    private final UserOverviewService overviewService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService,
+                          UserOverviewService overviewService) {
         this.userService = userService;
+        this.overviewService = overviewService;
+    }
+
+    @GetMapping(value = "/home/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserOverviewDto> loadHomePage(@PathVariable Integer id) throws InterruptedException, ExecutionException {
+        UserOverviewDto overviewDto = overviewService.getUserOverview(id);
+        return ResponseEntity.ok(overviewDto);
     }
 
     /**
@@ -29,6 +43,12 @@ public class UserController {
     @GetMapping(value = "/user/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserGetDto> retrieveUserById(@PathVariable Integer id) {
         UserGetDto user = userService.findById(id);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserGetDto> findUserByUsername(@RequestParam String username) {
+        UserGetDto user = userService.findByUsername(username);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 

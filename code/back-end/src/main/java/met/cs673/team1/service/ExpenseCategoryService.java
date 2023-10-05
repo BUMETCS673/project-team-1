@@ -1,6 +1,7 @@
 package met.cs673.team1.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
 import java.util.Optional;
 import met.cs673.team1.domain.entity.ExpenseCategory;
 import met.cs673.team1.repository.ExpenseCategoryRepository;
@@ -43,5 +44,13 @@ public class ExpenseCategoryService {
             throw new EntityNotFoundException("Expense category not found");
         }
         return optCategory.get();
+    }
+
+    public List<ExpenseCategory> saveAll(List<String> categories) {
+        return categories.stream().map(name -> {
+            ExpenseCategory category = new ExpenseCategory();
+            category.setName(name);
+            return repository.save(category);
+        }).toList();
     }
 }

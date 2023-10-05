@@ -15,7 +15,7 @@ public class Income {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer income_id;
+    private Integer incomeId;
 
     private String name;
 

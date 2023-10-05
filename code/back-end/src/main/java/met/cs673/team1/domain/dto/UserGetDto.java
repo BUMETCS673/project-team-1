@@ -5,13 +5,17 @@ import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import met.cs673.team1.domain.entity.Expense;
+import lombok.experimental.SuperBuilder;
 import met.cs673.team1.domain.entity.Role;
 
 @NoArgsConstructor
 @Setter
 @Getter
+@SuperBuilder
 public class UserGetDto {
+
+    @JsonProperty
+    private Integer userId;
 
     @JsonProperty
     private String username;
@@ -27,7 +31,4 @@ public class UserGetDto {
 
     @JsonProperty
     private List<Role> roles;
-
-    @JsonProperty
-    private List<Expense> expenses;
 }

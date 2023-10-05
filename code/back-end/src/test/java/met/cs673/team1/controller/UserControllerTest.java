@@ -42,11 +42,8 @@ public class UserControllerTest {
 
     @Test
     void testCreateNewUser() {
-        String password = "mypass";
-
         UserPostDto dto = new UserPostDto();
         dto.setUsername(USERNAME);
-        dto.setPassword(password);
 
         doNothing().when(userService).save(any(UserPostDto.class));
 
