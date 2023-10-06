@@ -12,7 +12,8 @@ const Dashboard = () => {
       loadExpenses()
 
   },[])
-
+  
+ // get user expenses by username, set expenses as response data 
   const loadExpenses = async () => {
       const expenseData = await axios.get("http://localhost:8080/expenses?username=fish66")
       setExpenses(expenseData.data)
