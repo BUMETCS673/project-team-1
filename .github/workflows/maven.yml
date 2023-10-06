@@ -28,9 +28,6 @@ jobs:
       - name: Build PennyWise with Maven
         run: |
           sed -i'' -e 's/localhost:3306/db:3306/g' ./code/back-end/src/main/resources/application.yml
-          if test -f ./code/back-end/src/main/resources/application.yml; then
-            rm ./code/back-end/src/main/resources/application.yml-e
-          fi
           mvn -B package -e -X --file ./code/back-end/pom.xml -Dmaven.war.outputDirectory=./code/container/pennywise
       - name: Prep for building container
         run: |
