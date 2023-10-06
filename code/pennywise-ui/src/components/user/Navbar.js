@@ -291,7 +291,7 @@ const NavBar = () => {
                 </StyledListItemButton>
               </ListItem>
 
-              <ListItem  disablePadding sx={{ display: 'block' }} component={Link} to="/login">
+              <ListItem  disablePadding sx={{ display: 'block' }} component={Link} to="/home">
                 <StyledListItemButton
                   sx={{
                     minHeight: 60,
