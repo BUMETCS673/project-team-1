@@ -3,7 +3,7 @@ import {Avatar, Button, CssBaseline, TextField, FormControlLabel, Link, Grid, Ty
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useNavigate } from 'react-router-dom';
 import GoogleSignIn from './OauthRedirect';
-import { postToken } from '../api/postToken';
+import { postToken } from './postToken';
 
 export default function LoginWithGoogle() {
   const navigate = useNavigate();

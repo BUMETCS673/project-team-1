@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Avatar,
   Button,
   CssBaseline,
   TextField,
-  FormControlLabel,
-  Link,
   Grid,
   Typography,
   Container,
@@ -15,15 +13,18 @@ import {
   Alert
 } from '@mui/material';
 import axios from 'axios';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 
-const nameOptions = ['Income', 'Check', 'Salary', 'Job'];
+const nameOptions = ['Income', 'Check', 'Salary', 'Job', 'Extra'];
 
 export default function Setup() {
   const [amount, setAmount] = useState('');
   const [username, setUsername] = useState('');
   const [selectedName, setSelectedName] = useState('');
+  const [selectedDate, setSelectedDate] = useState(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarSeverity, setSnackbarSeverity] = useState('success'); 
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
   const handleSubmit = async (event) => {
@@ -36,7 +37,7 @@ export default function Setup() {
         username,
         name: selectedName,
         amount: parseFloat(amount),
-        date: currentDate.toISOString().split('T')[0],
+        date: selectedDate,
       });
 
       if (response.status === 201) {
@@ -72,6 +73,10 @@ export default function Setup() {
     setSelectedName(newValue);
   };
 
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
+
   return (
     <>
       <Container component="main" maxWidth="xs">
@@ -82,6 +87,7 @@ export default function Setup() {
           </Typography>
           <Grid container spacing={3}>
             <Grid item xs={12}>
+              {/* Getting username */}
               <TextField
                 margin="normal"
                 required
@@ -93,6 +99,19 @@ export default function Setup() {
                 variant="standard"
                 onChange={handleUsernameChange}
               />
+              {/* Date picking from the user */}
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DatePicker
+                  label="Select Date"
+                  value={selectedDate}
+                  onChange={handleDateChange}
+                  renderInput={(params) => <TextField {...params} fullWidth variant="standard" />}
+                  slotProps={{ textField: { size: 'small' } }}
+                  sx={{mt:3, ml:9}}
+                />
+              </LocalizationProvider>
+
+              {/* Getting amount of dollars  */}
               <TextField
                 margin="normal"
                 required
@@ -104,7 +123,9 @@ export default function Setup() {
                 variant="standard"
                 onChange={handleAmountChange}
               />
-               <Autocomplete
+              {/* Getting type of the income */}
+              <Autocomplete
+                sx={{mt:3}}
                 id="name"
                 options={nameOptions}
                 value={selectedName}
@@ -137,6 +158,7 @@ export default function Setup() {
               />
             </Grid>
           </Grid>
+          {/* Handles submit */}
           <Button
             onClick={handleSubmit}
             type="submit"
