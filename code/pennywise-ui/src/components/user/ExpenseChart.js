@@ -7,6 +7,7 @@ import axios from "axios"
 
 const ExpenseChart = ( {expenses} ) => {
 
+    // create array of unique expenseCategories from user expenses data
     const getExpenseCategories = () => {
         const expenseCategories = new Set(); 
 
@@ -17,18 +18,21 @@ const ExpenseChart = ( {expenses} ) => {
 
     }
 
-    const makeCategory= (cat, dict) => {
-      var catTotal = 0
+    // loop over expenses and calculate total amount spent for input expense category 
+    // add key, value pair to input dict 
+    const makeCategory= (expenseCategory, dict) => {
+      var amountSpent = 0
 
       expenses.map((expense) => {
-        if (expense.category === cat) {
-          catTotal += expense.amount
-          dict.set(expense.category, catTotal)
+        if (expense.category === expenseCategory) {
+          amountSpent += expense.amount
+          dict.set(expense.category, amountSpent)
         }
       })
     }
 
-
+    // create dict, loop over expenseCategories and call makeCategory to add 
+    // { expenseCategory : amountSpent } to dict 
     const getCats = () => {
       const expenseCategories = getExpenseCategories() 
       var dict = new Map();
@@ -42,15 +46,17 @@ const ExpenseChart = ( {expenses} ) => {
     }
 
     const myMap = getCats()
+    // create array from map and display pie chart of amountSpent per expenseCategory for user 
     const values = Array.from(myMap.values())
-    const mappy = Array.from(myMap.entries())
 
     
 
     const data = {
+        // set expenseCategories as labels
         labels: getExpenseCategories().map((category) => category),
         datasets: [{
           label: 'My First Dataset',
+          // set amountSpent per expenseCategory as data
           data: values.map((value) => value),
           backgroundColor: [
             'rgba(28, 208, 187, 0.39)',
