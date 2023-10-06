@@ -89,10 +89,11 @@ export default function Setup() {
                 variant="standard"
                 onChange={handleAmountChange}
               />
-              <Autocomplete
+               <Autocomplete
                 id="name"
                 options={nameOptions}
                 value={selectedName}
+                isOptionEqualToValue={(option, value) => option.id === value.id}
                 onChange={handleNameChange}
                 renderInput={(params) => (
                   <TextField
