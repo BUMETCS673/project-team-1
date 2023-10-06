@@ -26,6 +26,8 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Build PennyWise with Maven
+        run: sed -i'' -e 's/localhost:3306/db:3306/g' ./code/back-end/src/main/resources/application.yml
+        run: rm ./code/back-end/src/main/resources/application.yml-e
         run: mvn -B package -e -X --file ./code/back-end/pom.xml -Dmaven.war.outputDirectory=./code/container/pennywise
       - name: Prep for building container
         run: |
