@@ -285,9 +285,9 @@ const NavBar = () => {
                       justifyContent: 'center',
                     }}
                   >
-                  <HomeIcon /> 
+                  <LoginIcon /> 
                   </ListItemIcon>
-                  <ListItemText primary="Home" sx={{ opacity: open ? 1 : 0, color: "#161717"}} />
+                  <ListItemText primary="Login" sx={{ opacity: open ? 1 : 0, color: "#161717"}} />
                 </StyledListItemButton>
               </ListItem>
 
@@ -307,9 +307,9 @@ const NavBar = () => {
                       justifyContent: 'center',
                     }}
                   >
-                  <LoginIcon /> 
+                  <HomeIcon /> 
                   </ListItemIcon>
-                  <ListItemText primary="Login" sx={{ opacity: open ? 1 : 0 }} />
+                  <ListItemText primary="Home" sx={{ opacity: open ? 1 : 0 }} />
                 </StyledListItemButton>
               </ListItem>
 
