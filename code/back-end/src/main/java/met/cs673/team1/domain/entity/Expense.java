@@ -1,7 +1,7 @@
 package met.cs673.team1.domain.entity;
 
 import jakarta.persistence.*;
-import java.sql.Date;
+import java.time.LocalDate;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,7 +26,7 @@ public class Expense {
     @JoinColumn(name = "category_id", referencedColumnName = "category_id")
     private ExpenseCategory category;
 
-    private Date date;
+    private LocalDate date;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")

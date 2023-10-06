@@ -6,10 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.IntStream;
@@ -38,6 +37,7 @@ class UserOverviewServiceTest {
     private static final String LAST_NAME = "last";
     private static final Double[] INCOMES = new Double[]{ 100.0, 253.19, 400.56 };
     private static final Double[] EXPENSES = new Double[]{ 23.45, 446.6, 12.2, 93.44 };
+    private static final LocalDate DATE = LocalDate.of(2023, 9, 12);
     private static final Double OFFSET = 0.000001;
 
     @MockBean
@@ -63,7 +63,7 @@ class UserOverviewServiceTest {
     void setUp() {
         incomeList = (List<IncomeDto>) IntStream.range(0, INCOMES.length).mapToObj(idx ->
                 IncomeDto.builder()
-                        .date(Date.from(Instant.now()))
+                        .date(DATE)
                         .amount(INCOMES[idx])
                         .name("income" + idx)
                         .build()
@@ -71,7 +71,7 @@ class UserOverviewServiceTest {
 
         expenseList = (List<ExpenseDto>) IntStream.range(0, EXPENSES.length).mapToObj(idx ->
                 ExpenseDto.builder()
-                        .date(Date.from(Instant.now()))
+                        .date(DATE)
                         .amount(EXPENSES[idx])
                         .name("expense" + idx)
                         .build()

@@ -7,7 +7,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
 import jakarta.persistence.EntityNotFoundException;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Optional;
 import met.cs673.team1.domain.dto.ExpenseDto;
 import met.cs673.team1.domain.entity.Expense;
@@ -29,7 +29,7 @@ public class ExpenseMapperTest {
     private static String NAME = "Lunch";
     private static Double AMOUNT = 24.5;
     private static String USERNAME = "username";
-    private static Date DATE = new Date(2023, 9, 12);
+    private static LocalDate DATE = LocalDate.of(2023, 9, 12);
 
     @Mock
     private ExpenseCategoryRepository categoryRepository;
