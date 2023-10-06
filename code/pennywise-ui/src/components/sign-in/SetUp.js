@@ -11,6 +11,8 @@ import {
   Container,
   Box,
   Autocomplete,
+  Snackbar,
+  Alert
 } from '@mui/material';
 import axios from 'axios';
 
@@ -20,13 +22,17 @@ export default function Setup() {
   const [amount, setAmount] = useState('');
   const [username, setUsername] = useState('');
   const [selectedName, setSelectedName] = useState('');
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success'); 
+  const [snackbarMessage, setSnackbarMessage] = useState('');
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const currentDate = new Date();
+    const URL = process.env.REACT_APP_API_BASE_URL;
 
     try {
-      const response = await axios.post('http://localhost:8080/addIncome', {
+      const response = await axios.post(`${URL}/addIncome`, {
         username,
         name: selectedName,
         amount: parseFloat(amount),
@@ -37,11 +43,20 @@ export default function Setup() {
         console.log('Data saved successfully');
         const responseData = await response.data;
         console.log('Response data:', responseData);
+        setSnackbarSeverity('success');
+        setSnackbarMessage('Data saved successfully');
+        setSnackbarOpen(true);
       } else {
         console.error('Failed to save data');
+        setSnackbarSeverity('error');
+        setSnackbarMessage('Failed to save data');
+        setSnackbarOpen(true);
       }
     } catch (error) {
       console.error('An error occurred:', error);
+      setSnackbarSeverity('error');
+      setSnackbarMessage('An error occurred. Please check again.');
+      setSnackbarOpen(true);
     }
   };
 
@@ -138,6 +153,14 @@ export default function Setup() {
             Submit
           </Button>
         </Box>
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={6000}
+          onClose={() => setSnackbarOpen(false)}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        >
+          <Alert severity={snackbarSeverity}>{snackbarMessage}</Alert>
+        </Snackbar>
       </Container>
     </>
   );
