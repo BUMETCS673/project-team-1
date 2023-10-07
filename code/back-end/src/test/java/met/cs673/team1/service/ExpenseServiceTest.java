@@ -17,11 +17,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class ExpenseServiceTest {
 
+    static final Integer USER_ID = 1;
+    static final String USERNAME = "username";
     static final LocalDate DATE = LocalDate.of(2023, 9, 10);
 
     @Mock
@@ -45,9 +48,9 @@ class ExpenseServiceTest {
         ExpenseDto dto = new ExpenseDto();
         doReturn(dto).doReturn(dto).when(expenseMapper).expenseToExpenseDto(any(Expense.class));
 
-        List<ExpenseDto> expenses = expenseService.findAllByUserId(1);
+        List<ExpenseDto> expenses = expenseService.findAllByUserId(USER_ID);
 
-        verify(expenseRepository).findAllByUserUserId(1);
+        verify(expenseRepository).findAllByUserUserId(USER_ID);
         verify(expenseMapper, times(2)).expenseToExpenseDto(any(Expense.class));
     }
 
@@ -61,9 +64,9 @@ class ExpenseServiceTest {
         ExpenseDto dto = new ExpenseDto();
         doReturn(dto).doReturn(dto).when(expenseMapper).expenseToExpenseDto(any(Expense.class));
 
-        List<ExpenseDto> expenses = expenseService.findAllByUserIdAndDateRange(1, DATE, DATE);
+        List<ExpenseDto> expenses = expenseService.findAllByUserIdAndDateRange(USER_ID, DATE, DATE);
 
-        verify(expenseRepository).findAllByUserUserIdAndDateBetween(1, DATE, DATE);
+        verify(expenseRepository).findAllByUserUserIdAndDateBetween(USER_ID, DATE, DATE);
         verify(expenseMapper, times(2)).expenseToExpenseDto(any(Expense.class));
     }
 
