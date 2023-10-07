@@ -114,4 +114,21 @@ class UserServiceTest {
         doReturn(optUser).when(userRepository).findById(anyInt());
         assertThrows(UserNotFoundException.class, () -> userService.findUserEntityById(USER_ID));
     }
+
+    @Test
+    void testFindUserEntityByUsername() {
+        doReturn(Optional.of(testUser)).when(userRepository).findByUsername(anyString());
+        User user = userService.findUserEntityByUsername(USERNAME);
+
+        assertNotNull(user);
+        assertThat(ReflectionTestUtils.getField(user, USERNAME)).isEqualTo(USERNAME);
+        assertThat(ReflectionTestUtils.getField(user, EMAIL)).isEqualTo(EMAIL);
+    }
+
+    @Test
+    void testFindUserEntityByUsernameThrowsException() {
+        Optional<User> optUser = Optional.empty();
+        doReturn(optUser).when(userRepository).findByUsername(anyString());
+        assertThrows(UserNotFoundException.class, () -> userService.findUserEntityByUsername(USERNAME));
+    }
 }

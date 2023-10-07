@@ -47,6 +47,21 @@ class IncomeServiceTest {
     }
 
     @Test
+    void testFindAllByUserIdAndDateRange() {
+        Integer userId = 1;
+        LocalDate date = LocalDate.now();
+        doReturn(Arrays.asList(new Income(), new Income()))
+                .when(incomeRepository)
+                .findAllByUserUserIdAndDateBetween(anyInt(), any(LocalDate.class), any(LocalDate.class));
+
+        List<IncomeDto> incomes = incomeService.findAllByUserIdAndDateRange(userId, date, date);
+
+        assertThat(incomes).hasSize(2);
+        verify(incomeRepository).findAllByUserUserIdAndDateBetween(userId, date, date);
+        verify(incomeMapper, times(2)).incomeToIncomeDto(any(Income.class));
+    }
+
+    @Test
     void testFindAllByUsernameSuccess() {
         IncomeDto dto = new IncomeDto();
         dto.setUsername(USERNAME);
@@ -64,7 +79,7 @@ class IncomeServiceTest {
         verify(incomeRepository).findAllByUserUserId(userId);
         verify(incomeMapper, times(2)).incomeToIncomeDto(any(Income.class));
 
-        assertThat(incomes.size()).isEqualTo(2);
+        assertThat(incomes).hasSize(2);
     }
 
     @Test
@@ -87,6 +102,6 @@ class IncomeServiceTest {
         verify(incomeRepository).findAllByUserUserIdAndDateBetween(userId, DATE, DATE);
         verify(incomeMapper, times(2)).incomeToIncomeDto(any(Income.class));
 
-        assertThat(incomes.size()).isEqualTo(2);
+        assertThat(incomes).hasSize(2);
     }
 }
