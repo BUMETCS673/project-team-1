@@ -1,10 +1,11 @@
 package met.cs673.team1.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-import java.util.Arrays;
+import java.time.LocalDate;
 import java.util.List;
 import met.cs673.team1.domain.dto.IncomeDto;
 import met.cs673.team1.service.IncomeService;
@@ -17,10 +18,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 @ExtendWith(MockitoExtension.class)
-public class IncomeControllerTest {
+class IncomeControllerTest {
 
-    private static String USERNAME = "user123";
-    private static Double INCOME = 1200.0;
+    private static final String USERNAME = "user123";
+    private static final Double INCOME = 1200.0;
+    private static final LocalDate DATE = LocalDate.of(2023, 9, 10);
 
     @Mock
     IncomeService incomeService;
@@ -40,18 +42,39 @@ public class IncomeControllerTest {
     }
 
     @Test
-    void testGetIncomeByUsername() {
+    void testGetIncomesByUsernameWithoutDateRange() {
         IncomeDto dto = new IncomeDto();
         dto.setUsername(USERNAME);
         dto.setAmount(INCOME);
-        List<IncomeDto> dtos = Arrays.asList(dto);
+        List<IncomeDto> dtos = List.of(dto);
         doReturn(dtos).when(incomeService).findAllByUsername(anyString());
 
-        ResponseEntity<List<IncomeDto>> response = incomeController.getIncomesByUsername(USERNAME);
+        ResponseEntity<List<IncomeDto>> response =
+                incomeController.findIncomesByUsername(USERNAME, null, null);
 
         verify(incomeService).findAllByUsername(USERNAME);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody().size()).isEqualTo(1);
+        assertNotNull(response.getBody());
+        assertThat(response.getBody()).hasSize(1);
+        assertThat(response.getBody().get(0).getUsername()).isEqualTo(USERNAME);
+        assertThat(response.getBody().get(0).getAmount()).isEqualTo(INCOME);
+    }
+
+    @Test
+    void testGetIncomeByUsernameAndDateRange() {
+        IncomeDto dto = new IncomeDto();
+        dto.setUsername(USERNAME);
+        dto.setAmount(INCOME);
+        List<IncomeDto> dtos = List.of(dto);
+        doReturn(dtos).when(incomeService).findAllByUsernameAndDateRange(anyString(), any(LocalDate.class), any(LocalDate.class));
+
+        ResponseEntity<List<IncomeDto>> response =
+                incomeController.findIncomesByUsername(USERNAME, DATE, DATE);
+
+        verify(incomeService).findAllByUsernameAndDateRange(USERNAME, DATE, DATE);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertNotNull(response.getBody());
+        assertThat(response.getBody()).hasSize(1);
         assertThat(response.getBody().get(0).getUsername()).isEqualTo(USERNAME);
         assertThat(response.getBody().get(0).getAmount()).isEqualTo(INCOME);
     }
