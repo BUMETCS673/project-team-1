@@ -6,6 +6,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 import met.cs673.team1.domain.dto.UserGetDto;
 import met.cs673.team1.domain.dto.UserOverviewDto;
@@ -51,7 +52,7 @@ class UserControllerTest {
     }
 
     @Test
-    void testLoadHomePathWithUsername() throws InterruptedException, ExecutionException {
+    void testLoadHomePageWithUsername() throws InterruptedException, ExecutionException {
         UserController spyController = Mockito.spy(userController);
         Integer userId = 1;
         User u = new User();
