@@ -45,7 +45,6 @@ public class UserService {
         }
     }
 
-
     public UserGetDto findByUsername(String username) throws UserNotFoundException {
         Optional<User> result = userRepository.findByUsername(username);
         if (result.isPresent()) {
@@ -62,6 +61,14 @@ public class UserService {
     public void save(UserPostDto userPostDto) {
         User user = userMapper.userPostDtoToUser(userPostDto);
         userRepository.save(user);
+    }
+
+    protected User findUserEntityById(Integer id) {
+        Optional<User> optUser = userRepository.findById(id);
+        if (optUser.isEmpty()) {
+            throw new UserNotFoundException("No user found");
+        }
+        return optUser.get();
     }
 }
 

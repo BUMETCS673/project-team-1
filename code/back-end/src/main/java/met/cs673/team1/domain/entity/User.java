@@ -2,7 +2,6 @@ package met.cs673.team1.domain.entity;
 
 import jakarta.persistence.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,8 +21,6 @@ public class User {
 
     private String username;
 
-    private String password;
-
     private String email;
 
     @Column(name = "first_name")
@@ -38,7 +35,4 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
-
-    @OneToMany(mappedBy = "user")
-    private List<Expense> expenses;
 }

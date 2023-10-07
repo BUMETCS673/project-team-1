@@ -1,6 +1,7 @@
 package met.cs673.team1.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
 import java.util.Optional;
 
 import jdk.jfr.Category;
@@ -49,4 +50,11 @@ public class ExpenseCategoryService {
         return optCategory.get();
     }
 
+    public List<ExpenseCategory> saveAll(List<String> categories) {
+        return categories.stream().map(name -> {
+            ExpenseCategory category = new ExpenseCategory();
+            category.setName(name);
+            return repository.save(category);
+        }).toList();
+    }
 }
