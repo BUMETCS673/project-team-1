@@ -4,7 +4,9 @@ import jakarta.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 import met.cs673.team1.domain.dto.ExpenseDto;
+import met.cs673.team1.domain.entity.User;
 import met.cs673.team1.service.ExpenseService;
+import met.cs673.team1.service.UserService;
 import met.cs673.team1.validation.ValidateDateRange;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -21,9 +23,12 @@ import org.springframework.web.bind.annotation.*;
 public class ExpenseController {
 
     private ExpenseService expenseService;
+    private UserService userService;
 
-    public ExpenseController(ExpenseService expenseService) {
+    public ExpenseController(ExpenseService expenseService,
+                             UserService userService) {
         this.expenseService = expenseService;
+        this.userService = userService;
     }
 
     /**
@@ -54,14 +59,8 @@ public class ExpenseController {
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate
     ) {
-        List<ExpenseDto> expenses;
-        if (startDate == null && endDate == null) {
-            //expenses = expenseService.findAllByUsername(username);
-        } else {
-            //expenses = expenseService.findAllByUsernameAndDateRange(username, startDate, endDate);
-        }
-        return ResponseEntity.ok(new ArrayList<>());
-        //return new ResponseEntity<>(expenses, HttpStatus.OK);
+        User user = userService.findUserEntityByUsername(username);
+        return getAllUserExpenses(user.getUserId(), startDate, endDate);
     }
 
     /**
