@@ -23,6 +23,7 @@ RUN npm install date-fns
 RUN npm install dayjs
 RUN npm install luxon
 RUN npm install moment
+RUN npm install @babel/plugin-proposal-private-property-in-object
 RUN npm install
 
 RUN npm run build
