@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import met.cs673.team1.domain.dto.UserGetDto;
 import met.cs673.team1.domain.dto.UserOverviewDto;
 import met.cs673.team1.domain.dto.UserPostDto;
+import met.cs673.team1.domain.entity.User;
 import met.cs673.team1.service.UserOverviewService;
 import met.cs673.team1.service.UserService;
 import met.cs673.team1.validation.ValidateDateRange;
@@ -41,9 +42,19 @@ public class UserController {
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate
     ) throws InterruptedException, ExecutionException {
-
         UserOverviewDto overviewDto = overviewService.getUserOverview(id, startDate, endDate);
         return ResponseEntity.ok(overviewDto);
+    }
+
+    @ValidateDateRange(start = "startDate", end = "endDate")
+    @GetMapping(value = "/home", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserOverviewDto> loadHomePage(
+            @RequestParam String username,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate
+    ) throws InterruptedException, ExecutionException {
+        User u = userService.findUserEntityByUsername(username);
+        return loadHomePage(u.getUserId(), startDate, endDate);
     }
 
     /**

@@ -1,28 +1,33 @@
 package met.cs673.team1.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 import met.cs673.team1.domain.dto.UserGetDto;
 import met.cs673.team1.domain.dto.UserOverviewDto;
 import met.cs673.team1.domain.dto.UserPostDto;
+import met.cs673.team1.domain.entity.User;
 import met.cs673.team1.service.UserOverviewService;
 import met.cs673.team1.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 @ExtendWith(MockitoExtension.class)
-public class UserControllerTest {
+class UserControllerTest {
 
-    private static String USERNAME = "user123";
+    static final String USERNAME = "user123";
+    static final LocalDate DATE = LocalDate.now();
 
     @Mock
     UserService userService;
@@ -34,16 +39,34 @@ public class UserControllerTest {
     UserController userController;
 
     @Test
-    void testLoadHomePage() throws InterruptedException, ExecutionException {
-        LocalDate testDate = LocalDate.of(2023, 9, 10);
+    void testLoadHomePageWithId() throws InterruptedException, ExecutionException {
         Integer userId = 1;
         doReturn(UserOverviewDto.builder().build())
                 .when(overviewService)
                 .getUserOverview(anyInt(), any(LocalDate.class), any(LocalDate.class));
 
-        ResponseEntity<UserOverviewDto> response = userController.loadHomePage(userId, testDate, testDate);
+        ResponseEntity<UserOverviewDto> response = userController.loadHomePage(userId, DATE, DATE);
 
-        verify(overviewService).getUserOverview(userId, testDate, testDate);
+        verify(overviewService).getUserOverview(userId, DATE, DATE);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
+
+    @Test
+    void testLoadHomePathWithUsername() throws InterruptedException, ExecutionException {
+        UserController spyController = Mockito.spy(userController);
+        Integer userId = 1;
+        User u = new User();
+        u.setUserId(userId);
+        doReturn(u).when(userService).findUserEntityByUsername(anyString());
+        doReturn(ResponseEntity.ok(UserOverviewDto.builder().build()))
+                .when(spyController)
+                .loadHomePage(anyInt(), any(LocalDate.class), any(LocalDate.class));
+
+        ResponseEntity<UserOverviewDto> response = spyController.loadHomePage(USERNAME, DATE, DATE);
+
+        verify(userService).findUserEntityByUsername(USERNAME);
+        verify(spyController).loadHomePage(userId, DATE, DATE);
+        assertTrue(response.hasBody());
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
