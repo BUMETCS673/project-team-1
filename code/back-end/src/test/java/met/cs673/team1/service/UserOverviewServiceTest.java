@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.function.Supplier;
 import java.util.stream.IntStream;
 import met.cs673.team1.domain.dto.ExpenseDto;
 import met.cs673.team1.domain.dto.IncomeDto;
@@ -20,6 +21,8 @@ import met.cs673.team1.domain.entity.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
@@ -52,6 +55,11 @@ class UserOverviewServiceTest {
     @SpyBean
     UserOverviewService overviewService;
 
+    @Captor
+    ArgumentCaptor<Supplier<List<IncomeDto>>> incomeCaptor;
+    @Captor
+    ArgumentCaptor<Supplier<List<ExpenseDto>>> expenseCaptor;
+
     List<IncomeDto> incomeList;
     List<ExpenseDto> expenseList;
     Double balance;
@@ -77,8 +85,8 @@ class UserOverviewServiceTest {
                         .build()
         ).toList();
 
-        balance = Arrays.stream(INCOMES).reduce(0.0, (a, b) -> a + b) -
-                Arrays.stream(EXPENSES).reduce(0.0, (a, b) -> a + b);
+        balance = Arrays.stream(INCOMES).reduce(0.0, Double::sum) -
+                Arrays.stream(EXPENSES).reduce(0.0, Double::sum);
 
         user = new User();
         user.setUserId(USER_ID);
@@ -95,12 +103,36 @@ class UserOverviewServiceTest {
     }
 
     @Test
-    void testGetUserOverview() throws InterruptedException, ExecutionException {
+    void testGetUserOverviewWithoutDateRange() throws InterruptedException, ExecutionException {
         doReturn(user).when(userService).findUserEntityById(anyInt());
         doReturn(incomeList).when(incomeService).findAllByUserId(anyInt());
         doReturn(expenseList).when(expenseService).findAllByUserId(anyInt());
 
-        UserOverviewDto result = overviewService.getUserOverview(USER_ID);
+        UserOverviewDto result = overviewService.getUserOverview(USER_ID, null, null);
+
+        assertThat(result.getEmail()).isEqualTo(EMAIL);
+        assertThat(result.getUsername()).isEqualTo(EMAIL);
+        assertThat(result.getBalance()).isCloseTo(balance, offset(OFFSET));
+        assertThat(result.getIncomes()).containsAll(incomeList);
+        assertThat(result.getExpenses()).containsAll(expenseList);
+    }
+
+    @Test
+    void testGetUserOverviewWithDateRange() throws InterruptedException, ExecutionException {
+        doReturn(user).when(userService).findUserEntityById(anyInt());
+        doReturn(incomeList).when(incomeService)
+                .findAllByUserIdAndDateRange(anyInt(), any(LocalDate.class), any(LocalDate.class));
+        doReturn(expenseList).when(expenseService)
+                .findAllByUserIdAndDateRange(anyInt(), any(LocalDate.class), any(LocalDate.class));
+
+        UserOverviewDto result = overviewService.getUserOverview(USER_ID, DATE, DATE);
+
+        verify(overviewService).getDtoWithFinancialsByUserId(anyInt(), any(Supplier.class), any(Supplier.class));
+
+        verify(incomeService, times(0)).findAllByUserId(USER_ID);
+        verify(incomeService).findAllByUserIdAndDateRange(USER_ID, DATE, DATE);
+        verify(expenseService, times(0)).findAllByUserId(USER_ID);
+        verify(expenseService).findAllByUserIdAndDateRange(USER_ID, DATE, DATE);
 
         assertThat(result.getEmail()).isEqualTo(EMAIL);
         assertThat(result.getUsername()).isEqualTo(EMAIL);
@@ -128,7 +160,11 @@ class UserOverviewServiceTest {
         doReturn(incomeList).when(incomeService).findAllByUserId(anyInt());
         doReturn(expenseList).when(expenseService).findAllByUserId(anyInt());
 
-        UserOverviewDto result = overviewService.getDtoWithFinancialsByUserId(USER_ID);
+        UserOverviewDto result = overviewService.getDtoWithFinancialsByUserId(
+                USER_ID,
+                () -> incomeService.findAllByUserId(USER_ID),
+                () -> expenseService.findAllByUserId(USER_ID)
+        );
 
         assertThat(result.getBalance()).isCloseTo(balance, offset(OFFSET));
         assertThat(result.getIncomes()).containsAll(incomeList);
@@ -145,12 +181,18 @@ class UserOverviewServiceTest {
     @Test
     void testGetUserOverviewRetry_OneInterruptedException() throws InterruptedException, ExecutionException {
         UserOverviewDto dto = UserOverviewDto.builder().email(EMAIL).build();
-        doThrow(InterruptedException.class).doReturn(dto).when(overviewService).getDtoWithFinancialsByUserId(anyInt());
+        doThrow(InterruptedException.class)
+                .doReturn(dto)
+                .when(overviewService)
+                .getDtoWithFinancialsByUserId(anyInt(), any(Supplier.class), any(Supplier.class));
         doReturn(user).when(userService).findUserEntityById(anyInt());
 
-        UserOverviewDto result = overviewService.getUserOverview(USER_ID);
+        UserOverviewDto result = overviewService.getUserOverview(USER_ID, null, null);
 
-        verify(overviewService, times(2)).getDtoWithFinancialsByUserId(USER_ID);
+        // Supplier lambdas are created internally. We can't verify the exact arguments for this call,
+        // so do the next best thing.
+        verify(overviewService, times(2))
+                .getDtoWithFinancialsByUserId(anyInt(), any(Supplier.class), any(Supplier.class));
         assertThat(result.getEmail()).isEqualTo(EMAIL);
     }
 
@@ -159,12 +201,15 @@ class UserOverviewServiceTest {
         UserOverviewDto dto = UserOverviewDto.builder().email(EMAIL).build();
         doThrow(InterruptedException.class)
                 .doThrow(InterruptedException.class)
-                .doReturn(dto).when(overviewService).getDtoWithFinancialsByUserId(anyInt());
+                .doReturn(dto)
+                .when(overviewService)
+                .getDtoWithFinancialsByUserId(anyInt(), any(Supplier.class), any(Supplier.class));
         doReturn(user).when(userService).findUserEntityById(anyInt());
 
-        UserOverviewDto result = overviewService.getUserOverview(USER_ID);
+        UserOverviewDto result = overviewService.getUserOverview(USER_ID, null, null);
 
-        verify(overviewService, times(3)).getDtoWithFinancialsByUserId(USER_ID);
+        verify(overviewService, times(3))
+                .getDtoWithFinancialsByUserId(anyInt(), any(Supplier.class), any(Supplier.class));
         assertThat(result.getEmail()).isEqualTo(EMAIL);
     }
 
@@ -173,13 +218,15 @@ class UserOverviewServiceTest {
         doThrow(InterruptedException.class)
                 .doThrow(InterruptedException.class)
                 .doThrow(InterruptedException.class)
-                .when(overviewService).getDtoWithFinancialsByUserId(anyInt());
+                .when(overviewService)
+                .getDtoWithFinancialsByUserId(anyInt(), any(Supplier.class), any(Supplier.class));
         doReturn(user).when(userService).findUserEntityById(anyInt());
         doReturn(userGetDto).when(userService).findById(anyInt());
 
-        UserOverviewDto result = overviewService.getUserOverview(USER_ID);
+        UserOverviewDto result = overviewService.getUserOverview(USER_ID, null, null);
 
-        verify(overviewService, times(3)).getDtoWithFinancialsByUserId(USER_ID);
+        verify(overviewService, times(3))
+                .getDtoWithFinancialsByUserId(anyInt(), any(Supplier.class), any(Supplier.class));
         verify(overviewService).getDtoWithoutFinancialsByUserId(USER_ID);
 
         assertThat(result.getEmail()).isEqualTo(user.getEmail());

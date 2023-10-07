@@ -4,8 +4,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+import java.time.LocalDate;
+import java.util.concurrent.ExecutionException;
 import met.cs673.team1.domain.dto.UserGetDto;
+import met.cs673.team1.domain.dto.UserOverviewDto;
 import met.cs673.team1.domain.dto.UserPostDto;
+import met.cs673.team1.service.UserOverviewService;
 import met.cs673.team1.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,8 +27,25 @@ public class UserControllerTest {
     @Mock
     UserService userService;
 
+    @Mock
+    UserOverviewService overviewService;
+
     @InjectMocks
     UserController userController;
+
+    @Test
+    void testLoadHomePage() throws InterruptedException, ExecutionException {
+        LocalDate testDate = LocalDate.of(2023, 9, 10);
+        Integer userId = 1;
+        doReturn(UserOverviewDto.builder().build())
+                .when(overviewService)
+                .getUserOverview(anyInt(), any(LocalDate.class), any(LocalDate.class));
+
+        ResponseEntity<UserOverviewDto> response = userController.loadHomePage(userId, testDate, testDate);
+
+        verify(overviewService).getUserOverview(userId, testDate, testDate);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
 
     @Test
     void testRetrieveUserByIdSuccess() {
