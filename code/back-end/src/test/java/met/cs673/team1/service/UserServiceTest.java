@@ -116,4 +116,5 @@ class UserServiceTest {
         doReturn(optUser).when(userRepository).findById(anyInt());
         assertThrows(UserNotFoundException.class, () -> userService.findUserEntityById(USER_ID));
     }
+
 }

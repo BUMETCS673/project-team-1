@@ -71,3 +71,9 @@ public class UserService {
         return optUser.get();
     }
 }
+
+// if email not exists
+// else
+// create user
+
+

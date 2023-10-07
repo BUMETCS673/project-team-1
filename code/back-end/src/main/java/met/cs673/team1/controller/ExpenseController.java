@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
  * REST endpoints for dealing with expenses
  */
 @RestController
+@CrossOrigin
 public class ExpenseController {
 
     private ExpenseService expenseService;
@@ -29,6 +30,12 @@ public class ExpenseController {
     @GetMapping(value = "/expenses/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ExpenseDto>> getAllUserExpensesById(@PathVariable Integer userId) {
         List<ExpenseDto> expenses = expenseService.findAllExpensesByUserId(userId);
+        return new ResponseEntity<>(expenses, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/expenses", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<ExpenseDto>> getAllUserExpenseByUsername(@RequestParam String username) {
+        List<ExpenseDto> expenses = expenseService.findAllExpensesByUsername(username);
         return new ResponseEntity<>(expenses, HttpStatus.OK);
     }
 

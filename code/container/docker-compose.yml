@@ -22,7 +22,13 @@ services:
       - db
     networks:
       - pennywise
+  pennywise-ui:
+    image: pennywise-ui
+    ports:
+      - 80:8080
+    networks:
+      - pennywise
 volumes:
-  datadiri:
+  datadir:
 networks:
   pennywise:

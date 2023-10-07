@@ -7,7 +7,7 @@ spring:
     show-sql: true
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://db:3306/pennywise_db
+    url: jdbc:mariadb://localhost:3306/pennywise_db
     username: root
     password: Password123!
   sql:

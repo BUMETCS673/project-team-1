@@ -1,5 +1,6 @@
 package met.cs673.team1.service;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -8,7 +9,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import met.cs673.team1.domain.dto.ExpenseDto;
+import met.cs673.team1.domain.dto.IncomeDto;
+import met.cs673.team1.domain.dto.UserGetDto;
 import met.cs673.team1.domain.entity.Expense;
+import met.cs673.team1.domain.entity.Income;
 import met.cs673.team1.domain.entity.User;
 import met.cs673.team1.exception.UserNotFoundException;
 import met.cs673.team1.mapper.ExpenseMapper;
@@ -93,4 +97,5 @@ public class ExpenseServiceTest {
 
         assertThrows(UserNotFoundException.class, () -> expenseService.save(dto));
     }
+
 }
