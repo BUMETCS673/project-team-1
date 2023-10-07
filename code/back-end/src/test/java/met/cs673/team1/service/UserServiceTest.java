@@ -7,8 +7,6 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 import met.cs673.team1.domain.dto.UserGetDto;
 import met.cs673.team1.domain.dto.UserPostDto;
