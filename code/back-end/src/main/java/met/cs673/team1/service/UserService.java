@@ -63,7 +63,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    protected User findUserEntityById(Integer id) {
+    public User findUserEntityById(Integer id) {
         Optional<User> optUser = userRepository.findById(id);
         if (optUser.isEmpty()) {
             throw new UserNotFoundException("No user found");
@@ -71,7 +71,7 @@ public class UserService {
         return optUser.get();
     }
 
-    protected User findUserEntityByUsername(String username) {
+    public User findUserEntityByUsername(String username) {
         Optional<User> optUser = userRepository.findByUsername(username);
         if (optUser.isEmpty()) {
             throw new UserNotFoundException(String.format("User with username '%s' not found", username));
