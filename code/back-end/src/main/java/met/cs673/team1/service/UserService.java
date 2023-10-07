@@ -70,4 +70,12 @@ public class UserService {
         }
         return optUser.get();
     }
+
+    protected User findUserEntityByUsername(String username) {
+        Optional<User> optUser = userRepository.findByUsername(username);
+        if (optUser.isEmpty()) {
+            throw new UserNotFoundException(String.format("User with username '%s' not found", username));
+        }
+        return optUser.get();
+    }
 }
