@@ -98,7 +98,7 @@ class UserOverviewServiceTest {
     void testGetUserOverview() throws InterruptedException, ExecutionException {
         doReturn(user).when(userService).findUserEntityById(anyInt());
         doReturn(incomeList).when(incomeService).findAllByUserId(anyInt());
-        doReturn(expenseList).when(expenseService).findAllExpensesByUserId(anyInt());
+        doReturn(expenseList).when(expenseService).findAllByUserId(anyInt());
 
         UserOverviewDto result = overviewService.getUserOverview(USER_ID);
 
@@ -126,7 +126,7 @@ class UserOverviewServiceTest {
     @Test
     void testGetDtoWithFinancials() throws InterruptedException, ExecutionException {
         doReturn(incomeList).when(incomeService).findAllByUserId(anyInt());
-        doReturn(expenseList).when(expenseService).findAllExpensesByUserId(anyInt());
+        doReturn(expenseList).when(expenseService).findAllByUserId(anyInt());
 
         UserOverviewDto result = overviewService.getDtoWithFinancialsByUserId(USER_ID);
 

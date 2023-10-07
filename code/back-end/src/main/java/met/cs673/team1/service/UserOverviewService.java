@@ -82,7 +82,7 @@ public class UserOverviewService {
         CompletableFuture<List<IncomeDto>> incomeFuture =
                 CompletableFuture.supplyAsync(() -> incomeService.findAllByUserId(id));
         CompletableFuture<List<ExpenseDto>> expenseFuture =
-                CompletableFuture.supplyAsync(() -> expenseService.findAllExpensesByUserId(id));
+                CompletableFuture.supplyAsync(() -> expenseService.findAllByUserId(id));
         CompletableFuture<Void> combined = CompletableFuture.allOf(expenseFuture, incomeFuture);
 
         combined.get();
