@@ -2,16 +2,12 @@ package met.cs673.team1.service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import met.cs673.team1.domain.dto.ExpenseDto;
 import met.cs673.team1.domain.entity.Expense;
-import met.cs673.team1.domain.entity.User;
-import met.cs673.team1.exception.UserNotFoundException;
 import met.cs673.team1.mapper.ExpenseMapper;
 import met.cs673.team1.repository.ExpenseCategoryRepository;
 import met.cs673.team1.repository.ExpenseRepository;
-import met.cs673.team1.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 /**
@@ -22,16 +18,16 @@ public class ExpenseService {
 
     private final ExpenseRepository expenseRepository;
     private final ExpenseCategoryRepository expenseCategoryRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final ExpenseMapper expenseMapper;
 
     public ExpenseService(final ExpenseRepository expenseRepository,
                           final ExpenseCategoryRepository expenseCategoryRepository,
-                          final UserRepository userRepository,
+                          final UserService userService,
                           final ExpenseMapper expenseMapper) {
         this.expenseRepository = expenseRepository;
         this.expenseCategoryRepository = expenseCategoryRepository;
-        this.userRepository = userRepository;
+        this.userService = userService;
         this.expenseMapper = expenseMapper;
     }
 
@@ -68,11 +64,7 @@ public class ExpenseService {
             throw new IllegalArgumentException("Expense username cannot be null");
         }
         Expense exp = expenseMapper.expenseDtoToExpense(expenseDto);
-        Optional<User> optUser = userRepository.findByUsername(expenseDto.getUsername());
-        if (optUser.isEmpty()) {
-            throw new UserNotFoundException("No user found to link this expense to.");
-        }
-        exp.setUser(optUser.get());
+        exp.setUser(userService.findUserEntityByUsername(expenseDto.getUsername()));
 
         Expense savedExpense = expenseRepository.save(exp);
         return expenseMapper.expenseToExpenseDto(savedExpense);

@@ -7,15 +7,12 @@ import static org.mockito.Mockito.*;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import met.cs673.team1.domain.dto.ExpenseDto;
 import met.cs673.team1.domain.entity.Expense;
 import met.cs673.team1.domain.entity.User;
-import met.cs673.team1.exception.UserNotFoundException;
 import met.cs673.team1.mapper.ExpenseMapper;
 import met.cs673.team1.repository.ExpenseCategoryRepository;
 import met.cs673.team1.repository.ExpenseRepository;
-import met.cs673.team1.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -32,7 +29,7 @@ class ExpenseServiceTest {
     @Mock
     ExpenseCategoryRepository categoryRepository;
     @Mock
-    UserRepository userRepository;
+    UserService userService;
     @Mock
     ExpenseMapper expenseMapper;
 
@@ -75,7 +72,7 @@ class ExpenseServiceTest {
         String username = "user123";
         User user = new User();
         user.setUsername(username);
-        doReturn(Optional.of(user)).when(userRepository).findByUsername(anyString());
+        doReturn(user).when(userService).findUserEntityByUsername(anyString());
 
         Expense one = new Expense();
         doReturn(one).when(expenseMapper).expenseDtoToExpense(any(ExpenseDto.class));
@@ -87,7 +84,7 @@ class ExpenseServiceTest {
         ExpenseDto outDto = expenseService.save(inDto);
 
         verify(expenseMapper).expenseDtoToExpense(inDto);
-        verify(userRepository).findByUsername(username);
+        verify(userService).findUserEntityByUsername(username);
         verify(expenseRepository).save(one);
         verify(expenseMapper).expenseToExpenseDto(one);
     }
@@ -95,21 +92,5 @@ class ExpenseServiceTest {
     @Test
     void testSaveExpenseThrowsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class, () -> expenseService.save(new ExpenseDto()));
-    }
-
-    @Test
-    void testSaveExpenseThrowsUserNotFoundException() {
-        ExpenseDto dto = new ExpenseDto();
-        dto.setUsername("name");
-
-        User u = new User();
-        u.setUsername("name");
-        Expense exp = new Expense();
-        exp.setUser(u);
-
-        doReturn(exp).when(expenseMapper).expenseDtoToExpense(any(ExpenseDto.class));
-        doReturn(Optional.empty()).when(userRepository).findByUsername(anyString());
-
-        assertThrows(UserNotFoundException.class, () -> expenseService.save(dto));
     }
 }
