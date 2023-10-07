@@ -33,9 +33,10 @@ public class IncomeService {
      * Add an income to the database
      * @param incomeDto data transfer object representing the income of a user
      */
-    public void addIncome(IncomeDto incomeDto) {
+    public IncomeDto addIncome(IncomeDto incomeDto) {
         Income income = incomeMapper.incomeDtoToIncome(incomeDto);
-        incomeRepository.save(income);
+        Income savedIncome = incomeRepository.save(income);
+        return incomeMapper.incomeToIncomeDto(savedIncome);
     }
 
     public List<IncomeDto> findAllByUserId(Integer id) {

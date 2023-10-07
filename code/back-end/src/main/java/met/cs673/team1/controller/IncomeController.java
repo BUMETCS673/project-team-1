@@ -32,9 +32,9 @@ public class IncomeController {
      * ExceptionHandlerControllerAdvice
      */
     @PostMapping(value = "/addIncome", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> addUserIncome(@RequestBody IncomeDto incomeDto) {
-        incomeService.addIncome(incomeDto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<IncomeDto> addUserIncome(@RequestBody IncomeDto incomeDto) {
+        IncomeDto dto = incomeService.addIncome(incomeDto);
+        return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 
     /**

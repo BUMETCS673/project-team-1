@@ -2,6 +2,7 @@ package met.cs673.team1.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.InstanceOfAssertFactories.DATE;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
@@ -39,11 +40,17 @@ class IncomeServiceTest {
     @Test
     void testAddIncome() {
         Income income = new Income();
+        IncomeDto dto = IncomeDto.builder().build();
+        doReturn(income).when(incomeRepository).save(any(Income.class));
         doReturn(income).when(incomeMapper).incomeDtoToIncome(any(IncomeDto.class));
+        doReturn(dto).when(incomeMapper).incomeToIncomeDto(any(Income.class));
 
-        incomeService.addIncome(new IncomeDto());
+        IncomeDto result = incomeService.addIncome(dto);
 
+        assertNotNull(result);
         verify(incomeRepository).save(income);
+        verify(incomeMapper).incomeDtoToIncome(dto);
+        verify(incomeMapper).incomeToIncomeDto(income);
     }
 
     @Test

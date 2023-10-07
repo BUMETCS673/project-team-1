@@ -91,11 +91,18 @@ class UserServiceTest {
     @Test
     void testSaveUser() {
         User u = new User();
+        UserPostDto postDto = UserPostDto.builder().build();
+        UserGetDto getDto = UserGetDto.builder().build();
         doReturn(u).when(userMapper).userPostDtoToUser(any(UserPostDto.class));
+        doReturn(u).when(userRepository).save(any(User.class));
+        doReturn(getDto).when(userMapper).userToUserGetDto(any(User.class));
 
-        userService.save(UserPostDto.builder().build());
+        UserGetDto result = userService.save(postDto);
 
+        assertNotNull(result);
+        verify(userMapper).userPostDtoToUser(postDto);
         verify(userRepository).save(u);
+        verify(userMapper).userToUserGetDto(u);
     }
 
     @Test

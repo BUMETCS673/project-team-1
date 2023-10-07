@@ -80,8 +80,8 @@ public class UserController {
      * @return HTTP status 201 Created
      */
     @PostMapping(value = "/createUser", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> createNewUser(@Valid @RequestBody UserPostDto userPostDto) {
-        userService.save(userPostDto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<UserGetDto> createNewUser(@Valid @RequestBody UserPostDto userPostDto) {
+        UserGetDto dto = userService.save(userPostDto);
+        return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 }

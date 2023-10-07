@@ -6,7 +6,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 import met.cs673.team1.domain.dto.UserGetDto;
 import met.cs673.team1.domain.dto.UserOverviewDto;
@@ -89,11 +88,12 @@ class UserControllerTest {
         UserPostDto dto = new UserPostDto();
         dto.setUsername(USERNAME);
 
-        doNothing().when(userService).save(any(UserPostDto.class));
+        doReturn(UserGetDto.builder().build()).when(userService).save(any(UserPostDto.class));
 
-        ResponseEntity<Void> response = userController.createNewUser(dto);
+        ResponseEntity<UserGetDto> response = userController.createNewUser(dto);
 
         verify(userService).save(dto);
+        assertTrue(response.hasBody());
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     }
 }

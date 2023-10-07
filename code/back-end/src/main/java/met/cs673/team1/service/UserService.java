@@ -58,9 +58,10 @@ public class UserService {
      * Save user to the database
      * @param userPostDto Data transfer object representing user's information
      */
-    public void save(UserPostDto userPostDto) {
+    public UserGetDto save(UserPostDto userPostDto) {
         User user = userMapper.userPostDtoToUser(userPostDto);
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        return userMapper.userToUserGetDto(savedUser);
     }
 
     public User findUserEntityById(Integer id) {

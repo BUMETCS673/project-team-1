@@ -2,6 +2,7 @@ package met.cs673.team1.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -33,11 +34,12 @@ class IncomeControllerTest {
     @Test
     void testAddIncome() {
         IncomeDto dto = new IncomeDto();
-        doNothing().when(incomeService).addIncome(any(IncomeDto.class));
+        doReturn(dto).when(incomeService).addIncome(any(IncomeDto.class));
 
-        ResponseEntity<Void> response = incomeController.addUserIncome(dto);
+        ResponseEntity<IncomeDto> response = incomeController.addUserIncome(dto);
 
         verify(incomeService).addIncome(dto);
+        assertTrue(response.hasBody());
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     }
 
