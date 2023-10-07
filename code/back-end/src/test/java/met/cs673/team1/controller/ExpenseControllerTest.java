@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import met.cs673.team1.domain.dto.ExpenseDto;
@@ -19,8 +20,9 @@ import org.springframework.http.ResponseEntity;
 
 
 @ExtendWith(MockitoExtension.class)
-public class ExpenseControllerTest {
+class ExpenseControllerTest {
 
+    static final LocalDate DATE = LocalDate.of(2023, 9, 12);
 
     @Mock
     ExpenseService expenseService;
@@ -31,10 +33,23 @@ public class ExpenseControllerTest {
     @Test
     void testGetAllExpensesById() {
         List<ExpenseDto> expenses = Arrays.asList(new ExpenseDto(), new ExpenseDto());
-        doReturn(expenses).when(expenseService).findAllExpensesByUserId(any(Integer.class));
-        ResponseEntity<List<ExpenseDto>> response = expenseController.getAllUserExpensesById(1);
+        doReturn(expenses).when(expenseService).findAllByUserId(any(Integer.class));
+        ResponseEntity<List<ExpenseDto>> response = expenseController.getAllUserExpenses(1, null, null);
 
-        verify(expenseService).findAllExpensesByUserId(1);
+        verify(expenseService).findAllByUserId(1);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody().size()).isEqualTo(2);
+    }
+
+    @Test
+    void testGetAllExpensesByIdAndDateRange() {
+        List<ExpenseDto> expenses = Arrays.asList(new ExpenseDto(), new ExpenseDto());
+        doReturn(expenses).when(expenseService)
+                .findAllByUserIdAndDateRange(any(Integer.class), any(LocalDate.class), any(LocalDate.class));
+        ResponseEntity<List<ExpenseDto>> response = expenseController.getAllUserExpenses(1, DATE, DATE);
+
+        verify(expenseService).findAllByUserIdAndDateRange(1, DATE, DATE);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody().size()).isEqualTo(2);

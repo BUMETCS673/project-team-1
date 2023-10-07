@@ -1,5 +1,6 @@
 package met.cs673.team1.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -39,8 +40,20 @@ public class ExpenseService {
      * @param userId user id
      * @return List of expenses
      */
-    public List<ExpenseDto> findAllExpensesByUserId(Integer userId) {
+    public List<ExpenseDto> findAllByUserId(Integer userId) {
         List<Expense> expenses = expenseRepository.findAllByUserUserId(userId);
+        return expenses.stream().map(expenseMapper::expenseToExpenseDto).collect(Collectors.toList());
+    }
+
+    /**
+     * Get all expenses by userId and date range
+     * @param userId user id
+     * @param start start date of range, inclusive
+     * @param end end date of range, inclusive
+     * @return List of expenses
+     */
+    public List<ExpenseDto> findAllByUserIdAndDateRange(Integer userId, LocalDate start, LocalDate end) {
+        List<Expense> expenses = expenseRepository.findAllByUserUserIdAndDateBetween(userId, start, end);
         return expenses.stream().map(expenseMapper::expenseToExpenseDto).collect(Collectors.toList());
     }
 

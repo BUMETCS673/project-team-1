@@ -1,18 +1,24 @@
 package met.cs673.team1.controller;
 
 import jakarta.validation.Valid;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import met.cs673.team1.domain.dto.ExpenseDto;
 import met.cs673.team1.service.ExpenseService;
+import met.cs673.team1.validation.ValidateDateRange;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
  * REST endpoints for dealing with expenses
  */
 @RestController
+@Validated
 public class ExpenseController {
 
     private ExpenseService expenseService;
@@ -26,10 +32,37 @@ public class ExpenseController {
      * @param userId id of user
      * @return list of expenses, represented as ExpenseDto objects
      */
+    @ValidateDateRange(start = "startDate", end = "endDate")
     @GetMapping(value = "/expenses/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<ExpenseDto>> getAllUserExpensesById(@PathVariable Integer userId) {
-        List<ExpenseDto> expenses = expenseService.findAllExpensesByUserId(userId);
+    public ResponseEntity<List<ExpenseDto>> getAllUserExpenses(
+            @PathVariable Integer userId,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate
+    ) {
+        List<ExpenseDto> expenses;
+        if (startDate == null && endDate == null) {
+            expenses = expenseService.findAllByUserId(userId);
+        } else {
+            expenses = expenseService.findAllByUserIdAndDateRange(userId, startDate, endDate);
+        }
         return new ResponseEntity<>(expenses, HttpStatus.OK);
+    }
+
+    @ValidateDateRange(start = "startDate", end = "endDate")
+    @GetMapping(value = "/expenses", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<ExpenseDto>> getAllUserExpenses(
+            @RequestParam String username,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate
+    ) {
+        List<ExpenseDto> expenses;
+        if (startDate == null && endDate == null) {
+            //expenses = expenseService.findAllByUsername(username);
+        } else {
+            //expenses = expenseService.findAllByUsernameAndDateRange(username, startDate, endDate);
+        }
+        return ResponseEntity.ok(new ArrayList<>());
+        //return new ResponseEntity<>(expenses, HttpStatus.OK);
     }
 
     /**

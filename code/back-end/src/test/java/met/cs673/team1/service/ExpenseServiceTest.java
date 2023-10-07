@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +23,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class ExpenseServiceTest {
+class ExpenseServiceTest {
+
+    static final LocalDate DATE = LocalDate.of(2023, 9, 10);
 
     @Mock
     ExpenseRepository expenseRepository;
@@ -43,11 +46,27 @@ public class ExpenseServiceTest {
         doReturn(Arrays.asList(one, two))
                 .when(expenseRepository).findAllByUserUserId(any(Integer.class));
         ExpenseDto dto = new ExpenseDto();
-        doReturn(dto).when(expenseMapper).expenseToExpenseDto(any(Expense.class));
+        doReturn(dto).doReturn(dto).when(expenseMapper).expenseToExpenseDto(any(Expense.class));
 
-        List<ExpenseDto> expenses = expenseService.findAllExpensesByUserId(1);
+        List<ExpenseDto> expenses = expenseService.findAllByUserId(1);
 
         verify(expenseRepository).findAllByUserUserId(1);
+        verify(expenseMapper, times(2)).expenseToExpenseDto(any(Expense.class));
+    }
+
+    @Test
+    void testFindAllExpensesByIdAndDateRange() {
+        Expense one = new Expense();
+        Expense two = new Expense();
+        doReturn(Arrays.asList(one, two))
+                .when(expenseRepository)
+                .findAllByUserUserIdAndDateBetween(any(Integer.class), any(LocalDate.class), any(LocalDate.class));
+        ExpenseDto dto = new ExpenseDto();
+        doReturn(dto).doReturn(dto).when(expenseMapper).expenseToExpenseDto(any(Expense.class));
+
+        List<ExpenseDto> expenses = expenseService.findAllByUserIdAndDateRange(1, DATE, DATE);
+
+        verify(expenseRepository).findAllByUserUserIdAndDateBetween(1, DATE, DATE);
         verify(expenseMapper, times(2)).expenseToExpenseDto(any(Expense.class));
     }
 
