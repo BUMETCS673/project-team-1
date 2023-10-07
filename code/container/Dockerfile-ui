@@ -18,9 +18,13 @@ RUN apt-get install -y nodejs npm
 
 WORKDIR "/usr/local/pennywise-ui"
 ADD pennywise-ui/ /usr/local/pennywise-ui/
-RUN npm install
 RUN npm install @mui/x-date-pickers
-RUN npm install --save date-fns
+RUN npm install date-fns
+RUN npm install dayjs
+RUN npm install luxon
+RUN npm install moment
+RUN npm install
+
 RUN npm run build
 
 EXPOSE 8080 3000
