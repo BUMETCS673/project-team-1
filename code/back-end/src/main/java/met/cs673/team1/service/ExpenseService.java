@@ -2,12 +2,16 @@ package met.cs673.team1.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import met.cs673.team1.domain.dto.ExpenseDto;
 import met.cs673.team1.domain.entity.Expense;
+import met.cs673.team1.domain.entity.User;
+import met.cs673.team1.exception.UserNotFoundException;
 import met.cs673.team1.mapper.ExpenseMapper;
 import met.cs673.team1.repository.ExpenseCategoryRepository;
 import met.cs673.team1.repository.ExpenseRepository;
+import met.cs673.team1.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 /**
@@ -19,15 +23,18 @@ public class ExpenseService {
     private final ExpenseRepository expenseRepository;
     private final ExpenseCategoryRepository expenseCategoryRepository;
     private final UserService userService;
+    private final UserRepository userRepository;
     private final ExpenseMapper expenseMapper;
 
     public ExpenseService(final ExpenseRepository expenseRepository,
                           final ExpenseCategoryRepository expenseCategoryRepository,
                           final UserService userService,
+                          final UserRepository userRepository,
                           final ExpenseMapper expenseMapper) {
         this.expenseRepository = expenseRepository;
         this.expenseCategoryRepository = expenseCategoryRepository;
         this.userService = userService;
+        this.userRepository = userRepository;
         this.expenseMapper = expenseMapper;
     }
 
@@ -49,7 +56,7 @@ public class ExpenseService {
         List<Expense> expenses = expenseRepository.findAllByUserUserId(optUser.get().getUserId());
         return expenses.stream().map(expenseMapper::expenseToExpenseDto).collect(Collectors.toList());
     }
-    
+
     /**
      * Get all expenses by userId and date range
      * @param userId user id
