@@ -6,7 +6,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
+
+import met.cs673.team1.common.MonthYearFormatter;
 import met.cs673.team1.domain.dto.IncomeDto;
 import met.cs673.team1.service.IncomeService;
 import org.junit.jupiter.api.Test;
@@ -31,6 +34,9 @@ class IncomeControllerTest {
 
     @Mock
     IncomeService incomeService;
+
+    @Mock
+    MonthYearFormatter formatter;
 
     @InjectMocks
     IncomeController incomeController;
@@ -90,8 +96,9 @@ class IncomeControllerTest {
         String monthYear = "jun2023";
         LocalDate start = LocalDate.of(2023, 6, 1);
         LocalDate end = LocalDate.of(2023, 6, 30);
-        IncomeController spyController = Mockito.spy(incomeController);
+        doReturn(YearMonth.of(2023, 6)).when(formatter).formatMonthYearString(anyString());
 
+        IncomeController spyController = Mockito.spy(incomeController);
         ResponseEntity<List<IncomeDto>> response = spyController.findIncomesByUsernameAndMonth(USERNAME, monthYear);
 
         verify(spyController).findIncomesByUsername(stringCaptor.capture(), dateCaptor.capture(), dateCaptor.capture());
