@@ -1,9 +1,12 @@
 package met.cs673.team1.controller;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import met.cs673.team1.domain.dto.IncomeDto;
 import met.cs673.team1.service.IncomeService;
+import met.cs673.team1.validation.ValidMonthYearFormat;
 import met.cs673.team1.validation.ValidateDateRange;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -43,7 +46,7 @@ public class IncomeController {
      * @return Response entity containing a list of IncomeDto objects representing all income sources
      */
     @ValidateDateRange(start = "startDate", end = "endDate")
-    @GetMapping(value = "/income", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/income", params = {"username", "startDate", "endDate"}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<IncomeDto>> findIncomesByUsername(
             @RequestParam String username,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
@@ -56,5 +59,21 @@ public class IncomeController {
             results = incomeService.findAllByUsername(username);
         }
         return new ResponseEntity<>(results, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/income", params = {"username", "month"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<IncomeDto>> findIncomesByUsernameAndMonth(
+            @RequestParam String username, @ValidMonthYearFormat @RequestParam(name = "month") String monthYear) {
+        YearMonth ym = formatMonthYear(monthYear);
+        return findIncomesByUsername(username, ym.atDay(1), ym.atEndOfMonth());
+    }
+
+    private YearMonth formatMonthYear(String input) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMyyyy");
+        StringBuilder output = new StringBuilder(input);
+        output.setCharAt(0, Character.toUpperCase(output.charAt(0)));
+        output.setCharAt(1, Character.toLowerCase(output.charAt(1)));
+        output.setCharAt(2, Character.toLowerCase(output.charAt(2)));
+        return YearMonth.parse(output, formatter);
     }
 }
