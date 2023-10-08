@@ -106,7 +106,7 @@ jobs:
         with:
           email: ${{ secrets.HEROKU_EMAIL }}
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          heroku_app_name: ${{ secrets.HEROKU_APP_NAME_UI }}
+          heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
           dockerfile_directory: ./code/container
           dockerfile_name: Dockerfile
           process_type: worker
