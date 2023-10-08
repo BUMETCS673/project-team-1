@@ -1,8 +1,5 @@
 package met.cs673.team1.domain.entity;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
 @Entity
 @Table(name = "ExpenseCategory")

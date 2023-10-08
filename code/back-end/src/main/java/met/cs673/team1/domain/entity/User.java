@@ -1,11 +1,7 @@
 package met.cs673.team1.domain.entity;
 
-import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "User")
@@ -23,6 +19,8 @@ public class User {
 
     private String email;
 
+    private Integer budget;
+
     @Column(name = "first_name")
     private String firstName;
 
@@ -35,4 +33,7 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
+
+   
+
 }

@@ -1,10 +1,7 @@
 package met.cs673.team1.domain.entity;
 
-import jakarta.persistence.*;
 import java.time.LocalDate;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+
 
 @Entity
 @Table(name = "Expense")

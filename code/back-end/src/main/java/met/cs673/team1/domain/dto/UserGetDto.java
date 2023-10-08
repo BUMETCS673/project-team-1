@@ -2,10 +2,6 @@ package met.cs673.team1.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.experimental.SuperBuilder;
 import met.cs673.team1.domain.entity.Role;
 
 @NoArgsConstructor
@@ -31,4 +27,8 @@ public class UserGetDto {
 
     @JsonProperty
     private List<Role> roles;
+
+    @JsonProperty
+    private Integer budget;
+
 }
