@@ -36,4 +36,4 @@ RUN chmod 755 start_service.sh
 #CMD ["catalina.sh", "run"]
 #CMD ["java", "-jar", "/app/pennywise.jar", "--server.port=$PORT"]
 #CMD ["start_service.sh"]
-CMD java -jar app/pennywise.jar --server.port=$PORT
+CMD java -jar app/pennywise.jar
