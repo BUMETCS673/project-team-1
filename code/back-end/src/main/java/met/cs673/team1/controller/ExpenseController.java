@@ -2,11 +2,14 @@ package met.cs673.team1.controller;
 
 import jakarta.validation.Valid;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
+import met.cs673.team1.common.MonthYearFormatter;
 import met.cs673.team1.domain.dto.ExpenseDto;
 import met.cs673.team1.domain.entity.User;
 import met.cs673.team1.service.ExpenseService;
 import met.cs673.team1.service.UserService;
+import met.cs673.team1.validation.ValidMonthYearFormat;
 import met.cs673.team1.validation.ValidateDateRange;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -24,11 +27,14 @@ public class ExpenseController {
 
     private ExpenseService expenseService;
     private UserService userService;
+    private MonthYearFormatter formatter;
 
     public ExpenseController(ExpenseService expenseService,
-                             UserService userService) {
+                             UserService userService,
+                             MonthYearFormatter formatter) {
         this.expenseService = expenseService;
         this.userService = userService;
+        this.formatter = formatter;
     }
 
     /**
@@ -61,6 +67,15 @@ public class ExpenseController {
     ) {
         User user = userService.findUserEntityByUsername(username);
         return getAllUserExpenses(user.getUserId(), startDate, endDate);
+    }
+
+    @GetMapping(value = "/expenses", params = {"username", "month"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<ExpenseDto>> getAllUserExpenses(
+            @RequestParam String username,
+            @RequestParam("month") @ValidMonthYearFormat String monthYear
+    ) {
+        YearMonth ym = formatter.formatMonthYearString(monthYear);
+        return getAllUserExpenses(username, ym.atDay(1), ym.atEndOfMonth());
     }
 
     /**
