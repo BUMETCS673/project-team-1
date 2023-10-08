@@ -35,5 +35,5 @@ public class UserPostDto {
 
     @JsonProperty
     @NotEmpty
-    private Integer budget;
+    private Double budget;
 }

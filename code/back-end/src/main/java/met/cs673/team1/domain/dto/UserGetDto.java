@@ -29,6 +29,6 @@ public class UserGetDto {
     private List<Role> roles;
 
     @JsonProperty
-    private Integer budget;
+    private Double budget;
 
 }

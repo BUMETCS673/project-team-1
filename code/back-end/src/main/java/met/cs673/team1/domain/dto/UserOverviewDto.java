@@ -29,7 +29,7 @@ public class UserOverviewDto {
     @JsonProperty
     private List<ExpenseDto> expenses;
     
-    //@JsonProperty
-    //private Integer budget;
+    @JsonProperty
+    private Double budget;
 
 }

@@ -19,7 +19,7 @@ public class User {
 
     private String email;
 
-    private Integer budget;
+    private Double budget;
 
     @Column(name = "first_name")
     private String firstName;
