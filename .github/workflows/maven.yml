@@ -43,7 +43,7 @@ jobs:
         #working-directory: ./code/container
         working-directory: ./code/pennywise-ui
         run: |
-          docker build . -t registry.heroku.com/pennywise-ui/web:latest
+          docker build . -t registry.heroku.com/pennywise-ui/web
       
       #- name: Start containers
       #  uses: isbang/compose-action@v1.5.1
@@ -64,24 +64,24 @@ jobs:
           #tar -czvf  pennywise.tar.gz ./pennywise_container
           #ls -la
 
-      - name: Build, Push and Release a Docker container to Heroku. # Your custom step name
-        #uses: gonuit/heroku-docker-deploy@v1.3.3 # GitHub action name (leave it as it is).
-        uses: snithyanantham/docker-compose-multiple-apps-heroku-deploy@v1.0
-        with:
+      #- name: Build, Push and Release a Docker container to Heroku. # Your custom step name
+      #  #uses: gonuit/heroku-docker-deploy@v1.3.3 # GitHub action name (leave it as it is).
+      #  uses: snithyanantham/docker-compose-multiple-apps-heroku-deploy@v1.0
+      #  with:
 
-          # The email address associated with your Heroku account.
-          email: ${{ secrets.HEROKU_EMAIL }}
+      #    # The email address associated with your Heroku account.
+      #    email: ${{ secrets.HEROKU_EMAIL }}
 
-          # Heroku API key associated with provided user's email.
-          # Api Key is available under your Heroku account settings.
-          #heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          api_key: ${{ secrets.HEROKU_API_KEY }}
-          # Name of the heroku application to which the build is to be sent.
-          heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
+      #    # Heroku API key associated with provided user's email.
+      #    # Api Key is available under your Heroku account settings.
+      #    #heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+      #    api_key: ${{ secrets.HEROKU_API_KEY }}
+      #    # Name of the heroku application to which the build is to be sent.
+      #    heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
 
-          docker_compose_file: './code/container/docker-compose.yml'
-          heroku_apps: '[{"imagename":"registry.heroku.com/pennywise-ui/web","appname":"pennywise-ui"}]'
-          #heroku_apps: '[{"imagename":"pennywise","appname":"pennywise","apptype":"backend"},{"imagename":"pennywise-ui","appname":"pennywise-ui","apptype":"web"}]'
+      #    docker_compose_file: './code/container/docker-compose.yml'
+      #    heroku_apps: '[{"imagename":"registry.heroku.com/pennywise-ui/web","appname":"pennywise-ui"}]'
+      #    #heroku_apps: '[{"imagename":"pennywise","appname":"pennywise","apptype":"backend"},{"imagename":"pennywise-ui","appname":"pennywise-ui","apptype":"web"}]'
 
       #- name: Upload Artifacts TO Google Drive
       #  uses: Jodebu/upload-to-drive@master
@@ -91,7 +91,16 @@ jobs:
       #    credentials: ${{ secrets.GDRIVE }}
       #    folder: ${{ secrets.FOLDERID }}
 
-
+      - name: Build, Push and Release a Docker container to Heroku. # Your custom step name
+        uses: gonuit/heroku-docker-deploy@v1.3.3 # GitHub action name (leave it as it is).
+        with:
+          email: ${{ secrets.HEROKU_EMAIL }}
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: ${{ secrets.HEROKU_APP_NAME_UI }}
+           dockerfile_directory: ./code/pennywise-ui
+           dockerfile_name: Dockerfile
+           process_type: web
+           
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
    # - name: Update dependency graph
