@@ -62,7 +62,7 @@ public class ExpenseController {
 
     //Get the user and their budget from the DB.
     private Double getUserBudget(ExpenseDto expenseDto){
-        UserGetDto user = userService.findByUsername(expenseDto.getUsername();
+        UserGetDto user = userService.findByUsername(expenseDto.getUsername());
         return  user.getBudget();
         ;
     }
