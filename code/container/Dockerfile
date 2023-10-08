@@ -34,5 +34,5 @@ EXPOSE 8080
 
 # Start Tomcat and deploy your WAR file
 #CMD ["catalina.sh", "run"]
-CMD ["java", "-jar", "/app/pennywise.jar"]
+CMD ["java", "-jar", "/app/pennywise.jar", "--server.port=$PORT"]
 #CMD ["start_service.sh"]
