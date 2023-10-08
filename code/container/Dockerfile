@@ -13,6 +13,7 @@ ENV PATH $CATALINA_HOME/bin:$PATH
 
 # Create a directory for your WAR file
 #RUN mkdir -p /usr/local/pennywise
+RUN mkdir -p /usr/local/pennywise-ui
 
 # Copy your WAR file into the container
 #COPY pennywise.war .
@@ -20,9 +21,18 @@ ENV PATH $CATALINA_HOME/bin:$PATH
 ADD pennywise.jar /app/pennywise.jar
 RUN chmod 755 /app/pennywise.jar
 
+
+# Copy the Front end files
+ADD pennywise-ui/ /usr/local/pennywise-ui/
+
+# Copy start script
+ADD start_service.sh .
+RUN chmod 755 start_service.sh
+
 # Expose the default Tomcat port (8080)
 EXPOSE 8080
 
 # Start Tomcat and deploy your WAR file
 #CMD ["catalina.sh", "run"]
 CMD ["java", "-jar", "/app/pennywise.jar"]
+#CMD ["start_service.sh"]
