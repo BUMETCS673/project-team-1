@@ -26,15 +26,15 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Build PennyWise with Maven
-        env:
-          HEROKU_CONNECTION_STRING: ${{ secrets.HEROKU_CONNECTION_STRING }}
-          HEROKU_DB: ${{ secrets.HEROKU_DB }}
-          HEROKU_DB_USER: ${{ secrets.HEROKU_DB_USER }}
-          HEROKU_DB_PWD: ${{ secrets.HEROKU_DB_PWD }}
+        with:
+          #HEROKU_CONNECTION_STRING: ${{ secrets.HEROKU_CONNECTION_STRING }}
+          #HEROKU_DB: ${{ secrets.HEROKU_DB }}
+          #HEROKU_DB_USER: ${{ secrets.HEROKU_DB_USER }}
+          #HEROKU_DB_PWD: ${{ secrets.HEROKU_DB_PWD }}
         run: |
-          sed -i'' -e 's@localhost:3306@pennywise@$HEROKU_CONNECTION_STRING/$HEROKU_DB@g' ./code/back-end/src/main/resources/application.yml
-          sed -i'' -e 's@root@$HEROKU_DB_USER@g' ./code/back-end/src/main/resources/application.yml
-          sed -i'' -e 's@Password123!@$HEROKU_DB_PWD@g' ./code/back-end/src/main/resources/application.yml
+          sed -i'' -e 's/localhost:3306@pennywise/${{ secrets.HEROKU_CONNECTION_STRING }}:${{ secrets.HEROKU_DB }}/g' ./code/back-end/src/main/resources/application.yml
+          sed -i'' -e 's/root/${{ secrets.HEROKU_DB_USER }}/g' ./code/back-end/src/main/resources/application.yml
+          sed -i'' -e 's/Password123!/${{ secrets.HEROKU_DB_PWD }}/g' ./code/back-end/src/main/resources/application.yml
           mvn -B package -e -X --file ./code/back-end/pom.xml -Dmaven.war.outputDirectory=./code/container/pennywise
           cat ./code/back-end/src/main/resources/application.yml
 
