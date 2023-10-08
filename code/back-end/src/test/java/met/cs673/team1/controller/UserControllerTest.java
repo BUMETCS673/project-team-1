@@ -6,8 +6,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.time.YearMonth;
 import java.util.concurrent.ExecutionException;
+import met.cs673.team1.common.MonthYearFormatter;
 import met.cs673.team1.domain.dto.UserGetDto;
 import met.cs673.team1.domain.dto.UserOverviewDto;
 import met.cs673.team1.domain.dto.UserPostDto;
@@ -16,9 +17,7 @@ import met.cs673.team1.service.UserOverviewService;
 import met.cs673.team1.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,11 +28,20 @@ class UserControllerTest {
     static final String USERNAME = "user123";
     static final LocalDate DATE = LocalDate.now();
 
+    @Captor
+    ArgumentCaptor<LocalDate> dateCaptor;
+
+    @Captor
+    ArgumentCaptor<String> stringCaptor;
+
     @Mock
     UserService userService;
 
     @Mock
     UserOverviewService overviewService;
+
+    @Mock
+    MonthYearFormatter formatter;
 
     @InjectMocks
     UserController userController;
@@ -53,7 +61,7 @@ class UserControllerTest {
 
     @Test
     void testLoadHomePageWithUsername() throws InterruptedException, ExecutionException {
-        UserController spyController = Mockito.spy(userController);
+        UserController spyController = spy(userController);
         Integer userId = 1;
         User u = new User();
         u.setUserId(userId);
@@ -68,6 +76,32 @@ class UserControllerTest {
         verify(spyController).loadHomePage(userId, DATE, DATE);
         assertTrue(response.hasBody());
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
+
+    @Test
+    void testLoadHomePageWithMonthYear() throws InterruptedException, ExecutionException {
+        String monthYear = "jun2023";
+        LocalDate start = LocalDate.of(2023, 6, 1);
+        LocalDate end = LocalDate.of(2023, 6, 30);
+        YearMonth ym = YearMonth.of(2023, 6);
+        doReturn(ym).when(formatter).formatMonthYearString(anyString());
+
+        UserController spyController = spy(userController);
+        doReturn(ResponseEntity.ok(UserOverviewDto.builder().build()))
+                .when(spyController)
+                .loadHomePage(anyString(), any(LocalDate.class), any(LocalDate.class));
+
+        ResponseEntity<UserOverviewDto> response = spyController.loadHomePage(USERNAME, monthYear);
+
+        verify(formatter).formatMonthYearString(monthYear);
+        verify(spyController).loadHomePage(stringCaptor.capture(), dateCaptor.capture(), dateCaptor.capture());
+        assertThat(stringCaptor.getValue()).isEqualTo(USERNAME);
+
+        LocalDate startArg = dateCaptor.getAllValues().get(0);
+        LocalDate endArg = dateCaptor.getAllValues().get(1);
+
+        assertThat(startArg.compareTo(start)).isZero();
+        assertThat(endArg.compareTo(end)).isZero();
     }
 
     @Test
