@@ -33,7 +33,7 @@ jobs:
         run: |
           ls -la ./code/container 
           cp ./code/container/pennywise/*.jar ./code/container/pennywise.jar
-          cp -r ./code/pennywise-ui ./code/container/pennywise-ui
+          #cp -r ./code/pennywise-ui ./code/container/pennywise-ui
           ls -la ./code/container
       #- name: Build pennywise backend container
       #  working-directory: ./code/container
@@ -42,7 +42,7 @@ jobs:
       - name: Build pennywise frontend container
         #working-directory: ./code/container
         working-directory: ./code/pennywise-ui
-        run: docker build .  -t pennywise-ui:latest
+        run: docker build . -t pennywise-ui:latest
       
       #- name: Start containers
       #  uses: isbang/compose-action@v1.5.1
