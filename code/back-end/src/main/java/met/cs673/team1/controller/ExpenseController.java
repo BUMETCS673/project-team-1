@@ -9,7 +9,7 @@ import met.cs673.team1.domain.dto.ExpenseDto;
 import met.cs673.team1.domain.entity.User;
 import met.cs673.team1.service.ExpenseService;
 import met.cs673.team1.service.UserService;
-import met.cs673.team1.validation.ValidMonthYearFormat;
+import met.cs673.team1.validation.ValidMonthYear;
 import met.cs673.team1.validation.ValidateDateRange;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -72,7 +72,7 @@ public class ExpenseController {
     @GetMapping(value = "/expenses", params = {"username", "month"}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ExpenseDto>> getAllUserExpenses(
             @RequestParam String username,
-            @RequestParam("month") @ValidMonthYearFormat String monthYear
+            @RequestParam("month") @ValidMonthYear String monthYear
     ) {
         YearMonth ym = formatter.formatMonthYearString(monthYear);
         return getAllUserExpenses(username, ym.atDay(1), ym.atEndOfMonth());

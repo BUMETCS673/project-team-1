@@ -6,6 +6,7 @@ import static org.mockito.Mockito.*;
 
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -36,6 +37,17 @@ class MonthYearFormatterTest {
                 ymFormatter.formatMonthYearString(arg);
                 ymStaticMock.verify(() -> YearMonth.parse(EXPECTED, formatter));
             }
+        }
+    }
+
+    @Test
+    void testFormatMonthYearThrowsException() {
+        try (MockedStatic<YearMonth> ymStaticMock = mockStatic(YearMonth.class)) {
+            ymStaticMock.when(() -> YearMonth.parse(anyString(), any(DateTimeFormatter.class)))
+                    .thenThrow(DateTimeParseException.class);
+            ymFormatter.formatMonthYearString("ju2023");
+        } catch (DateTimeParseException e) {
+
         }
     }
 }

@@ -6,6 +6,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 import jakarta.validation.ConstraintValidatorContext;
+import met.cs673.team1.common.MonthYearFormatter;
 import org.hibernate.validator.constraintvalidation.HibernateConstraintViolationBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class MonthYearFormatValidatorTest {
+class MonthYearValidatorTest {
 
     @Mock
     HibernateConstraintViolationBuilder violationBuilder;
@@ -22,11 +23,14 @@ class MonthYearFormatValidatorTest {
     @Mock
     ConstraintValidatorContext context;
 
-    MonthYearFormatValidator validator;
+    @Mock
+    MonthYearFormatter formatter;
+
+    MonthYearValidator validator;
 
     @BeforeEach
     void setUp() {
-        validator = new MonthYearFormatValidator();
+        validator = new MonthYearValidator(formatter);
     }
 
     @Test
@@ -42,8 +46,8 @@ class MonthYearFormatValidatorTest {
     }
 
     @Test
-    void testBuildConstraintViolationCalls() {
-        String my = "invalid";
+    void testInvalidMonthAbbreviation() {
+        String my = "abc2023";
         doNothing().when(context).disableDefaultConstraintViolation();
         doReturn(violationBuilder).when(context).buildConstraintViolationWithTemplate(anyString());
         doReturn(context).when(violationBuilder).addConstraintViolation();
@@ -51,7 +55,8 @@ class MonthYearFormatValidatorTest {
         validator.isValid(my, context);
 
         verify(context).disableDefaultConstraintViolation();
-        verify(context).buildConstraintViolationWithTemplate(MonthYearFormatValidator.INVALID_MESSAGE);
+        verify(context).buildConstraintViolationWithTemplate(
+                String.join(" ", MonthYearValidator.INVALID_MESSAGE, MonthYearValidator.GUIDANCE));
         verify(violationBuilder).addConstraintViolation();
     }
 

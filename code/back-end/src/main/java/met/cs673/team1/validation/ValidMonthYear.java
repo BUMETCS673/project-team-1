@@ -9,8 +9,8 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = MonthYearFormatValidator.class)
-public @interface ValidMonthYearFormat {
+@Constraint(validatedBy = MonthYearValidator.class)
+public @interface ValidMonthYear {
 
     String message() default "Invalid month parameter";
     Class<?>[] groups () default {};

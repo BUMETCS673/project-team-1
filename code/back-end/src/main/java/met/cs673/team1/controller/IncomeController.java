@@ -6,7 +6,7 @@ import java.util.List;
 import met.cs673.team1.common.MonthYearFormatter;
 import met.cs673.team1.domain.dto.IncomeDto;
 import met.cs673.team1.service.IncomeService;
-import met.cs673.team1.validation.ValidMonthYearFormat;
+import met.cs673.team1.validation.ValidMonthYear;
 import met.cs673.team1.validation.ValidateDateRange;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -66,7 +66,7 @@ public class IncomeController {
 
     @GetMapping(value = "/income", params = {"username", "month"}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<IncomeDto>> findIncomesByUsernameAndMonth(
-            @RequestParam String username, @ValidMonthYearFormat @RequestParam(name = "month") String monthYear) {
+            @RequestParam String username, @ValidMonthYear @RequestParam(name = "month") String monthYear) {
         YearMonth ym = formatter.formatMonthYearString(monthYear);
         return findIncomesByUsername(username, ym.atDay(1), ym.atEndOfMonth());
     }
