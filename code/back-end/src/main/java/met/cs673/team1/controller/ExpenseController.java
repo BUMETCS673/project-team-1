@@ -1,6 +1,8 @@
 package met.cs673.team1.controller;
 
 import jakarta.validation.Valid;
+
+import java.time.Month;
 import java.util.List;
 import met.cs673.team1.domain.dto.ExpenseDto;
 import met.cs673.team1.domain.dto.UserGetDto;
@@ -9,7 +11,7 @@ import met.cs673.team1.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * REST endpoints for dealing with expenses
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class ExpenseController {
 
     private ExpenseService expenseService;
+    private UserService userService;
 
 
     public ExpenseController(ExpenseService expenseService, UserService userService) {
@@ -55,29 +58,29 @@ public class ExpenseController {
         Double currentMonthlyExp = getCurrentMonthlyExp(expenseDto);
         if (currentMonthlyExp > budget){
             result.setIsOverBudget(true);
+        }else{
+            result.setIsOverBudget(false);
         }
         return new ResponseEntity<>(result, HttpStatus.CREATED);
-
     }
 
     //Get the user and their budget from the DB.
     private Double getUserBudget(ExpenseDto expenseDto){
         UserGetDto user = userService.findByUsername(expenseDto.getUsername());
         return  user.getBudget();
-        ;
     }
 
-    //query expenses table for the user for the month of the expense and return the sum of the ammounts.
+    //query expenses table for the user for the month of the expense and return the sum of the amounts.
 
     private Double getCurrentMonthlyExp(ExpenseDto expenseDto){
         List<ExpenseDto> expenses = expenseService.findAllExpensesByUsername(expenseDto.getUsername());
         Month expenseMonth = expenseDto.getDate().getMonth();
         int expenseYear = expenseDto.getDate().getYear();
-        Double sum = 0;
+        double sum = 0;
         for (ExpenseDto expense : expenses){
             if (expense.getDate().getMonth()  == expenseMonth && expense.getDate().getYear() == expenseYear){
                 sum += expense.getAmount();
-            } 
+            }
         }
         
        
