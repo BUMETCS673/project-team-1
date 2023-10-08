@@ -26,7 +26,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Build PennyWise with Maven
-        with:
+        #with:
           #HEROKU_CONNECTION_STRING: ${{ secrets.HEROKU_CONNECTION_STRING }}
           #HEROKU_DB: ${{ secrets.HEROKU_DB }}
           #HEROKU_DB_USER: ${{ secrets.HEROKU_DB_USER }}
