@@ -85,6 +85,18 @@ class UserControllerTest {
     }
 
     @Test
+    void testFindUserByUsername() {
+        UserGetDto dto = UserGetDto.builder().build();
+        doReturn(dto).when(userService).findByUsername(anyString());
+
+        ResponseEntity<UserGetDto> response = userController.findUserByUsername(USERNAME);
+
+        verify(userService).findByUsername(USERNAME);
+        assertTrue(response.hasBody());
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
+
+    @Test
     void testCreateNewUser() {
         UserPostDto dto = new UserPostDto();
         dto.setUsername(USERNAME);
