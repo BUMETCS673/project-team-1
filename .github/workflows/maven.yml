@@ -35,9 +35,9 @@ jobs:
           cp ./code/container/pennywise/*.jar ./code/container/pennywise.jar
           cp -r ./code/pennywise-ui ./code/container/pennywise-ui
           ls -la ./code/container
-      #- name: Build pennywise backend container
-      #  working-directory: ./code/container
-      #  run: docker build . -t pennywise:latest
+      - name: Build pennywise backend container
+        working-directory: ./code/container
+        run: docker build . -t registry.heroku.com/pennywise/worker
       
       - name: Build pennywise frontend container
         #working-directory: ./code/container
@@ -91,8 +91,8 @@ jobs:
       #    credentials: ${{ secrets.GDRIVE }}
       #    folder: ${{ secrets.FOLDERID }}
 
-      - name: Build, Push and Release a Docker container to Heroku. # Your custom step name
-        uses: gonuit/heroku-docker-deploy@v1.3.3 # GitHub action name (leave it as it is).
+      - name: Build, Push and Release a Docker Front End container to Heroku. 
+        uses: gonuit/heroku-docker-deploy@v1.3.3
         with:
           email: ${{ secrets.HEROKU_EMAIL }}
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
@@ -100,6 +100,17 @@ jobs:
           dockerfile_directory: ./code/pennywise-ui
           dockerfile_name: Dockerfile
           process_type: web
+
+      - name: Build, Push and Release a Docker Back End container to Heroku.
+        uses: gonuit/heroku-docker-deploy@v1.3.3 
+        with:
+          email: ${{ secrets.HEROKU_EMAIL }}
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: ${{ secrets.HEROKU_APP_NAME_UI }}
+          dockerfile_directory: ./code/container
+          dockerfile_name: Dockerfile
+          process_type: worker
+
 
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive

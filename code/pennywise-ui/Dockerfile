@@ -18,6 +18,8 @@ RUN npm install dayjs
 RUN npm install luxon
 RUN npm install moment
 RUN npm install @babel/plugin-proposal-private-property-in-object
+RUN ng update
+RUN npm audit fix --force
 RUN npm install
 RUN npm run build
 #RUN npm build
