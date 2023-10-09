@@ -68,7 +68,7 @@ class ExpenseCategoryControllerIntegrationTest {
         savedCategories.add(new ExpenseCategory());
         savedCategories.add(new ExpenseCategory());
 
-        // Mock the behavior of the categoryService.saveAll method
+        // Mock expenseCategoryService saveAll method to return savedCategories
         when(expenseCategoryService.saveAll(categories)).thenReturn(savedCategories);
 
         mockMvc.perform(post("/addCategories")
@@ -78,7 +78,7 @@ class ExpenseCategoryControllerIntegrationTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.size()").value(savedCategories.size()));
 
-        // Verify that categoryService.saveAll was called with the provided inputCategories
+        // Verify that expenseCategoryService.saveAll was called with categories
         verify(expenseCategoryService, times(1)).saveAll(categories);
     }
 
