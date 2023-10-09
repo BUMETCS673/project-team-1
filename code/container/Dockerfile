@@ -2,7 +2,8 @@
 #FROM openjdk:11-jre-slim
 #FROM tomcat:9.0
 #FROM tomcat:8.0-alpine
-FROM amazoncorretto:21.0.0-al2023-headful
+#FROM amazoncorretto:21.0.0-al2023-headful
+FROM amazoncorretto:17-alpine
 #FROM amazoncorretto:17.0.8-al2023-headless
 
 # Set environment variables for Tomcat
