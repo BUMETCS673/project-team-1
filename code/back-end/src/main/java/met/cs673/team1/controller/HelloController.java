@@ -11,6 +11,6 @@ public class HelloController {
 //    @RequestMapping(value = "/", method = RequestMethod.GET)
     @GetMapping("/")
     public String hellowWorld() {
-        return "Five Star Stories: Dedicated to Fatima";
+        return "Welcome to PennyWise";
     }
 }
