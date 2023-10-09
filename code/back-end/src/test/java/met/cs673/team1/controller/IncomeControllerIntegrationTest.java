@@ -31,8 +31,9 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
-import static org.jboss.logging.NDC.get;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -41,7 +42,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(IncomeController.class)
 @AutoConfigureMockMvc
@@ -78,6 +79,46 @@ class IncomeControllerIntegrationTest {
 
         // check that the addIncome method was called with incomeDto
         Mockito.verify(incomeService).addIncome(incomeDto);
+    }
+
+    @Test
+    public void testGetIncomes() throws Exception {
+        String username = "fish66";
+        List<IncomeDto> incomes = new ArrayList<>();
+
+        // Create IncomeDto objects to add to incomes
+        IncomeDto income1 = new IncomeDto();
+        income1.setName("Salary");
+        income1.setAmount(5000.0);
+        income1.setUsername(username);
+        income1.setDate(LocalDate.of(2023, 1, 15));
+        incomes.add(income1);
+
+        IncomeDto income2 = new IncomeDto();
+        income2.setName("Check");
+        income2.setAmount(100.0);
+        income2.setUsername(username);
+        income2.setDate(LocalDate.of(2023, 2, 28));
+        incomes.add(income2);
+
+        // Mock incomeService findAllByUsername method to return the incomeList
+        when(incomeService.findAllByUsername(username)).thenReturn(incomes);
+
+        // simulate HTTP GET request to "/income"
+        ResultActions response = mockMvc.perform(get("/income")
+                .param("username", username));
+
+        response.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                // check value of response[0].amount === value of income1 amount
+                .andExpect(jsonPath("$[0].amount").value(income1.getAmount()))
+                // check value of response[1].username === value of income2 username
+                .andExpect(jsonPath("$[1].username").value(income2.getUsername()));
+
+        // check that incomeService.findAllByUsername was called with the provided username
+        verify(incomeService, times(1)).findAllByUsername(username);
+
+
     }
 
 }
