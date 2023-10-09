@@ -32,9 +32,8 @@ jobs:
           #HEROKU_DB_USER: ${{ secrets.HEROKU_DB_USER }}
           #HEROKU_DB_PWD: ${{ secrets.HEROKU_DB_PWD }}
           #This line supposed to be in run
-          #sed -i'' -e 's@localhost:3306/pennywise_db@${{ secrets.HEROKU_CONNECTION_STRING }}:3306/${{ secrets.HEROKU_DB }}@g' ./code/back-end/src/main/resources/application.yml
         run: |
-          sed -i'' -e 's@mariadb://localhost:3306/pennywise_db@mysql://${{ secrets.HEROKU_CONNECTION_STRING }}:3306/${{ secrets.HEROKU_DB }}@g' ./code/back-end/src/main/resources/application.yml
+          sed -i'' -e 's@localhost:3306/pennywise_db@${{ secrets.HEROKU_CONNECTION_STRING }}:3306/${{ secrets.HEROKU_DB }}@g' ./code/back-end/src/main/resources/application.yml
           sed -i'' -e 's/root/${{ secrets.HEROKU_DB_USER }}/g' ./code/back-end/src/main/resources/application.yml
           sed -i'' -e 's/Password123!/${{ secrets.HEROKU_DB_PWD }}/g' ./code/back-end/src/main/resources/application.yml
           mvn -B package -e -X --file ./code/back-end/pom.xml -Dmaven.war.outputDirectory=./code/container/pennywise
