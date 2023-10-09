@@ -45,6 +45,7 @@ jobs:
           cp ./code/container/pennywise/*.jar ./code/container/pennywise.jar
           cp -r ./code/pennywise-ui ./code/container/pennywise-ui
           ls -la ./code/container
+
       - name: Build pennywise backend container
         working-directory: ./code/container
         run: docker build . -t registry.heroku.com/pennywise/worker
@@ -119,7 +120,7 @@ jobs:
           heroku_app_name: ${{ secrets.HEROKU_APP_NAME_BACKEND }}
           dockerfile_directory: ./code/container
           dockerfile_name: Dockerfile
-          process_type: worker
+          process_type: web
 
 
 
