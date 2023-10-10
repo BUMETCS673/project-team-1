@@ -15,6 +15,7 @@ import {
 import axios from 'axios';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { format } from 'date-fns';
 
 const nameOptions = ['Income', 'Check', 'Salary', 'Job', 'Extra'];
 
@@ -31,13 +32,14 @@ export default function Setup() {
     event.preventDefault();
     const currentDate = new Date();
     const URL = process.env.REACT_APP_API_BASE_URL;
+    const formattedDate = selectedDate ? format(selectedDate, 'yyyy-MM-dd') : null; //format for server 
 
     try {
       const response = await axios.post(`${URL}/addIncome`, {
         username,
         name: selectedName,
         amount: parseFloat(amount),
-        date: selectedDate,
+        date: formattedDate,
       });
 
       if (response.status === 201) {

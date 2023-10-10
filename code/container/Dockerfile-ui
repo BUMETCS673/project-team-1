@@ -16,6 +16,7 @@ RUN apt-get install -y nodejs npm
 
 #RUN npm install -g npm
 
+
 WORKDIR "/usr/local/pennywise-ui"
 ADD pennywise-ui/ /usr/local/pennywise-ui/
 RUN npm install @mui/x-date-pickers

@@ -11,6 +11,7 @@
 
 # production
 /build
+code/container/pennywise
 
 # misc
 .DS_Store
