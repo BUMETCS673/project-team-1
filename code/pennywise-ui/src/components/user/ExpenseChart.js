@@ -1,6 +1,6 @@
 import 'chart.js/auto';
 import { Pie } from "react-chartjs-2" 
-import { Box } from "@mui/material"
+import { Box, Typography } from "@mui/material"
 import ExpenseTable from './ExpenseTable';
 import { useState } from "react"
 import axios from "axios"
