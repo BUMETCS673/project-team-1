@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-10-09T14:06:57-0400",
+    date = "2023-10-12T14:39:05-0400",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 19.0.2 (Oracle Corporation)"
 )
 @Component
@@ -22,6 +22,7 @@ public class IncomeMapperImpl extends IncomeMapper {
         Income income = new Income();
 
         income.setUser( mapUsernameToUser( incomeDto.getUsername() ) );
+        income.setIncomeId( incomeDto.getIncomeId() );
         income.setName( incomeDto.getName() );
         income.setAmount( incomeDto.getAmount() );
         income.setDate( incomeDto.getDate() );
@@ -38,6 +39,7 @@ public class IncomeMapperImpl extends IncomeMapper {
         IncomeDto.IncomeDtoBuilder<?, ?> incomeDto = IncomeDto.builder();
 
         incomeDto.username( mapUserToUsername( income.getUser() ) );
+        incomeDto.incomeId( income.getIncomeId() );
         incomeDto.name( income.getName() );
         incomeDto.amount( income.getAmount() );
         incomeDto.date( income.getDate() );
