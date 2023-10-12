@@ -1,9 +1,11 @@
 package met.cs673.team1.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.function.Supplier;
 import lombok.extern.slf4j.Slf4j;
 import met.cs673.team1.domain.dto.ExpenseDto;
 import met.cs673.team1.domain.dto.IncomeDto;
@@ -31,10 +33,22 @@ public class UserOverviewService {
     }
 
     @Retryable(retryFor = {InterruptedException.class, ExecutionException.class})
-    public UserOverviewDto getUserOverview(Integer id) throws InterruptedException, ExecutionException {
+    public UserOverviewDto getUserOverview(Integer id, LocalDate start, LocalDate end) throws InterruptedException, ExecutionException {
         User user = userService.findUserEntityById(id);
 
-        UserOverviewDto overview = getDtoWithFinancialsByUserId(user.getUserId());
+        Supplier<List<IncomeDto>> incomeSupplier;
+        Supplier<List<ExpenseDto>> expenseSupplier;
+
+        // Should we search for incomes and expenses with a date range or without a date range?
+        if (start != null && end != null) {
+            incomeSupplier = () -> incomeService.findAllByUserIdAndDateRange(id, start, end);
+            expenseSupplier = () -> expenseService.findAllByUserIdAndDateRange(id, start, end);
+        } else {
+            incomeSupplier = () -> incomeService.findAllByUserId(id);
+            expenseSupplier = () -> expenseService.findAllByUserId(id);
+        }
+
+        UserOverviewDto overview = getDtoWithFinancialsByUserId(user.getUserId(), incomeSupplier, expenseSupplier);
 
         return overview.toBuilder()
                 .username(user.getUsername())
@@ -44,8 +58,15 @@ public class UserOverviewService {
                 .build();
     }
 
+    /**
+     * Recover method for retryable user overview retrieval.
+     * @param id user id
+     * @param start not used, but needed to match method parameters of getUserOverview
+     * @param end not used, but needed to match method parameters of getUserOverview
+     * @return UserOverviewDto without any financial data
+     */
     @Recover
-    public UserOverviewDto getDtoRecovery(Integer id) {
+    public UserOverviewDto getDtoRecovery(Integer id, LocalDate start, LocalDate end) {
         User user = userService.findUserEntityById(id);
         return getDtoWithoutFinancialsByUserId(user.getUserId());
     }
@@ -78,11 +99,16 @@ public class UserOverviewService {
      * @throws InterruptedException
      * @throws ExecutionException
      */
-    public UserOverviewDto getDtoWithFinancialsByUserId(Integer id) throws InterruptedException, ExecutionException {
+    public UserOverviewDto getDtoWithFinancialsByUserId(
+            Integer id,
+            Supplier<List<IncomeDto>> incomeSupplier,
+            Supplier<List<ExpenseDto>> expenseSupplier
+    ) throws InterruptedException, ExecutionException {
+
         CompletableFuture<List<IncomeDto>> incomeFuture =
-                CompletableFuture.supplyAsync(() -> incomeService.findAllByUserId(id));
+                CompletableFuture.supplyAsync(incomeSupplier);
         CompletableFuture<List<ExpenseDto>> expenseFuture =
-                CompletableFuture.supplyAsync(() -> expenseService.findAllExpensesByUserId(id));
+                CompletableFuture.supplyAsync(expenseSupplier);
         CompletableFuture<Void> combined = CompletableFuture.allOf(expenseFuture, incomeFuture);
 
         combined.get();

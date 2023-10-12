@@ -18,6 +18,9 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class IncomeDto {
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Integer incomeId;
+
     @JsonProperty
     @NotBlank
     private String name;

@@ -1,99 +1,227 @@
 import React, { useState, useEffect } from 'react'
-import {Avatar, Button, CssBaseline, TextField, FormControlLabel, Link, Grid, Typography, Container, Box, Dialog, DialogTitle, DialogContent} from '@mui/material';
+import {
+  Avatar, 
+  Button, 
+  CssBaseline, 
+  TextField, 
+  FormControlLabel, 
+  Link, 
+  Grid, 
+  Typography, 
+  Container, 
+  Box, 
+  InputLabel, 
+  MenuItem, 
+  Dialog, 
+  DialogTitle, 
+  DialogActions,
+  DialogContent, 
+  Paper, 
+  FormControl, 
+  Select,
+  Snackbar,
+  Alert,
+} from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useNavigate } from 'react-router-dom';
 //import GoogleSignIn from './OauthRedirect';
 import { postToken } from '../../api/postToken';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import axios from 'axios';
 
 export default function AddNewExpense() {
-  // control the open/close state
-  const [open, setOpen] = useState(false);
 
-  // store the input value
-  const [inputValue, setInputValue] = useState('');
+  const [expense, setExpense]                 = useState('');
+  const [name, setExpenseName]                = useState('');
+  const [category, setExpenseCategory]        = useState('');
+  const [selectedDate, setSelectedDate]       = useState(null);
+  const [open, setOpen]                       = useState(false);
+  const [newCategory, setNewCategory]      = useState('');
+  const [categories, setCategories]           = useState([]); // State for storing categories
+  const [snackbarOpen, setSnackbarOpen]       = useState(false);
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+  const [snackbarMessage, setSnackbarMessage] = useState('');
 
-  // handle the dialog open
   const handleOpen = () => {
     setOpen(true);
-  };
+  }
 
-  // handle dialog close
   const handleClose = () => {
     setOpen(false);
-  };
+  }
 
-  // handle input field change
-  const handleInputChange = (event) => {
-    setInputValue(event.target.value);
-  };
-
-  // handle form submission
-  const handleSubmit = () => {
-    console.log('Input Value:', inputValue);
-    handleClose();
-  };
-
-  // Store the input value
-  const [expenseDescription, setExpenseDescription] = useState('');
-
-  // Handle the input change
-  const handleDescriptionChange = (event) => {
-    setExpenseDescription(event.target.value="name");
-  };
-
-  //Handle the form submission
-  const handleFormSubmit = async (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    const currentDate = new Date();
+    const URL = process.env.REACT_APP_API_BASE_URL;
 
-    // POST request to the endpoint
     try {
-      const response = await fetch('', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ description: expenseDescription }),
+      const response = await axios.post(`${URL}/addExpense`, {
+        username: "pmp2023",
+        name: setExpenseName(name),
+        category: setExpenseCategory(category),
+        amount: parseFloat(expense),
+        date: selectedDate,
       });
 
-      //check status of request
-      if (response.ok) {
-        console.log('Expense created successfully!');
+      if (response.status === 201) {
+        console.log('Data saved successfully');
+        const responseData = await response.data;
+        console.log('Response data:', responseData);
+        setSnackbarSeverity('success');
+        setSnackbarMessage('Data saved successfully');
+        setSnackbarOpen(true);
       } else {
-        console.log('Failed to create expense');
+        console.error('Failed to save data');
+        setSnackbarSeverity('error');
+        setSnackbarMessage('Failed to save data');
+        setSnackbarOpen(true);
       }
     } catch (error) {
-      console.error('Error', error);
+      console.error('Error creating expense:', error);
+      setSnackbarSeverity('error');
+      setSnackbarMessage('An error occured. Please check again.');
+      setSnackbarOpen(true);
     }
   };
+
+  const handleExpenseChange = (event) => {
+    setExpense(event.target.value);
+  };
+
+  const handleExpenseNameChange = (event) => {
+    setExpenseName(event.target.value);
+  };
+
+  const handleNewCategory = (eventTwo) => {
+    setNewCategory(eventTwo.target.value);
+  }
+
+  const handleExpenseCategoryChange = (event) => {
+    setExpenseCategory(event.target.value);
+  };
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
+
+  const handleDialogSubmit = async (eventTwo) => {
+    eventTwo.preventDefault();
+    const URL = process.env.REACT_APP_API_BASE_URL;
+
+    try {
+      const response = await axios.post(`${URL}/addExpense`, {
+        name: setNewCategory(newCategory),
+      });
+
+      if (response.status === 201) {
+        console.log('Data saved successfully');
+        const responseData = await response.data;
+        console.log('Response data:', responseData);
+      } else {
+        console.error('Failed to save data');
+      }
+    } catch (error) {
+      console.error('Error creating expense:', error);
+    }
+
+  };
+
   return (
-    <>
-    <Container component="main" maxWidth="md">
-      <CssBaseline />
-      <Box sx={{ padding: 5, marginTop: 15, display: 'flex', flexDirection: 'column', alignItems: 'left', backgroundColor: '#efefef', }}>
-        <form onSubmit={handleFormSubmit}>
-          <TextField value={expenseDescription} onChange={handleDescriptionChange} fullWidth sx={{ marginBottom: 1 }} id="expense-title-field" label="Expense Title" variant="outlined" />
-          <TextField type="number" fullWidth sx={{ marginBottom: 1 }} id="expense-input-field" label="$ Expense Amount" variant="outlined" />
-          <Button type="submit" variant="contained" color="primary">
-            Create Expense
-          </Button>
-          <Button variant="outlined" color="primary" onClick={handleOpen}>
-            Add New Category
-          </Button>
-          <Dialog open={open} onClose={handleClose}>
-            <DialogTitle>New Category Title</DialogTitle>
-            <DialogContent>
+    <Container>
+      <Grid container justifyContent="center" alignItems="center" style={{ height: '100vh' }}>
+        <Grid item xs={12} sm={6}>
+          <Paper elevation={3} style={{ padding: '16px' }}>
+            <Typography variant="h5" gutterBottom>
+              Create New Expense
+            </Typography>
+            <form onSubmit={handleSubmit}>
               <TextField
-              autoFocus
-              label="Category Title"
-              type="text"
+                label="Description"
+                name="name"
+                variant="standard"
+                onChange={handleExpenseNameChange}
+                fullWidth
+                required
+                margin="normal"
               />
-            </DialogContent>
-          </Dialog>
-        </form>
-      </Box>
+              <TextField
+                label="Amount"
+                name="amount"
+                onChange={handleExpenseChange}
+                fullWidth
+                required
+                margin="normal"
+                type="number"
+              />
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DatePicker 
+                  label="Select Date"
+                  value={selectedDate}
+                  onChange={handleDateChange}
+                  renderInput={(params) => <TextField {...params} fullwidth variant="standard" />}
+                  slotProps={{ textField: { size: 'small' }}}
+                  sx={{mt:3, ml:9}}
+                />
+              </LocalizationProvider>
+              <FormControl fullWidth required margin="normal">
+                <InputLabel>Category</InputLabel>
+                <Select
+                  name="category"
+                  value={expense.category}
+                  onChange={handleExpenseCategoryChange}
+                >
+                  <MenuItem value="">Select a Category</MenuItem>
+                  <MenuItem value="Health">Health</MenuItem>
+                  {categories.map((category) => (
+                    <MenuItem key={category.id} value={category.id}>
+                      {category.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <Button onClick={handleSubmit} type="submit" variant="contained" color="primary" fullWidth>
+                Create Expense
+              </Button>
+            </form>
+            <Button onClick={handleOpen} variant="outlined" color="secondary" fullWidth>
+              Add New Category
+            </Button>
+            <Dialog open={open} onClose={handleClose}>
+              <DialogTitle>Enter New Category Title</DialogTitle>
+              <DialogContent>
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  label="Category Title"
+                  type="text"
+                  fullWidth
+                  onChange={handleNewCategory}
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose} color="primary">
+                  Cancel
+                </Button>
+                <Button onClick={handleDialogSubmit} color="primary">
+                  Submit
+                </Button>
+              </DialogActions>
+            </Dialog>
+            <Snackbar
+              open={snackbarOpen}
+              autoHideDuration={6000}
+              onClose={() => setSnackbarOpen(false)}
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+            >
+              <Alert severity={snackbarSeverity}>{snackbarMessage}</Alert>
+            </Snackbar>
+          </Paper>
+        </Grid>
+      </Grid>
     </Container>
-  </>
-);
+  );
 
 }
 

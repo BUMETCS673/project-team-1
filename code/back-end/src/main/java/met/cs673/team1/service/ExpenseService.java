@@ -1,5 +1,6 @@
 package met.cs673.team1.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,15 +22,18 @@ public class ExpenseService {
 
     private final ExpenseRepository expenseRepository;
     private final ExpenseCategoryRepository expenseCategoryRepository;
+    private final UserService userService;
     private final UserRepository userRepository;
     private final ExpenseMapper expenseMapper;
 
     public ExpenseService(final ExpenseRepository expenseRepository,
                           final ExpenseCategoryRepository expenseCategoryRepository,
+                          final UserService userService,
                           final UserRepository userRepository,
                           final ExpenseMapper expenseMapper) {
         this.expenseRepository = expenseRepository;
         this.expenseCategoryRepository = expenseCategoryRepository;
+        this.userService = userService;
         this.userRepository = userRepository;
         this.expenseMapper = expenseMapper;
     }
@@ -39,7 +43,7 @@ public class ExpenseService {
      * @param userId user id
      * @return List of expenses
      */
-    public List<ExpenseDto> findAllExpensesByUserId(Integer userId) {
+    public List<ExpenseDto> findAllByUserId(Integer userId) {
         List<Expense> expenses = expenseRepository.findAllByUserUserId(userId);
         return expenses.stream().map(expenseMapper::expenseToExpenseDto).collect(Collectors.toList());
     }
@@ -52,7 +56,19 @@ public class ExpenseService {
         List<Expense> expenses = expenseRepository.findAllByUserUserId(optUser.get().getUserId());
         return expenses.stream().map(expenseMapper::expenseToExpenseDto).collect(Collectors.toList());
     }
-    
+
+    /**
+     * Get all expenses by userId and date range
+     * @param userId user id
+     * @param start start date of range, inclusive
+     * @param end end date of range, inclusive
+     * @return List of expenses
+     */
+    public List<ExpenseDto> findAllByUserIdAndDateRange(Integer userId, LocalDate start, LocalDate end) {
+        List<Expense> expenses = expenseRepository.findAllByUserUserIdAndDateBetween(userId, start, end);
+        return expenses.stream().map(expenseMapper::expenseToExpenseDto).collect(Collectors.toList());
+    }
+
     /**
      * Save an expense to the database
      * @param expenseDto Data transfer object representing an expense
@@ -64,11 +80,7 @@ public class ExpenseService {
             throw new IllegalArgumentException("Expense username cannot be null");
         }
         Expense exp = expenseMapper.expenseDtoToExpense(expenseDto);
-        Optional<User> optUser = userRepository.findByUsername(expenseDto.getUsername());
-        if (optUser.isEmpty()) {
-            throw new UserNotFoundException("No user found to link this expense to.");
-        }
-        exp.setUser(optUser.get());
+        exp.setUser(userService.findUserEntityByUsername(expenseDto.getUsername()));
 
         Expense savedExpense = expenseRepository.save(exp);
         return expenseMapper.expenseToExpenseDto(savedExpense);

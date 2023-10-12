@@ -58,15 +58,24 @@ public class UserService {
      * Save user to the database
      * @param userPostDto Data transfer object representing user's information
      */
-    public void save(UserPostDto userPostDto) {
+    public UserGetDto save(UserPostDto userPostDto) {
         User user = userMapper.userPostDtoToUser(userPostDto);
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        return userMapper.userToUserGetDto(savedUser);
     }
 
-    protected User findUserEntityById(Integer id) {
+    public User findUserEntityById(Integer id) {
         Optional<User> optUser = userRepository.findById(id);
         if (optUser.isEmpty()) {
             throw new UserNotFoundException("No user found");
+        }
+        return optUser.get();
+    }
+
+    public User findUserEntityByUsername(String username) {
+        Optional<User> optUser = userRepository.findByUsername(username);
+        if (optUser.isEmpty()) {
+            throw new UserNotFoundException(String.format("User with username '%s' not found", username));
         }
         return optUser.get();
     }
