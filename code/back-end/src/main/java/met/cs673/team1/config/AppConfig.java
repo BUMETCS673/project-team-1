@@ -11,6 +11,6 @@ public class AppConfig {
 
     @Bean
     public DateTimeFormatter formatter() {
-        return DateTimeFormatter.ofPattern("MMMyyyy");
+        return DateTimeFormatter.ofPattern("MMM yyyy");
     }
 }
