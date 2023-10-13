@@ -11,7 +11,7 @@ RUN mkdir -p /usr/local/pennywise-ui
 
 # Copy the Front end files
 WORKDIR "/usr/local/clydetest"
-COPY ./ /usr/local/clydetest/
+COPY ./clyde/clydetest/ /usr/local/clydetest/
 # RUN npm install @mui/x-date-pickers
 # RUN npm install date-fns
 # RUN npm install dayjs
