@@ -24,6 +24,8 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import LoginIcon from '@mui/icons-material/Login';
 import HomeIcon from '@mui/icons-material/Home';
 import ChecklistIcon from '@mui/icons-material/Checklist';
+import pennyTitle from "../img/penny.png"
+
 
 import { Link } from 'react-router-dom'
 import Dashboard from './Dashboard';
@@ -124,6 +126,8 @@ const NavBar = () => {
         <AppBar position="absolute" open={open} sx={{ pb: "15px", pt: "15px", display: "flex", justifyContent: "center", alignItems: "space-between"}}>
           <Toolbar   sx={{
                 pr: '24px', 
+                display:"flex",
+                justifyContent:"space-between"
                 // keep right padding when drawer closed
               }}>
             <IconButton
@@ -138,17 +142,10 @@ const NavBar = () => {
             >
               <MenuIcon />
             </IconButton>
-            <Typography 
-              component="h1"
-              variant="h6" 
-              noWrap 
-              sx={{ flexGrow: 1}}
-              fontWeight="bold"
-              color="#A2B575"
-              fontSize={40}
-              >
-              Pennywise 
-            </Typography>
+
+            <Box>
+              <img src={pennyTitle}/>
+            </Box>
 
             <IconButton
               sx={{

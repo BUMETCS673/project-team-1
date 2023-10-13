@@ -27,12 +27,6 @@ const Dashboard = () => {
                 username: "fish66"
             }
         }).then(expenseData => setExpenses(expenseData))
-        if (expenseData.status === 200) {
-            console.log("success")
-        } else {
-            console.error("failed to get data")
-            setErrorMessage("failed to get data")
-        }
     } catch(err) {
         console.log(err)
         setErrorMessage("Error: failed to get user data")
@@ -47,21 +41,16 @@ const Dashboard = () => {
                 username: "fish66"
             }
         }).then(expenseData => setExpenses(expenseData))
-        if (expenseData.status === 200) {
-            console.log("success")
-        } else {
-            console.error("failed to get data")
-            setErrorMessage("Error: failed to get user data")
-        }
     } catch(err) {
         console.log(err)
+        setErrorMessage("Error: failed to search data")
     }
   }
 
   const handleClick = (e) => {
     e.preventDefault()
-    setErrorMessage("Error: failed to search data")
-    console.log(startDate, endDate)
+    loadExpensesByDate()
+
   }
 
 
@@ -73,7 +62,7 @@ const Dashboard = () => {
 
         <Toolbar />
                 <Box sx={{display:"flex", justifyContent:"flex-sart", alignItems:"center",
-                    width:"72%",height:"10vh"}}>
+                    width:"68%",height:"10vh"}}>
                     <Typography sx={{fontSize:24}}>Expense Summary</Typography>
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <DatePicker
@@ -119,12 +108,11 @@ const Dashboard = () => {
 
               </Container>
               { errorMessage && (
-                <p>{errorMessage}</p>
+                <Typography sx={{color:"red", fontSize:16}}>{errorMessage}</Typography>
               )}
         
         </Box>
      
-      
         
         </>
     )
