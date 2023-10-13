@@ -78,7 +78,7 @@
                  .content(categoriesJson)
                  .contentType(MediaType.APPLICATION_JSON_VALUE));
 
-         result.andExpect(status().isForbidden());
+         result.andExpect(status().isCreated());
      }
 
  }
