@@ -120,8 +120,8 @@ jobs:
           email: ${{ secrets.HEROKU_EMAIL }}
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: ${{ secrets.HEROKU_APP_NAME_UI }}
-          dockerfile_directory: ./clyde/clydetest
-          #dockerfile_directory: ./code/pennywise-ui
+          #dockerfile_directory: ./clyde/clydetest
+          dockerfile_directory: ./code/pennywise-ui
           dockerfile_name: Dockerfile
           process_type: web
 
