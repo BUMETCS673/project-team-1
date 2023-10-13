@@ -6,7 +6,6 @@ import { BrowserRouter } from 'react-router-dom';
 
 const port = process.env.PORT || 3000;
 const root = ReactDOM.createRoot(document.getElementById('root'));
-
 root.render(
   <BrowserRouter>
     <React.StrictMode>
@@ -15,4 +14,5 @@ root.render(
   </BrowserRouter>
 
 );
+
 
