@@ -6,11 +6,22 @@ import AddExpense from "./components/user/AddExpense"
 import Dashboard from "./components/user/Dashboard"
 import NavBar from "./components/user/Navbar"
 
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter as Router } from 'react-router-dom'; 
+import App from './App';
+
 import { Routes, Route} from "react-router-dom" 
 
 import './App.css';
 
-const port = process.env.PORT || 3000
+ReactDOM.render(
+  <Router>
+    <App />
+  </Router>,
+  document.getElementById('root')
+);
 
 function App() {
   return (
