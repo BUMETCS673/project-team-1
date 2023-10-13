@@ -7,8 +7,6 @@ import { BrowserRouter } from 'react-router-dom';
 let port;
 if (process.env.PORT) {
   port = process.env.PORT;
-} else {
-  port = 3000;
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

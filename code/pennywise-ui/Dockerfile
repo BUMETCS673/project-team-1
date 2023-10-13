@@ -32,4 +32,4 @@ EXPOSE 3000
 
 #ENTRYPOINT ["./start_service.sh"]
 #ENTRYPOINT ["serve", "-s", "build", "-l", ]
-CMD ["npm", "start"]
+ENTRYPOINT ["npm", "start"]
