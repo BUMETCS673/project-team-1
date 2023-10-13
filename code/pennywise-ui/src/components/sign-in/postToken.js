@@ -3,9 +3,11 @@ import axios from 'axios';
 export const postToken = async (token) => {
   const URL = process.env.REACT_APP_API_BASE_URL;
   try {
-    const response = await axios.post(`${URL}/v1/oauth/login`, token, {
-      withCredentials: true, 
+    const response = await axios({
+      method: 'POST',
+      url: `${URL}/v1/oauth/login`,
       headers: {
+        'Authorization': `Bearer ${token}`,
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
