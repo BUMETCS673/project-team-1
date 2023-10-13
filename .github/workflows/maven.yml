@@ -19,38 +19,39 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: maven
-      - name: Build PennyWise with Maven
-        #with:
-          #HEROKU_CONNECTION_STRING: ${{ secrets.HEROKU_CONNECTION_STRING }}
-          #HEROKU_DB: ${{ secrets.HEROKU_DB }}
-          #HEROKU_DB_USER: ${{ secrets.HEROKU_DB_USER }}
-          #HEROKU_DB_PWD: ${{ secrets.HEROKU_DB_PWD }}
-          #This line supposed to be in run
-        run: |
-          sed -i'' -e 's@localhost:3306/pennywise_db@${{ secrets.HEROKU_CONNECTION_STRING }}:3306/${{ secrets.HEROKU_DB }}@g' ./code/back-end/src/main/resources/application.yml
-          sed -i'' -e 's/root/${{ secrets.HEROKU_DB_USER }}/g' ./code/back-end/src/main/resources/application.yml
-          sed -i'' -e 's/Password123!/${{ secrets.HEROKU_DB_PWD }}/g' ./code/back-end/src/main/resources/application.yml
-          mvn -B package -e -X --file ./code/back-end/pom.xml -Dmaven.war.outputDirectory=./code/container/pennywise
-          cat ./code/back-end/src/main/resources/application.yml
+##=================
+      # - name: Set up JDK 17
+      #   uses: actions/setup-java@v3
+      #   with:
+      #     java-version: '17'
+      #     distribution: 'temurin'
+      #     cache: maven
+      # - name: Build PennyWise with Maven
+      #   #with:
+      #     #HEROKU_CONNECTION_STRING: ${{ secrets.HEROKU_CONNECTION_STRING }}
+      #     #HEROKU_DB: ${{ secrets.HEROKU_DB }}
+      #     #HEROKU_DB_USER: ${{ secrets.HEROKU_DB_USER }}
+      #     #HEROKU_DB_PWD: ${{ secrets.HEROKU_DB_PWD }}
+      #     #This line supposed to be in run
+      #   run: |
+      #     sed -i'' -e 's@localhost:3306/pennywise_db@${{ secrets.HEROKU_CONNECTION_STRING }}:3306/${{ secrets.HEROKU_DB }}@g' ./code/back-end/src/main/resources/application.yml
+      #     sed -i'' -e 's/root/${{ secrets.HEROKU_DB_USER }}/g' ./code/back-end/src/main/resources/application.yml
+      #     sed -i'' -e 's/Password123!/${{ secrets.HEROKU_DB_PWD }}/g' ./code/back-end/src/main/resources/application.yml
+      #     mvn -B package -e -X --file ./code/back-end/pom.xml -Dmaven.war.outputDirectory=./code/container/pennywise
+      #     cat ./code/back-end/src/main/resources/application.yml
 
 
-      - name: Prep for building container
-        run: |
-          ls -la ./code/container 
-          cp ./code/container/pennywise/*.jar ./code/container/pennywise.jar
-          cp -r ./code/pennywise-ui ./code/container/pennywise-ui
-          ls -la ./code/container
+      # - name: Prep for building container
+      #   run: |
+      #     ls -la ./code/container 
+      #     cp ./code/container/pennywise/*.jar ./code/container/pennywise.jar
+      #     cp -r ./code/pennywise-ui ./code/container/pennywise-ui
+      #     ls -la ./code/container
 
-      - name: Build pennywise backend container
-        working-directory: ./code/container
-        run: docker build . -t registry.heroku.com/pennywise/worker
-      
+      # - name: Build pennywise backend container
+      #   working-directory: ./code/container
+      #   run: docker build . -t registry.heroku.com/pennywise/worker
+##=================
       # - name: Build pennywise frontend container
       #   #working-directory: ./code/container
       #   working-directory: ./code/pennywise-ui
@@ -102,17 +103,17 @@ jobs:
       #    target: ./code/container/pennywise.tar.gz
       #    credentials: ${{ secrets.GDRIVE }}
       #    folder: ${{ secrets.FOLDERID }}
-
-      - name: Build, Push and Release a Docker Back End container to Heroku.
-        uses: gonuit/heroku-docker-deploy@v1.3.3 
-        with:
-          email: ${{ secrets.HEROKU_EMAIL }}
-          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          heroku_app_name: ${{ secrets.HEROKU_APP_NAME_BACKEND }}
-          dockerfile_directory: ./code/container
-          dockerfile_name: Dockerfile
-          process_type: web
-
+##=================
+      # - name: Build, Push and Release a Docker Back End container to Heroku.
+      #   uses: gonuit/heroku-docker-deploy@v1.3.3 
+      #   with:
+      #     email: ${{ secrets.HEROKU_EMAIL }}
+      #     heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+      #     heroku_app_name: ${{ secrets.HEROKU_APP_NAME_BACKEND }}
+      #     dockerfile_directory: ./code/container
+      #     dockerfile_name: Dockerfile
+      #     process_type: web
+##=================
       - name: Build, Push and Release a Docker Front End container to Heroku. 
         uses: gonuit/heroku-docker-deploy@v1.3.3
         with:
