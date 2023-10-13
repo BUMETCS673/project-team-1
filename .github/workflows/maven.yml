@@ -55,7 +55,7 @@ jobs:
         #working-directory: ./code/container
         working-directory: ./code/pennywise-ui
         run: |
-          docker build . -t registry.heroku.com/pennywise-ui/web
+          docker build -f Dockerfile . -t registry.heroku.com/pennywise-ui/web
       
       #- name: Start containers
       #  uses: isbang/compose-action@v1.5.1
