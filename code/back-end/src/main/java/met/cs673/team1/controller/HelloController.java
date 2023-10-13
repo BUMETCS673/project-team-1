@@ -11,6 +11,7 @@ public class HelloController {
         return "Welcome to PennyWise";
     }
 
-    @PostMapping("/v1/oauth/login")
-    public void login() {}
+//    @PostMapping("/v1/oauth/login")
+//    public void login() {}
+
 }

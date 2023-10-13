@@ -15,8 +15,8 @@ spring:
       mode: always
   jackson:
     time-zone: GMT-4
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          jwk-set-uri: https://www.googleapis.com/oauth2/v3/certs
+#  security:
+#    oauth2:
+#      resourceserver:
+#        jwt:
+#          jwk-set-uri: https://www.googleapis.com/oauth2/v3/certs

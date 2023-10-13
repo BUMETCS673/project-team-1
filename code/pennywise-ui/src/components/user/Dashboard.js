@@ -22,11 +22,11 @@ const Dashboard = () => {
  // get user expenses by username, set expenses as response data 
   const loadExpenses = async () => {
     try {
-        const expenseData = await axios.get("", {
+        const expenseData = await axios.get("http://localhost:8080/expenses", {
             params: {
                 username: "fish66"
             }
-        }).then(expenseData => setExpenses(expenseData))
+        }).then(expenseData => setExpenses(expenseData.data))
     } catch(err) {
         console.log(err)
         setErrorMessage("Error: failed to get user data")
@@ -36,7 +36,7 @@ const Dashboard = () => {
    // get user expenses by username and dates, set expenses as response data 
    const loadExpensesByDate = async () => {
     try {
-        const expenseData = await axios.get("", {
+        const expenseData = await axios.get("http://localhost:8080/expenses", {
             params: {
                 username: "fish66"
             }
