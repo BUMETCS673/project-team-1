@@ -10,7 +10,7 @@ CREATE TABLE User (
     last_name VARCHAR(255));
 CREATE TABLE ExpenseCategory (
     category_id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL
+    name VARCHAR(255) NOT NULL UNIQUE
 );
 CREATE TABLE Expense (
     expense_id INT AUTO_INCREMENT PRIMARY KEY,
