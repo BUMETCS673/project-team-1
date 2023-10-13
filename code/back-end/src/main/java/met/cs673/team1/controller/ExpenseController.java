@@ -55,8 +55,8 @@ public class ExpenseController {
     public ResponseEntity<ExpenseDto> addUserExpense(@Valid @RequestBody ExpenseDto expenseDto) {
         ExpenseDto result = expenseService.save(expenseDto);
         Double budget = getUserBudget(expenseDto);
-        Double currentMonthlyExp = getCurrentMonthlyExp(expenseDto);
-        if (currentMonthlyExp > budget){
+        Double currentMonthlyExp = getCurrentMonthlyExp(expenseDto) + result.getAmount();
+        if ((budget != null) && (currentMonthlyExp > budget)){
             result.setIsOverBudget(true);
         }else{
             result.setIsOverBudget(false);
