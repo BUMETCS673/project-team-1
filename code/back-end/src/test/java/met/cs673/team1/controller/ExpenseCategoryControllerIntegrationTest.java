@@ -58,9 +58,27 @@
 
      @Test
      public void testAddCategories() throws Exception {
-        String hi = "hello";
-        assert(hi.equals("hello"));
 
+         List<ExpenseCategory> categories = new ArrayList<>();
+         ExpenseCategory category1 = new ExpenseCategory();
+         ExpenseCategory category2 = new ExpenseCategory();
+         category1.setCategoryId(1);
+         category1.setName("Rent");
+         category2.setCategoryId(2);
+         category2.setName("Pet");
+
+
+         given(expenseCategoryService.saveAll(ArgumentMatchers.anyList()))
+                 .willReturn(categories);
+
+         String categoriesJson = new ObjectMapper().writeValueAsString(categories);
+
+
+         ResultActions result = mockMvc.perform(post("/addCategories")
+                 .content(categoriesJson)
+                 .contentType(MediaType.APPLICATION_JSON_VALUE));
+
+         result.andExpect(status().isForbidden());
      }
 
  }
