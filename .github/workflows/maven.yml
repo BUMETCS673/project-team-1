@@ -51,11 +51,11 @@ jobs:
         working-directory: ./code/container
         run: docker build . -t registry.heroku.com/pennywise/worker
       
-      - name: Build pennywise frontend container
-        #working-directory: ./code/container
-        working-directory: ./code/pennywise-ui
-        run: |
-          docker build -f Dockerfile . -t registry.heroku.com/pennywise-ui/web
+      # - name: Build pennywise frontend container
+      #   #working-directory: ./code/container
+      #   working-directory: ./code/pennywise-ui
+      #   run: |
+      #     docker build -f Dockerfile . -t registry.heroku.com/pennywise-ui/web
       
       #- name: Start containers
       #  uses: isbang/compose-action@v1.5.1
@@ -119,7 +119,8 @@ jobs:
           email: ${{ secrets.HEROKU_EMAIL }}
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: ${{ secrets.HEROKU_APP_NAME_UI }}
-          dockerfile_directory: ./code/pennywise-ui
+          dockerfile_directory: ./clyde/clydetest
+          #dockerfile_directory: ./code/pennywise-ui
           dockerfile_name: Dockerfile
           process_type: web
 
