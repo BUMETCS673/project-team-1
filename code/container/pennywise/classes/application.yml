@@ -15,3 +15,13 @@ spring:
       mode: always
   jackson:
     time-zone: GMT-4
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: https://www.googleapis.com/oauth2/v3/certs
+      client:
+        registration:
+          google:
+            client-id: 869179723470-udakp8abqo615fg4jv0krkarh61n2jrb.apps.googleusercontent.com
+            client-secret: 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
