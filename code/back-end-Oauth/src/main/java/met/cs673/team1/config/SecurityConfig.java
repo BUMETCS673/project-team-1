@@ -19,7 +19,7 @@ import java.util.List;
           jsr250Enabled = true,
           prePostEnabled = true
 )
-/**
+
 public class SecurityConfig  {
 
      protected void configure(HttpSecurity http) throws Exception {
@@ -33,7 +33,7 @@ public class SecurityConfig  {
                     .authenticated()
                     .and()
                     .oauth2Login()
-                    .defaultSuccessUrl("/login.html");
+                   // .defaultSuccessUrl("/Dashboard.html", true);
 
 
             }
@@ -48,27 +48,5 @@ public class SecurityConfig  {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-    */
-@Configuration
-@EnableWebSecurity
-public class SecurityConfig {
-
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .cors()
-                .disable()//some stackoverflow solution(not accepted) said so
-                .csrf()
-                .disable()
-                .authorizeRequests()
-                .anyRequest()
-                .authenticated()
-                .and()
-                .oauth2Login();
-                   // .defaultSuccessUrl("/Dashboard.html", true);
-
-        return http.build();
-    }
-
-    }
+}
 
