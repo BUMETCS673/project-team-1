@@ -21,6 +21,8 @@ const Dashboard = () => {
   
  // get user expenses by username, set expenses as response data 
   const loadExpenses = async () => {
+    const URL = process.env.REACT_APP_API_BASE_URL;  
+    const port = process.env.PORT || 3000;  
     try {
         const expenseData = await axios.get("", {
             params: {

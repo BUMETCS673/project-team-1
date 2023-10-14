@@ -30,6 +30,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import axios from 'axios';
 
+
 export default function AddNewExpense() {
 
   const [expense, setExpense]                 = useState('');
@@ -55,6 +56,7 @@ export default function AddNewExpense() {
     event.preventDefault();
     const currentDate = new Date();
     const URL = process.env.REACT_APP_API_BASE_URL;
+    const port = process.env.PORT || 3000;
 
     try {
       const response = await axios.post(`${URL}/addExpense`, {
