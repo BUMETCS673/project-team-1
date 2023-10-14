@@ -32,44 +32,46 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import axios from 'axios';
 import { format } from 'date-fns';
 
-const categoryOptions = ['Housing', 'Food', 'Transportation', 'Insurance', 'Fun'];
 
 export default function AddNewExpense() {
-  //Monetary amount
   const [expenseAmount, setExpenseAmount] = useState('');
-  //Expense title
   const [selectedName, setSelectedName] = useState('');
-  //Expense category
   const [selectedCategory, setSelectedCategory] = useState('');
-  //Date expense was done
   const [selectedDate, setSelectedDate] = useState(null);
-  //Notification for successful submit
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
   const [snackbarMessage, setSnackbarMessage] = useState('');
-  //Dialog box open close
   const [open, setOpen] = useState(false);
-  //New Category name
   const [newCategory, setNewCategoryName] = useState('');
+  const [expenseCategories, setExpenseCategories] = useState([])
   
   const formattedDate = selectedDate ? format(selectedDate, 'yyyy-MM-dd') : null;
-  const expenseCategories = ["Pet"];
 
   useEffect(() => {
-      createCategories()
-
+      getCategories()
+   
   }, [])
 
- // get user expenses by username, set expenses as response data 
- const createCategories = async () => {
+ // get expenseCategories, set response.data as expenseCategories 
+ const getCategories = async () => {
   try {
-      const categories = await axios.post("http://localhost:8080/addCategories", {
-        expenseCategories
-      }).then(categories => console.log(categories))
+      const categories = await axios.get("http://localhost:8080/categories")
+      .then(categories => formatCategories(categories.data))
+
   } catch(err) {
       console.log(err)
   }
 }
+
+// create array of unique category names, set array as expenseCategories
+  const formatCategories = (array) => {
+    const categories = new Set();
+    array.map((cat) => {
+      categories.add(cat.name)
+    })
+    setExpenseCategories(Array.from(categories))
+  }
+
 
   const handleOpen = () => {
     setOpen(true);
@@ -87,7 +89,7 @@ export default function AddNewExpense() {
     const username = "fish66";
 
     try {
-      const response = await axios.post(`${URL}/addExpense`, {
+      const response = await axios.post("http://localhost:8080/addExpense", {
         username,
         name: selectedName,
         category: selectedCategory,
@@ -158,6 +160,7 @@ export default function AddNewExpense() {
 
   };
 
+
   return (
     <>
     <Container component="main" maxWidth="xs">
@@ -204,7 +207,7 @@ export default function AddNewExpense() {
             <Autocomplete
               sx={{mt:3}}
               id="category"
-              options={categoryOptions}
+              options={expenseCategories}
               value={selectedCategory}
               isOptionEqualToValue={(option, value) => option.id === value.id}
               onChange={handleCategoryChange}
