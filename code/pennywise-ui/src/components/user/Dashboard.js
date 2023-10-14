@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios"
 import ExpenseTable from "./ExpenseTable"
 import ExpenseChart from "./ExpenseChart"
+import ExpensePlot from "./ExpensePlot";
 
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
@@ -14,6 +15,9 @@ const Dashboard = () => {
   const [endDate, setEndDate] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
 
+  const formattedStartDate = startDate ? format(startDate, 'yyyy-MM-dd') : null; //format for server 
+  const formattedEndDate = endDate ? format(endDate, 'yyyy-MM-dd') : null; //format for server 
+
   useEffect(() => {
       loadExpenses()
 
@@ -22,11 +26,11 @@ const Dashboard = () => {
  // get user expenses by username, set expenses as response data 
   const loadExpenses = async () => {
     try {
-        const expenseData = await axios.get("", {
+        const expenseData = await axios.get("http://localhost:8080/expenses", {
             params: {
-                username: "fish66"
+                username: "fish66", 
             }
-        }).then(expenseData => setExpenses(expenseData))
+        }).then(expenseData => setExpenses(expenseData.data))
     } catch(err) {
         console.log(err)
         setErrorMessage("Error: failed to get user data")
@@ -36,11 +40,13 @@ const Dashboard = () => {
    // get user expenses by username and dates, set expenses as response data 
    const loadExpensesByDate = async () => {
     try {
-        const expenseData = await axios.get("", {
+        const expenseData = await axios.get("http://localhost:8080/expenses", {
             params: {
-                username: "fish66"
+                username: "fish66",
+                startDate: formattedStartDate, 
+                endDate: formattedEndDate
             }
-        }).then(expenseData => setExpenses(expenseData))
+        }).then(expenseData => setExpenses(expenseData.data))
     } catch(err) {
         console.log(err)
         setErrorMessage("Error: failed to search data")
@@ -57,7 +63,7 @@ const Dashboard = () => {
 
     return (
         <>
-        <Box sx={{ display: "flex", height: "100vh", width: "100vw", display: "flex", flexDirection:"column",
+        <Box sx={{ display: "flex", height: "200vh", width: "100vw", display: "flex", flexDirection:"column",
             justifyContent: "flex-start", alignItems: "center", mt: "60px", background:"#F2F2F2"}}>
 
         <Toolbar />
@@ -110,6 +116,12 @@ const Dashboard = () => {
               { errorMessage && (
                 <Typography sx={{color:"red", fontSize:16}}>{errorMessage}</Typography>
               )}
+              <Container sx={{ display: "flex", justifyContent: "center",
+               height: "60vh", ml:30, alignItems:"center", width:"90%", mt:"10px"}} >
+
+              <ExpensePlot expenses={expenses}/>
+
+              </Container>
         
         </Box>
      
