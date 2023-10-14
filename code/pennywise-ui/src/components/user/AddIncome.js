@@ -30,7 +30,7 @@ export default function AddIncome() {
         event.preventDefault();
         const currentDate = new Date();
         const URL = process.env.REACT_APP_API_BASE_URL;
-        const port = process.env.PORT || 3000;
+        // const port = process.env.PORT || 3000;
 
 
         try {

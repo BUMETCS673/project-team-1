@@ -2,6 +2,7 @@ import axios from 'axios';
 
 export const postToken = async (token) => {
   const URL = process.env.REACT_APP_API_BASE_URL;
+  // const port = process.env.PORT || 3000;
   try {
     const response = await axios({
       method: 'POST',
