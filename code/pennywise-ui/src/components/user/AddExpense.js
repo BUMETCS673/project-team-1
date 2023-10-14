@@ -30,6 +30,7 @@ import { postToken } from '../../api/postToken';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import axios from 'axios';
+import { format } from 'date-fns';
 
 const categoryOptions = ['Housing', 'Food', 'Transportation', 'Insurance', 'Fun'];
 
@@ -50,6 +51,25 @@ export default function AddNewExpense() {
   const [open, setOpen] = useState(false);
   //New Category name
   const [newCategory, setNewCategoryName] = useState('');
+  
+  const formattedDate = selectedDate ? format(selectedDate, 'yyyy-MM-dd') : null;
+  const expenseCategories = ["Pet"];
+
+  useEffect(() => {
+      createCategories()
+
+  }, [])
+
+ // get user expenses by username, set expenses as response data 
+ const createCategories = async () => {
+  try {
+      const categories = await axios.post("http://localhost:8080/addCategories", {
+        expenseCategories
+      }).then(categories => console.log(categories))
+  } catch(err) {
+      console.log(err)
+  }
+}
 
   const handleOpen = () => {
     setOpen(true);
@@ -64,13 +84,15 @@ export default function AddNewExpense() {
     const currentDate = new Date();
     const URL = process.env.REACT_APP_API_BASE_URL;
 
+    const username = "fish66";
+
     try {
       const response = await axios.post(`${URL}/addExpense`, {
         username,
         name: selectedName,
         category: selectedCategory,
         amount: parseFloat(expenseAmount),
-        date: selectedDate,
+        date: formattedDate,
       });
 
       if (response.status === 201) {

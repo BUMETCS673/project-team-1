@@ -33,7 +33,6 @@ public class UserPostDto {
     @NotBlank
     private String lastName;
 
-
     @JsonProperty
     @NotEmpty
     private List<String> roles;
