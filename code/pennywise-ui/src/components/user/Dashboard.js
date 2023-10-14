@@ -4,6 +4,7 @@ import axios from "axios"
 import ExpenseTable from "./ExpenseTable"
 import ExpenseChart from "./ExpenseChart"
 import ExpensePlot from "./ExpensePlot";
+import IncomeReport from "./IncomeReport";
 
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
@@ -18,6 +19,7 @@ const Dashboard = () => {
   const [firstName, setFirstName] = useState("")
   const [email, setEmail] = useState("")
   const [balance, setBalance] = useState(null)
+  const [incomes, setIncomes] = useState([])
 
   const [userData, setUserData] = useState(null)
 
@@ -36,11 +38,13 @@ const Dashboard = () => {
                 username: "fish66"
             }
         }).then((res) => {
+            setUserData(res.data)
             setExpenses(res.data.expenses)
             setBalance(res.data.balance)
             setEmail(res.data.email)
             setUsername(res.data.username)
             setFirstName(res.data.firstName)
+            setIncomes(res.data.incomes)
         })
     } catch(err) {
         console.log(err)
@@ -74,11 +78,13 @@ const Dashboard = () => {
                     endDate: formattedEndDate
                 }
             }).then((res) => {
+                setUserData(res.data)
                 setExpenses(res.data.expenses)
                 setBalance(res.data.balance)
                 setEmail(res.data.email)
                 setUsername(res.data.username)
                 setFirstName(res.data.firstName)
+                setIncomes(res.data.incomes)
             })
         } catch(err) {
             console.log(err)
@@ -95,16 +101,17 @@ const Dashboard = () => {
 
 
 
+
     return (
         <>
-        <Box sx={{ display: "flex", height: "170vh", width: "100vw", display: "flex", flexDirection:"column",
+        <Box sx={{ display: "flex", height: "250vh", width: "100vw", display: "flex", flexDirection:"column",
             justifyContent: "flex-start", alignItems: "center", mt: "60px", background:"#F2F2F2"}}>
 
         <Toolbar />
                 <Box sx={{width:"80%", display:"flex", justifyContent:"space-between", alignItems:"flex-start", height:"5vh", 
                     mt:7}}>
                     <Box sx={{width: "30%"}}>
-                        <Typography sx={{fontSize:30, fontWeight:"bold", color:"#646464"}}>Expense Dashboard</Typography>
+                        <Typography sx={{fontSize:30, fontWeight:"bold", color:"#646464"}}>Expense Report</Typography>
                         <Typography sx={{fontSize:14}}>Username: {username}</Typography>
                         <Typography sx={{fontSize:14}}>Email: {email} </Typography>
                     </Box>
@@ -173,6 +180,12 @@ const Dashboard = () => {
                height: "60vh", alignItems:"center", width:"80%", mt:"10px"}} >
 
               <ExpensePlot expenses={expenses}/>
+
+              </Box>
+              <Box sx={{width:"80%", display:"flex", flexDirection:"column", justifyContent:"space-between", alignItems:"center", height:"100vh", 
+                    mt:7}}>
+
+                    <IncomeReport incomes={incomes} startDate={formattedStartDate} endDate={formattedEndDate}/>
 
               </Box>
         
