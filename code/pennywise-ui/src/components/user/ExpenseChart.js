@@ -85,7 +85,7 @@ const ExpenseChart = ( {expenses} ) => {
 
         <>
 
-        <Box sx={{height: 450, width: "100%", display:"flex", flexDirection:"column", 
+        <Box sx={{height: 400, width: "100%", display:"flex", flexDirection:"column", 
         justifyContent:"center", alignItems:"center"}}>
           <Typography sx={{fontSize:18, mb:1}}>
             Expenses by Category

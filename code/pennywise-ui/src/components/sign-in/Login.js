@@ -36,7 +36,7 @@ export default function LoginWithGoogle() {
     <>
     <Container component="main" maxWidth="xs">
       <CssBaseline />
-      <Box sx={{ marginTop: 15, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <Box sx={{ marginTop: 30, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <Avatar sx={{ m: 1, bgcolor: '#A2B575' }}>
             <LockOutlinedIcon />
           </Avatar>

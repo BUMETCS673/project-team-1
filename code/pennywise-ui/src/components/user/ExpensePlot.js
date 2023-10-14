@@ -14,8 +14,7 @@ const ExpensePlot = ( {expenses} ) => {
         expenses.map((expense) => {
             expenseDates.add(expense.date)
         })
-        console.log(expenseDates)
-        return Array.from(expenseDates); 
+        return Array.from(expenseDates).sort(); 
 
     }
 

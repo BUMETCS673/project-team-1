@@ -127,9 +127,11 @@ const NavBar = () => {
           <Toolbar   sx={{
                 pr: '24px', 
                 display:"flex",
-                justifyContent:"space-between"
+                justifyContent:"space-between",
+                alignItems:"center"
                 // keep right padding when drawer closed
               }}>
+            <Box sx={{display:"flex"}}>
             <IconButton
               color="inherit"
               aria-label="open drawer"
@@ -146,6 +148,9 @@ const NavBar = () => {
             <Box>
               <img src={pennyTitle}/>
             </Box>
+
+            </Box>
+          
 
             <IconButton
               sx={{

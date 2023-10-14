@@ -165,7 +165,7 @@ export default function AddNewExpense() {
     <>
     <Container component="main" maxWidth="xs">
       <CssBaseline />
-      <Box sx={{ marginTop: 15, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <Box sx={{ marginTop: 30, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <Typography variant="h6" gutterBottom>Add Expense</Typography>
         <Grid container spacing={3}>
           <Grid item xs={12}>
