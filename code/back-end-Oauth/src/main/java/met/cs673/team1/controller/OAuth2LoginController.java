@@ -21,7 +21,7 @@ public class OAuth2LoginController {
             return new RedirectView(redirectUrl);
         } else {
             // Handle the case where the user's email is not available
-            return new RedirectView("http://localhost:3000/signup");
+            return new RedirectView("http://localhost:3000/dashboard");
         }
     }
 }
