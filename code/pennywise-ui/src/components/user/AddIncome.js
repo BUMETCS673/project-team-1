@@ -15,28 +15,34 @@ import {
 import axios from 'axios';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { format } from 'date-fns';
 
 const nameOptions = ['Income', 'Check', 'Salary', 'Job', 'Extra'];
 
 export default function AddIncome() {
-    const [amount, setAmount] = useState('');
+    const [amount, setAmount] = useState(null);
     const [selectedName, setSelectedName] = useState('');
     const [selectedDate, setSelectedDate] = useState(null);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
     const [snackbarMessage, setSnackbarMessage] = useState('');
+
+    const formattedDate = selectedDate ? format(selectedDate, 'yyyy-MM-dd') : null;
+    const formattedAmount = amount ? parseFloat(amount) : null;
+
+    const URL = process.env.REACT_APP_API_BASE_URL;
+    const username = "fish66"
     
     const handleSubmit = async (event) => {
         event.preventDefault();
         const currentDate = new Date();
-        const URL = process.env.REACT_APP_API_BASE_URL;
 
         try {
-            const response = await axios.post(`${URL}/addIncome`, {
+            const response = await axios.post("http://localhost:8080/addIncome", {
                 username,
                 name: selectedName,
-                amount: parseFloat(amount),
-                date: selectedDate,
+                amount: formattedAmount,
+                date: formattedDate,
             });
 
             if (response.status === 201) {
@@ -57,6 +63,9 @@ export default function AddIncome() {
             setSnackbarSeverity('error');
             setSnackbarMessage('An error occured. Please check again.');
             setSnackbarOpen(true);
+            console.log({
+                username, selectedName, amount, selectedDate
+            })
         }
     };
 
