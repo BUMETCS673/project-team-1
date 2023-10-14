@@ -6,6 +6,7 @@ export const postToken = async (token) => {
     const response = await axios({
       method: 'POST',
       url: `${URL}/v1/oauth/login`,
+      credentials: 'include',
       headers: {
         'Authorization': `Bearer ${token}`,
         'Accept': 'application/json',
