@@ -18,7 +18,7 @@ export default function LoginWithGoogle() {
     //Callback function for Google Sign-In
   const onGoogleSignIn = async (response) => {
     const { credential } = response;
-    const result = await postToken(credential, setIsLogin);
+    const result = await postToken(credential);
     setIsLogin(result);
   };
 
