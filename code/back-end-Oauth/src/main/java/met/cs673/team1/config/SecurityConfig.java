@@ -20,24 +20,24 @@ import java.util.List;
           prePostEnabled = true
 )
 
-public class SecurityConfig  {
+public class SecurityConfig {
 
-     protected void configure(HttpSecurity http) throws Exception {
-            http
-                    .cors()
-                    .disable()//some stackoverflow solution(not accepted) said so
-                    .csrf()
-                    .disable()
-                    .authorizeRequests()
-                    .anyRequest()
-                    .authenticated()
-                    .and()
-                    .oauth2Login()
-                    .defaultSuccessUrl("/Dashboard.html", true);
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .cors()
+                .disable()//some stackoverflow solution(not accepted) said so
+                .csrf()
+                .disable()
+                .authorizeRequests()
+                .anyRequest()
+                .authenticated()
+                .and()
+                .oauth2Login()
+                .defaultSuccessUrl("/Dashboard.html", true);
 
 
+    }
 
-     }
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         final CorsConfiguration configuration = new CorsConfiguration();
@@ -49,3 +49,4 @@ public class SecurityConfig  {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+}
