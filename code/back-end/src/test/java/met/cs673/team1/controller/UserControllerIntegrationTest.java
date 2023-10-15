@@ -1,15 +1,103 @@
 package met.cs673.team1.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import met.cs673.team1.common.MonthYearFormatter;
+import met.cs673.team1.domain.dto.ExpenseDto;
+import met.cs673.team1.domain.dto.IncomeDto;
+import met.cs673.team1.domain.dto.UserOverviewDto;
+import met.cs673.team1.service.UserOverviewService;
+import met.cs673.team1.service.UserService;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import lombok.experimental.SuperBuilder;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+
+@WebMvcTest(UserController.class)
+@AutoConfigureMockMvc
 
 class UserControllerIntegrationTest {
-    @Test
-    public void test() {
+    @Autowired
+    private MockMvc mockMvc;
 
-        String hi = "hello";
-        assert(hi.equals("hello"));
+
+    @MockBean
+    private UserService userService;
+
+    @MockBean
+    MonthYearFormatter formatter;
+
+    @MockBean
+    private UserOverviewService userOverviewService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @Test
+    public void testHome() throws Exception {
+        // create mock expenseList
+        java.util.List<ExpenseDto> mockExpenses = new ArrayList<>();
+        ExpenseDto expense1 = new ExpenseDto();
+        expense1.setExpenseId(1);
+        expense1.setUsername("testUser");
+        expense1.setDate(LocalDate.of(2023, 10, 15));
+        expense1.setCategory("food");
+        expense1.setAmount(20.00);
+        expense1.setName("potatoes");
+        mockExpenses.add(expense1);
+
+        // create mock incomeList
+        java.util.List<IncomeDto> mockIncomes = new ArrayList<>();
+        IncomeDto income1 = new IncomeDto();
+        income1.setDate(LocalDate.of(2023, 10, 14));
+        income1.setIncomeId(1);
+        income1.setAmount(100.00);
+        income1.setUsername("testUser");
+        income1.setName("check");
+        mockIncomes.add(income1);
+
+        // create mock UserOverviewDto
+        UserOverviewDto userOverviewDto = UserOverviewDto.builder()
+                .username("test")
+                .email("test@example.com")
+                .firstName("testUser")
+                .lastName("userLastName")
+                .balance(1000.0)
+                .incomes(mockIncomes)
+                .expenses(mockExpenses)
+                .build();
+
+        // mock getUserOverview method to return mock overviewDto
+        when(userOverviewService.getUserOverview(anyInt(), any(), any())).thenReturn(userOverviewDto);
+
+        // simulate HTTP GET request to /home/{id}
+        ResultActions response = mockMvc.perform(get("/home/1")
+                .param("startDate", "2023-01-01")
+                .param("endDate", "2023-12-31")
+                .contentType(MediaType.APPLICATION_JSON));
+
+        // Assert the expected status and content
+        response.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+
     }
 
 

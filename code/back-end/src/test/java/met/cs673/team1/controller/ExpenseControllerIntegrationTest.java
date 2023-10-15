@@ -6,7 +6,6 @@ import met.cs673.team1.domain.dto.ExpenseDto;
 import met.cs673.team1.domain.entity.Role;
 import met.cs673.team1.domain.entity.User;
 import met.cs673.team1.service.ExpenseService;
-import met.cs673.team1.service.IncomeService;
 import met.cs673.team1.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,9 +16,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -33,6 +33,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(ExpenseController.class)
@@ -65,13 +66,7 @@ class ExpenseControllerIntegrationTest {
         Role role = new Role();
         roles.add(role);
 
-        User user = new User();
-        user.setUsername("test");
-        user.setUserId(1);
-        user.setEmail("@.test");
-        user.setRoles(roles);
-        user.setLastName("mtest");
-        user.setFirstName("rtest");
+        Integer userId = 1;
 
         LocalDate startDate = LocalDate.parse("2023-01-01");
         LocalDate endDate = LocalDate.parse("2023-01-31");
@@ -80,8 +75,8 @@ class ExpenseControllerIntegrationTest {
         List<ExpenseDto> mockExpenses = new ArrayList<>();
 
         ExpenseDto expense1 = new ExpenseDto();
-        expense1.setExpenseId(1);
-        expense1.setUsername(user.getUsername());
+        expense1.setExpenseId(userId);
+        expense1.setUsername("testUser");
         expense1.setDate(startDate);
         expense1.setCategory("food");
         expense1.setAmount(20.00);
@@ -89,11 +84,42 @@ class ExpenseControllerIntegrationTest {
 
         mockExpenses.add(expense1);
 
+        when(expenseService.findAllByUserId(userId)).thenReturn(mockExpenses);
 
-        String hi = "hello";
-        assert(hi.equals("hello"));
+        // simulate HTTP GET request to /expenses/{userId}
+        ResultActions response = mockMvc.perform(get("/expenses/{userId}", userId)
+                .param("startDate", "2023-01-01")
+                .param("endDate", "2023-12-31")
+                .contentType(MediaType.APPLICATION_JSON));
 
+        // Assert the expected status and content
+        response.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
+    @Test
+    public void testGetAllUserExpensesByUsername() throws Exception {
+        // mock userData
+        String username = "testUser";
+        User user = new User();
+        user.setUserId(1);
+        user.setUsername(username);
+
+        List<ExpenseDto> expenses = new ArrayList<>();
+        when(userService.findUserEntityByUsername(username)).thenReturn(user);
+        when(expenseService.findAllByUserId(user.getUserId())).thenReturn(expenses);
+
+        // Perform GET request to /expenses
+        ResultActions response = mockMvc.perform(get("/expenses")
+                .param("username", username)
+                .param("startDate", "2023-10-01")
+                .param("endDate", "2023-10-31")
+                .contentType(MediaType.APPLICATION_JSON));
+
+        // Assert the expected status and content
+        response.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+
+    }
 
 }

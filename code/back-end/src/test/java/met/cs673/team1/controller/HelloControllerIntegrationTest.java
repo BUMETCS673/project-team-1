@@ -18,14 +18,10 @@
 
      @Test
      void testHelloWorld() throws Exception {
-
-         String hi = "hello";
-         assert(hi.equals("hello"));
-
-         // simulate HTTP GET request to "/"
-//         mockMvc.perform(MockMvcRequestBuilders.get("/"))
-//                 .andExpect(MockMvcResultMatchers.status().isOk())
-//                 // check response contains expected message
-//                 .andExpect(MockMvcResultMatchers.content().string(containsString("Welcome to PennyWise")));
+//          simulate HTTP GET request to "/"
+         mockMvc.perform(MockMvcRequestBuilders.get("/"))
+                 .andExpect(MockMvcResultMatchers.status().isOk())
+                 // check response contains expected message
+                 .andExpect(MockMvcResultMatchers.content().string(containsString("Welcome to PennyWise")));
      }
  }

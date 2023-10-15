@@ -24,6 +24,7 @@
  import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
  import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
  import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+ import met.cs673.team1.common.MonthYearFormatter;
 
  import java.sql.Date;
  import java.time.LocalDate;
@@ -47,6 +48,9 @@
 
      @MockBean
      ExpenseCategoryService expenseCategoryService;
+
+     @MockBean
+     MonthYearFormatter formatter;
 
      @Autowired
      ObjectMapper objectMapper;
@@ -80,5 +84,6 @@
 
          result.andExpect(status().isCreated());
      }
+
 
  }
