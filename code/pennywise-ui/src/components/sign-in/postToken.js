@@ -5,7 +5,7 @@ export const postToken = async (token) => {
   try {
     const response = await axios({
       method: 'POST',
-      url: `${URL}/v1/oauth/login`,
+      url: "https://pennywise-backend-81abbbcf7b6a.herokuapp.com/v1/oauth/login",
       credentials: 'include',
       headers: {
         'Authorization': `Bearer ${token}`,
