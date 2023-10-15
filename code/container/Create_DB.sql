@@ -8,7 +8,9 @@ CREATE TABLE User (
     #password VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
     first_name VARCHAR(255),
-    last_name VARCHAR(255));
+    last_name VARCHAR(255),
+    budget DECIMAL(10, 2));
+udget DECIMAL(10, 2));
 CREATE TABLE ExpenseCategory (
     category_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL UNIQUE
