@@ -53,6 +53,7 @@ class IncomeMapperTest {
         inc.setUser(u);
         inc.setAmount(AMOUNT);
         inc.setName(NAME);
+        inc.setIncomeId(1);
 
         IncomeDto dto = incomeMapper.incomeToIncomeDto(inc);
 
@@ -60,6 +61,7 @@ class IncomeMapperTest {
         assertThat(dto.getUsername()).isEqualTo(USERNAME);
         assertThat(dto.getAmount()).isEqualTo(AMOUNT);
         assertThat(dto.getName()).isEqualTo(NAME);
+        assertThat(dto.getIncomeId()).isEqualTo(1);
     }
 
     @Test

@@ -1,0 +1,5 @@
+build:
+  docker:
+    web: code/pennywise-ui/Dockerfile
+run:
+  web: serve -s build

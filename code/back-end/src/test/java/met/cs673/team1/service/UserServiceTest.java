@@ -7,8 +7,6 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 import met.cs673.team1.domain.dto.UserGetDto;
 import met.cs673.team1.domain.dto.UserPostDto;
@@ -93,11 +91,18 @@ class UserServiceTest {
     @Test
     void testSaveUser() {
         User u = new User();
+        UserPostDto postDto = UserPostDto.builder().build();
+        UserGetDto getDto = UserGetDto.builder().build();
         doReturn(u).when(userMapper).userPostDtoToUser(any(UserPostDto.class));
+        doReturn(u).when(userRepository).save(any(User.class));
+        doReturn(getDto).when(userMapper).userToUserGetDto(any(User.class));
 
-        userService.save(UserPostDto.builder().build());
+        UserGetDto result = userService.save(postDto);
 
+        assertNotNull(result);
+        verify(userMapper).userPostDtoToUser(postDto);
         verify(userRepository).save(u);
+        verify(userMapper).userToUserGetDto(u);
     }
 
     @Test
@@ -117,4 +122,20 @@ class UserServiceTest {
         assertThrows(UserNotFoundException.class, () -> userService.findUserEntityById(USER_ID));
     }
 
+    @Test
+    void testFindUserEntityByUsername() {
+        doReturn(Optional.of(testUser)).when(userRepository).findByUsername(anyString());
+        User user = userService.findUserEntityByUsername(USERNAME);
+
+        assertNotNull(user);
+        assertThat(ReflectionTestUtils.getField(user, USERNAME)).isEqualTo(USERNAME);
+        assertThat(ReflectionTestUtils.getField(user, EMAIL)).isEqualTo(EMAIL);
+    }
+
+    @Test
+    void testFindUserEntityByUsernameThrowsException() {
+        Optional<User> optUser = Optional.empty();
+        doReturn(optUser).when(userRepository).findByUsername(anyString());
+        assertThrows(UserNotFoundException.class, () -> userService.findUserEntityByUsername(USERNAME));
+    }
 }

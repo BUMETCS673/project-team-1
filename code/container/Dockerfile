@@ -2,7 +2,8 @@
 #FROM openjdk:11-jre-slim
 #FROM tomcat:9.0
 #FROM tomcat:8.0-alpine
-FROM amazoncorretto:21.0.0-al2023-headful
+#FROM amazoncorretto:21.0.0-al2023-headful
+FROM amazoncorretto:17-alpine
 #FROM amazoncorretto:17.0.8-al2023-headless
 
 # Set environment variables for Tomcat
@@ -30,9 +31,10 @@ ADD start_service.sh .
 RUN chmod 755 start_service.sh
 
 # Expose the default Tomcat port (8080)
-EXPOSE 8080
+#EXPOSE 8080
 
 # Start Tomcat and deploy your WAR file
 #CMD ["catalina.sh", "run"]
-CMD ["java", "-jar", "/app/pennywise.jar"]
+#CMD ["java", "-jar", "/app/pennywise.jar", "--server.port=$PORT"]
 #CMD ["start_service.sh"]
+CMD java -jar app/pennywise.jar
