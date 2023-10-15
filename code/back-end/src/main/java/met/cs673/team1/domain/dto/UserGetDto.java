@@ -2,6 +2,8 @@ package met.cs673.team1.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+
+import io.micrometer.observation.transport.Propagator;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -31,4 +33,8 @@ public class UserGetDto {
 
     @JsonProperty
     private List<Role> roles;
+
+    @JsonProperty
+    private Double budget;
+
 }
