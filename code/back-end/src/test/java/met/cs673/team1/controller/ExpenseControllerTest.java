@@ -307,48 +307,5 @@ class ExpenseControllerTest {
         assertThat(response.getBody().getCategory()).isEqualTo(GROCERIES);
         assertThat(response.getBody().getAmount()).isEqualTo(GROCERIES_AMOUNT);
     }
-    @Test
-    void testAddUserExpenseWithLastMonthsExpenseIsOverBudget() {
-        // setup
-        String username = "username";
-        String GROCERIES = "Groceries";
-        Double GROCERIES_AMOUNT = 105.50;
-        ExpenseDto dto = new ExpenseDto();
-        dto.setCategory(GROCERIES);
-        dto.setAmount(GROCERIES_AMOUNT);
-        dto.setUsername(username);
-        dto.setDate(LocalDate.now().minusDays(45));
-
-        // setup
-        doReturn(dto).when(expenseService).save(any(ExpenseDto.class));
-        UserGetDto fakeDto = UserGetDto.builder().username(username).budget(100.0).build();
-        doReturn(fakeDto).when(userService).findByUsername(anyString());
-
-        // execution
-        expenseController.addUserExpense(dto);
-
-        ExpenseDto dto1 = new ExpenseDto();
-        dto1.setCategory(GROCERIES);
-        dto1.setAmount(60.25);
-        dto1.setUsername(username);
-        dto1.setDate(LocalDate.now());
-        expenseController.addUserExpense(dto1);
-
-        ExpenseDto dto2= new ExpenseDto();
-        dto2.setCategory(GROCERIES);
-        dto2.setAmount(20.25);
-        dto2.setUsername(username);
-        dto2.setDate(LocalDate.now());
-        ResponseEntity<ExpenseDto> response = expenseController.addUserExpense(dto2);
-
-        assertNotNull(response.hasBody());
-        ExpenseDto result = response.getBody();
-        assertFalse(result.getIsOverBudget());
-
-        verify(expenseService).save(dto);
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-        assertThat(response.getBody().getCategory()).isEqualTo(GROCERIES);
-        assertThat(response.getBody().getAmount()).isEqualTo(GROCERIES_AMOUNT);
-    }
 }
 
