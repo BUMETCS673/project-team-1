@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import met.cs673.team1.common.MonthYearFormatter;
 import met.cs673.team1.domain.dto.ExpenseDto;
 import met.cs673.team1.domain.dto.IncomeDto;
+import met.cs673.team1.domain.dto.UserGetDto;
 import met.cs673.team1.domain.dto.UserOverviewDto;
+import met.cs673.team1.domain.entity.Role;
 import met.cs673.team1.service.UserOverviewService;
 import met.cs673.team1.service.UserService;
 import org.junit.jupiter.api.Test;
@@ -20,6 +22,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -28,7 +31,9 @@ import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @WebMvcTest(UserController.class)
@@ -52,7 +57,7 @@ class UserControllerIntegrationTest {
     private ObjectMapper objectMapper;
 
     @Test
-    public void testHome() throws Exception {
+    public void testGetUserOverview() throws Exception {
         // create mock expenseList
         java.util.List<ExpenseDto> mockExpenses = new ArrayList<>();
         ExpenseDto expense1 = new ExpenseDto();
@@ -99,6 +104,69 @@ class UserControllerIntegrationTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
     }
+
+    @Test
+    void testFindUserByUsername() throws Exception {
+
+        List<Role> roles = new ArrayList<>();
+        Role role = new Role();
+        role.setName("user");
+        roles.add(role);
+
+        // Create a mock user and user data
+        UserGetDto mockUser = new UserGetDto();
+        mockUser.setUsername("testUser");
+        mockUser.setFirstName("testName");
+        mockUser.setLastName("testLastName");
+        mockUser.setEmail("testUser@test.com");
+        mockUser.setUserId(1);
+        mockUser.setRoles(roles);
+
+        // Mock the userService to return the mock user when findByUsername is called
+        given(userService.findByUsername("testUser")).willReturn(mockUser);
+
+        // Perform a GET request to /user?username=testUser
+        ResultActions response = mockMvc.perform(get("/user")
+                .param("username", "testUser")
+                .contentType(MediaType.APPLICATION_JSON));
+
+        // Assert the expected status and content
+        response.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(objectMapper.writeValueAsString(mockUser)));
+    }
+
+    @Test
+    void testFindUserById() throws Exception {
+
+        List<Role> roles = new ArrayList<>();
+        Role role = new Role();
+        role.setName("user");
+        roles.add(role);
+
+        // Create a mock user and user data
+        UserGetDto mockUser = new UserGetDto();
+        mockUser.setUsername("testUser");
+        mockUser.setFirstName("testName");
+        mockUser.setLastName("testLastName");
+        mockUser.setEmail("testUser@test.com");
+        mockUser.setUserId(1);
+        mockUser.setRoles(roles);
+
+        // Mock the userService to return the mock user when findByUsername is called
+        given(userService.findById(1)).willReturn(mockUser);
+
+        // Perform a GET request to /user?username=testUser
+        ResultActions response = mockMvc.perform(get("/user/1")
+                .param("id", "1")
+                .contentType(MediaType.APPLICATION_JSON));
+
+        // Assert the expected status and content
+        response.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(objectMapper.writeValueAsString(mockUser)));
+    }
+
 
 
 }

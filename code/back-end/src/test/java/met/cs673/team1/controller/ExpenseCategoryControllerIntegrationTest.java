@@ -85,5 +85,35 @@
          result.andExpect(status().isCreated());
      }
 
+     @Test
+     public void getCategories() throws Exception {
+
+         // create mock list of categories
+         List<ExpenseCategory> mockCategories = new ArrayList<>();
+         ExpenseCategory category1 = new ExpenseCategory();
+         ExpenseCategory category2 = new ExpenseCategory();
+         category1.setCategoryId(1);
+         category1.setName("Rent");
+         category2.setCategoryId(2);
+         category2.setName("Pet");
+
+        // mock getCategories method to return mockCategories
+         given(expenseCategoryService.getCategories())
+                 .willReturn(mockCategories);
+
+         // convert to JSON
+         String categoriesJson = new ObjectMapper().writeValueAsString(mockCategories);
+
+
+         // simulate HTTP  GET request to /categories
+         ResultActions response = mockMvc.perform(MockMvcRequestBuilders.get("/categories")
+                 .contentType(MediaType.APPLICATION_JSON));
+
+         // Assert the expected status and content
+         response.andExpect(status().isOk())
+                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+
+     }
+
 
  }

@@ -35,6 +35,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 @WebMvcTest(ExpenseController.class)
 @AutoConfigureMockMvc
@@ -55,23 +56,21 @@ class ExpenseControllerIntegrationTest {
     @MockBean
     private UserService userService;
 
+
     @BeforeEach
     void setUp() {
     }
 
     @Test
     void testFindAllByUserId() throws Exception {
-
-        Set<Role> roles =new HashSet<Role>();
-        Role role = new Role();
-        roles.add(role);
-
+        // create mock userId
         Integer userId = 1;
 
+        // create mock dates
         LocalDate startDate = LocalDate.parse("2023-01-01");
         LocalDate endDate = LocalDate.parse("2023-01-31");
 
-        // Create a list of mock ExpenseDto objects
+        // create list of mock ExpenseDto objects
         List<ExpenseDto> mockExpenses = new ArrayList<>();
 
         ExpenseDto expense1 = new ExpenseDto();
@@ -84,6 +83,7 @@ class ExpenseControllerIntegrationTest {
 
         mockExpenses.add(expense1);
 
+        // mock findAllByUserId to return  mockExpenses
         when(expenseService.findAllByUserId(userId)).thenReturn(mockExpenses);
 
         // simulate HTTP GET request to /expenses/{userId}
@@ -99,14 +99,18 @@ class ExpenseControllerIntegrationTest {
 
     @Test
     public void testGetAllUserExpensesByUsername() throws Exception {
-        // mock userData
+        // create mock userData
         String username = "testUser";
         User user = new User();
         user.setUserId(1);
         user.setUsername(username);
 
+        // create mock expense data
         List<ExpenseDto> expenses = new ArrayList<>();
+
+        // mock userService to return user
         when(userService.findUserEntityByUsername(username)).thenReturn(user);
+        // mock expenseService to return expenses
         when(expenseService.findAllByUserId(user.getUserId())).thenReturn(expenses);
 
         // Perform GET request to /expenses
@@ -121,5 +125,31 @@ class ExpenseControllerIntegrationTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
     }
+
+//    @Test
+//    public void addExpense() throws Exception {
+//        // create mock expense data
+//        ExpenseDto expenseDto = new ExpenseDto();
+//        expenseDto.setName("Groceries");
+//        expenseDto.setExpenseId(1);
+//        expenseDto.setUsername("testUser");
+//        expenseDto.setCategory("Food");
+//        expenseDto.setAmount(200.00);
+//        expenseDto.setDate(LocalDate.of(2023, 10, 10 ));
+//
+//        // mock expenseService to return expense
+//        given(expenseService.save(ArgumentMatchers.any()))
+//                .willReturn(expenseDto);
+//
+//        String expenseJson = new ObjectMapper().writeValueAsString(expenseDto);
+//
+//
+//        ResultActions result = mockMvc.perform(post("/addExpense")
+//                .content(expenseJson)
+//                .contentType(MediaType.APPLICATION_JSON_VALUE));
+//
+//        result.andExpect(status().isCreated());
+//
+//    }
 
 }
