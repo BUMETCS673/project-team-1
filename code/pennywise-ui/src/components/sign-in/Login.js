@@ -8,12 +8,6 @@ import { postToken } from './postToken';
 export default function LoginWithGoogle() {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(false);
-  const googleSignInUrl = `${process.env.REACT_APP_API_BASE_URL}/oauth2/authorization/google?redirect_uri=${process.env.OAUTH2_REDIRECT_URI}`;
-
-  // const handleLoginWithGoogle = () => {
-  //   //Redirect SpringBoot backend Oauth endpoint
-  //         window.location.href = googleSignInUrl;
-  // };
   
     //Callback function for Google Sign-In
   const onGoogleSignIn = async (response) => {
