@@ -24,6 +24,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import LoginIcon from '@mui/icons-material/Login';
 import HomeIcon from '@mui/icons-material/Home';
 import ChecklistIcon from '@mui/icons-material/Checklist';
+import LockResetIcon from '@mui/icons-material/LockReset';
 import pennyTitle from "../img/penny.png"
 
 
@@ -337,7 +338,32 @@ const NavBar = () => {
                   <ListItemText primary="Setup" sx={{ opacity: open ? 1 : 0 }} />
                 </StyledListItemButton>
               </ListItem>
-       
+
+                    
+             <ListItem  disablePadding sx={{ display: 'block' }} component={Link} to="/signin">
+                <StyledListItemButton
+                  sx={{
+                    minHeight: 60,
+                    justifyContent: open ? 'initial' : 'center',
+                    px: 2.5,
+                    color: "#646464", 
+                    backgrounfColor: "#F2F2F2"
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : 'auto',
+                      justifyContent: 'center',
+                    }}
+                  >
+                  <LockResetIcon/> 
+                  </ListItemIcon>
+                  <ListItemText primary="Sign-in" sx={{ opacity: open ? 1 : 0 }} />
+                </StyledListItemButton>
+              </ListItem>
+          </List>
+
           </List>
 
 
