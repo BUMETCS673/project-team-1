@@ -359,7 +359,7 @@ const NavBar = () => {
                   >
                   <LockResetIcon/> 
                   </ListItemIcon>
-                  <ListItemText primary="Sign-in" sx={{ opacity: open ? 1 : 0 }} />
+                  <ListItemText primary="Sign up" sx={{ opacity: open ? 1 : 0 }} />
                 </StyledListItemButton>
               </ListItem>
           </List>
