@@ -364,9 +364,6 @@ const NavBar = () => {
               </ListItem>
           </List>
 
-          </List>
-
-
         </Drawer>
         </Box>
       </ThemeProvider>
