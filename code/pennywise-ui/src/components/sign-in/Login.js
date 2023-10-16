@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import {Avatar, Button, CssBaseline, TextField, FormControlLabel, Link, Grid, Typography, Container, Box} from '@mui/material';
+import {Avatar, Button, CssBaseline, TextField, FormControlLabel, Link, Grid, Typography, Container, Box, createChainedFunction} from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useNavigate } from 'react-router-dom';
 import GoogleSignIn from './OauthRedirect';
 import { postToken } from './postToken';
+import axios from 'axios';
 
 export default function LoginWithGoogle() {
   const navigate = useNavigate();
@@ -23,8 +24,9 @@ export default function LoginWithGoogle() {
     }
   }, [isLogin, navigate]);
 
-  console.log("API_BASE_URL:", process.env.REACT_APP_API_BASE_URL);
-  console.log("OAUTH2_REDIRECT_URI:", process.env.REACT_APP_OAUTH2_REDRIECT_URI);
+
+
+ 
 
   return (
     <>
@@ -48,6 +50,16 @@ export default function LoginWithGoogle() {
           />
         </Box> */}
         <Box sx={{ mt: 2 }}>
+
+
+        <Link href="http://localhost:8081">
+              <Button variant="contained" color="primary">
+                Visit localhost:8081
+              </Button>
+            </Link>
+
+        
+
           <GoogleSignIn onGoogleSignIn={onGoogleSignIn} text="Sign in with Google"/>
           {/* <Button
             onClick={handleLoginWithGoogle}

@@ -5,10 +5,17 @@ import ExpenseTable from "./ExpenseTable"
 import ExpenseChart from "./ExpenseChart"
 import ExpensePlot from "./ExpensePlot";
 import IncomeReport from "./IncomeReport";
+import { useParams } from 'react-router-dom';
 
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { format } from 'date-fns';
+import NavBar from "./Navbar";
+import AddIncome from "./AddIncome";
+import AddNewExpense from "./AddExpense"
+import Header from "./Header"
+
+import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   const [expenses, setExpenses] = useState([]);
@@ -17,25 +24,49 @@ const Dashboard = () => {
   const [errorMessage, setErrorMessage] = useState(null)
   const [username, setUsername] = useState("")
   const [firstName, setFirstName] = useState("")
-  const [email, setEmail] = useState("")
+  const [emailData, setEmail] = useState("")
   const [balance, setBalance] = useState(null)
   const [incomes, setIncomes] = useState([])
 
   const [userData, setUserData] = useState(null)
+  const [gemail, setGEmail] = useState('');
+  const [gname, setGName] = useState('');
+
 
   const formattedStartDate = startDate ? format(startDate, 'yyyy-MM-dd') : null; //format for server 
-  const formattedEndDate = endDate ? format(endDate, 'yyyy-MM-dd') : null; //format for server 
+  const formattedEndDate = endDate ? format(endDate, 'yyyy-MM-dd') : null; //format for server
+
+
+  useEffect(() => {
+    // Parse the query string from the URL
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+
+    // Get the "email" and "name" parameters from the URL
+    const emailParam = urlParams.get('email');
+    const nameParam = urlParams.get('name');
+
+    if (emailParam) {
+      setGEmail(emailParam);
+    }
+
+    if (nameParam) {
+      setGName(nameParam);
+    }
+  }, []);
 
   useEffect(() => {
       getUserData()
 
   },[])
 
+
+
   const getUserData = async () => {
     try {
         const res = await axios.get("http://localhost:8080/home", {
             params: {
-                username: "fish66"
+                username: gemail,
             }
         }).then((res) => {
             setUserData(res.data)
@@ -59,7 +90,7 @@ const Dashboard = () => {
     try {
         const expenseData = await axios.get("http://localhost:8080/expenses", {
             params: {
-                username: "fish66", 
+                username: gemail, 
             }
         }).then(expenseData => setExpenses(expenseData.data))
     } catch(err) {
@@ -73,7 +104,7 @@ const Dashboard = () => {
         try {
             const res = await axios.get("http://localhost:8080/home", {
                 params: {
-                    username: "fish66",
+                    username: gemail,
                     startDate: formattedStartDate, 
                     endDate: formattedEndDate
                 }
@@ -104,30 +135,35 @@ const Dashboard = () => {
 
     return (
         <>
+        <Box sx={{display:"flex", flexDirection:"column", justifyContent:"flex-start", alignItems: "center",
+                background:"#f2f2f2", height:"130vh"}}>
+            
+            <Header balance={balance} gemail={gemail} gname={gname}/>
+            <Box  sx={{display:"flex", flexDirection:"column", width:"80%", mt:5, justifyContent:"space-around", 
+                        alignItems:"flex-start", p:4,}}>
+                <Typography sx={{fontSize:20}}>Enter Income and Expense Information Here: </Typography>
+                <Box sx={{display: "flex", justifyContent:"flex-start", background:"#f2f2f2",
+                            width:"100%", alignItems:"flex-start", mt:5}}>
+                     <AddIncome gemail={gemail}/>
+                     <AddNewExpense gemail={gemail}/>
+                </Box>
+
+            </Box>
         <Box sx={{ display: "flex", height: "250vh", width: "100vw", display: "flex", flexDirection:"column",
-            justifyContent: "flex-start", alignItems: "center", mt: "60px", background:"#F2F2F2"}}>
+            justifyContent: "flex-start", alignItems: "center", background:"#F2F2F2"}}>
 
         <Toolbar />
                 <Box sx={{width:"80%", display:"flex", justifyContent:"space-between", alignItems:"flex-start", height:"5vh", 
                     mt:7}}>
                     <Box sx={{width: "30%"}}>
                         <Typography sx={{fontSize:30, fontWeight:"bold", color:"#646464"}}>Expense Report</Typography>
-                        <Typography sx={{fontSize:14}}>Username: {username}</Typography>
-                        <Typography sx={{fontSize:14}}>Email: {email} </Typography>
-                    </Box>
-
-                    <Box sx={{border:1, width: "25%", mt:2}}>
-                        <Grid sx={{width:"100%", background:"#fff", height: "7vh", display: "flex", flexDirection: "column", 
-                            justifyContent:"center", alignItems:"center"}}>
-                            <Typography sx={{fontSize:18, color:"#809159"}}>Remaining Balance: </Typography>
-                            <Typography sx={{fontSize:18, color:"#809159", fontWeight:"bold"}}>${balance}</Typography>
-                        </Grid>
                     </Box>
 
                 </Box>
-                <Box sx={{display:"flex", justifyContent:"flex-start", alignItems:"center",
-                    width:"80%",height:"5vh", mt:10, mb:0}}>
-                    <Typography sx={{fontSize:20}}>Filter Expenses By Date</Typography>
+                <Box sx={{display:"flex", justifyContent:"space-between", alignItems:"center",
+                    width:"80%",height:"5vh", boxShadow:1, p:4, pt:6, pb:6}}>
+                    <Typography sx={{fontSize:20}}>Filter By Date</Typography>
+               
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <DatePicker
                         label="Start Date"
@@ -157,7 +193,7 @@ const Dashboard = () => {
                 </Box>
 
               <Box sx={{ display: "flex", justifyContent: "center",
-               height: "50vh", alignItems:"center", width:"80%"}} >
+               height: "60vh", alignItems:"center", width:"80%", boxShadow:1, p:4, mt:5}} >
                 <Grid item xs={12} md={8} lg={9} mb={5} display="flex" justifyContent="center" width="60%">
 
                 <ExpenseTable expenses={expenses}/>
@@ -176,19 +212,24 @@ const Dashboard = () => {
               { errorMessage && (
                 <Typography sx={{color:"red", fontSize:16}}>{errorMessage}</Typography>
               )}
-              <Box sx={{ display: "flex", justifyContent: "center",
-               height: "60vh", alignItems:"center", width:"80%", mt:"10px"}} >
-
+              <Box sx={{ display: "flex", justifyContent: "space-around",
+               height: "60vh", alignItems:"center", width:"80%", mt:"10px", p:4,}} >
+                <Typography sx={{fontSize:24, fontWeight:"bold", color:"#646464"}}>Expenses By Date</Typography>
               <ExpensePlot expenses={expenses}/>
 
               </Box>
-              <Box sx={{width:"80%", display:"flex", flexDirection:"column", justifyContent:"space-between", alignItems:"center", height:"100vh", 
-                    mt:7}}>
-
+              <Box sx={{ display: "flex", justifyContent: "space-around",
+               height: "60vh", alignItems:"center", width:"80%", mt:"10px", p:4,}} >
+                    <Typography sx={{fontSize:24, fontWeight:"bold", color:"#646464"}}>Incomes By Date</Typography>
+       
                     <IncomeReport incomes={incomes} startDate={formattedStartDate} endDate={formattedEndDate}/>
 
               </Box>
+              <Box sx={{height:"30vh"}}>
+
+              </Box>
         
+        </Box>
         </Box>
      
         

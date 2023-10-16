@@ -202,7 +202,8 @@ const NavBar = () => {
                     fontWeight: "bold",
                     display: "flex", 
                     alignItems: "center",
-                    justifyContent: "center" 
+                    justifyContent: "center",
+                    mt:5
                   
                   }}
                 >
@@ -219,7 +220,7 @@ const NavBar = () => {
                 </StyledListItemButton>
               </ListItem>
 
-              <ListItem  disablePadding sx={{ display: 'block' }} component={Link} to="/addIncome">
+              {/* <ListItem  disablePadding sx={{ display: 'block' }} component={Link} to="/addIncome">
                 <StyledListItemButton
                   sx={{
                     minHeight: 60,
@@ -239,8 +240,8 @@ const NavBar = () => {
                   </ListItemIcon>
                   <ListItemText primary="Add Income" sx={{ opacity: open ? 1 : 0 }} />
                 </StyledListItemButton>
-              </ListItem>
-
+              </ListItem> */}
+{/* 
               <ListItem  disablePadding sx={{ display: 'block' }} component={Link} to="/addExpense">
                 <StyledListItemButton
                   sx={{
@@ -262,7 +263,7 @@ const NavBar = () => {
                   </ListItemIcon>
                   <ListItemText primary="Add Expense" sx={{ opacity: open ? 1 : 0 }} />
                 </StyledListItemButton>
-              </ListItem>
+              </ListItem> */}
        
           </List>
           <Divider />

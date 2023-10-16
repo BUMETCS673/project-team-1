@@ -19,7 +19,7 @@ import { format } from 'date-fns';
 
 const nameOptions = ['Income', 'Check', 'Salary', 'Job', 'Extra'];
 
-export default function AddIncome() {
+export default function AddIncome( {gemail }) {
     const [amount, setAmount] = useState(null);
     const [selectedName, setSelectedName] = useState('');
     const [selectedDate, setSelectedDate] = useState(null);
@@ -31,7 +31,6 @@ export default function AddIncome() {
     const formattedAmount = amount ? parseFloat(amount) : null;
 
     const URL = process.env.REACT_APP_API_BASE_URL;
-    const username = "fish66"
     
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -39,7 +38,7 @@ export default function AddIncome() {
 
         try {
             const response = await axios.post("http://localhost:8080/addIncome", {
-                username,
+                username: gemail,
                 name: selectedName,
                 amount: formattedAmount,
                 date: formattedDate,
@@ -83,9 +82,9 @@ export default function AddIncome() {
 
     return (
         <>
-            <Container component="main" maxWidth="xs">
                 <CssBaseline />
-                <Box sx={{ marginTop: 30, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <Box  sx={{ display: 'flex', flexDirection: 'column', alignItems: "center",
+                     width:"35%", background:"#fff", p:5, boxShadow:1}}>
                     <Typography variant="h6" gutterBottom>
                         Add Income
                     </Typography>
@@ -170,8 +169,7 @@ export default function AddIncome() {
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                 >
                     <Alert severity={snackbarSeverity}>{snackbarMessage}</Alert>
-                </Snackbar>
-            </Container>
+                </Snackbar> 
         </>
     );
 }

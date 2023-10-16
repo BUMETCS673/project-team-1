@@ -80,19 +80,15 @@ const IncomeReport = ( {incomes, startDate, endDate} ) => {
 
     return (
         <>
-        <Box sx={{width:"100%", height:"100vh", display:"flex", flexDirection:"column", alignItems:"center", 
-            justifyContent:"flex-start"}}>
-            <Box sx={{width:"100%", height:"5vh"}}>
-                <Typography sx={{fontSize:30, fontWeight:"bold", color:"#646464"}}>Income Report</Typography>
-                <Typography>{startDate} - {endDate}</Typography>
-            </Box>
-            <Box sx={{height: 450, width: "90%", display:"flex", flexDirection:"column", 
-        justifyContent:"center", alignItems:"center", background: "#fff", p:5, mt:10}}>
-                <Typography>Incomes by Date</Typography>
-                <Line data={data}/>
 
-            </Box>
 
+        <Box sx={{height: 450, width: "70%", display:"flex", flexDirection:"column", 
+        justifyContent:"center", alignItems:"center", background: "#fff", p:5, boxShadow:1}}>
+          <Typography sx={{fontSize:18}}>
+            Incomes by Date
+          </Typography>
+
+        <Line data={data}/>
         </Box>
         </>
 

@@ -33,7 +33,7 @@ import axios from 'axios';
 import { format } from 'date-fns';
 
 
-export default function AddNewExpense() {
+export default function AddNewExpense( {gemail}) {
   const [expenseAmount, setExpenseAmount] = useState('');
   const [selectedName, setSelectedName] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -86,11 +86,9 @@ export default function AddNewExpense() {
     const currentDate = new Date();
     const URL = process.env.REACT_APP_API_BASE_URL;
 
-    const username = "fish66";
-
     try {
       const response = await axios.post("http://localhost:8080/addExpense", {
-        username,
+        username: gemail,
         name: selectedName,
         category: selectedCategory,
         amount: parseFloat(expenseAmount),
@@ -163,9 +161,8 @@ export default function AddNewExpense() {
 
   return (
     <>
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <Box sx={{ marginTop: 30, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: "center",
+        width:"35%", background:"#fff", p:5, ml:7, boxShadow:1}}>
         <Typography variant="h6" gutterBottom>Add Expense</Typography>
         <Grid container spacing={3}>
           <Grid item xs={12}>
@@ -300,7 +297,6 @@ export default function AddNewExpense() {
       >
         <Alert severity={snackbarSeverity}>{snackbarMessage}</Alert>
       </Snackbar>
-    </Container>
     </>
   );
 

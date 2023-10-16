@@ -85,8 +85,8 @@ const ExpensePlot = ( {expenses} ) => {
 
         <>
 
-        <Box sx={{height: 450, width: "90%", display:"flex", flexDirection:"column", 
-        justifyContent:"center", alignItems:"center", background: "#fff", p:5}}>
+        <Box sx={{height: 450, width: "70%", display:"flex", flexDirection:"column", 
+        justifyContent:"center", alignItems:"center", background: "#fff", p:5, boxShadow:1}}>
           <Typography sx={{fontSize:18}}>
             Expenses by Date
           </Typography>
