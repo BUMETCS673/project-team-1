@@ -30,7 +30,7 @@ export default function LoginWithGoogle() {
 
   return (
     <>
-    <Container component="main" maxWidth="xs">
+   <Container component="main" maxWidth="xs">
       <CssBaseline />
       <Box sx={{ marginTop: 30, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <Avatar sx={{ m: 1, bgcolor: '#A2B575' }}>
@@ -39,13 +39,17 @@ export default function LoginWithGoogle() {
         <Typography component="h1" variant="h6">
           Sign in
         </Typography>
-    
-         <Link href="http://localhost:8081">
-              <Button variant="outlined" color="primary" sx={{mt:4}}>
-                Google Sign-in
-              </Button>
-         </Link>
-
+        {/* <Box sx={{ mt: 3 }}>
+          <TextField
+            fullWidth
+            variant="outlined"
+            value={googleSignInUrl}
+            InputProps={{
+              readOnly: true,
+            }}
+          />
+        </Box> */}
+        <Box sx={{ mt: 2 }}>
           <GoogleSignIn onGoogleSignIn={onGoogleSignIn} text="Sign in with Google"/>
           {/* <Button
             onClick={handleLoginWithGoogle}
@@ -53,7 +57,12 @@ export default function LoginWithGoogle() {
           >
             Sign in
           </Button> */}
-        
+           <Link href="http://localhost:8081">
+              <Button variant="outlined" color="primary" sx={{mt:4}}>
+                Google Sign-in
+              </Button>
+            </Link>
+        </Box>
       </Box>
     </Container>
   </>
