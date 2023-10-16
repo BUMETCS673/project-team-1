@@ -47,11 +47,11 @@ jobs:
 
       - name: Build pennywise backend container
         working-directory: ./code/container
-        run: docker build . -t registry.heroku.com/pennywise/worker
+        run: docker build . -t registry.heroku.com/pennywise/web
 
       - name: Build pennywise oauth container
         working-directory: ./code/container
-        run: docker build Dockerfile-oauth . -t registry.heroku.com/pennywise/worker  
+        run: docker build -f Dockerfile-oauth . -t registry.heroku.com/pennywise-oauth/web  
       
       # - name: Build pennywise frontend container
       #   #working-directory: ./code/container
