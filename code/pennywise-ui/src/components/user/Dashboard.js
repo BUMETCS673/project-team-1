@@ -29,20 +29,41 @@ const Dashboard = () => {
   const [incomes, setIncomes] = useState([])
 
   const [userData, setUserData] = useState(null)
+  //Getting "email" and "name" parameters from the URL after authentication
   const [gemail, setGEmail] = useState('');
   const [gname, setGName] = useState('');
-
+  const [gfirstName, setGFirstName] = useState('');
+  const [glastName, setGLastName] = useState('');
+  const [userExists, setUserExists] = useState(false);
 
   const formattedStartDate = startDate ? format(startDate, 'yyyy-MM-dd') : null; //format for server 
   const formattedEndDate = endDate ? format(endDate, 'yyyy-MM-dd') : null; //format for server
 
+  //creating user in db
+  const createUser = async () => {
+    try {
+      const newUser = {
+        firstName: gfirstName,
+        lastName: glastName,
+        email: gemail,
+        username: gemail,
+        password: 'password',
+        roles: ['USER'],
+      };
+
+      const response = await axios.post('http://localhost:8080/createUser', newUser);
+      console.log('New user created:', response.data);
+    } catch (error) {
+      console.error('Error creating user:', error);
+    }
+  };
 
   useEffect(() => {
-    // Parse the query string from the URL
+    //Parse the query string from URL
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
 
-    // Get the "email" and "name" parameters from the URL
+    //Get the "email" and "name" parameters from URL
     const emailParam = urlParams.get('email');
     const nameParam = urlParams.get('name');
 
@@ -52,14 +73,45 @@ const Dashboard = () => {
 
     if (nameParam) {
       setGName(nameParam);
+      //name split by space
+      const nameParts = nameParam.split(' ');
+      setGFirstName(nameParts[0]);
+      setGLastName(nameParts.slice(1).join(' '));
     }
   }, []);
 
   useEffect(() => {
+    const checkUserExistence = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/user", {
+          params: {
+            username: gemail,
+          }
+        });
+
+        const userExists = response.data;
+
+        if (userExists) {
+          console.log("User exists.");
+          setUserExists(true);
+        } else {
+          console.log("User doesn't exist. Proceeding to create the user.");
+          createUser(); //create user in db
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    if (gname && gemail) {
+      checkUserExistence();
+    }
+  }, [gname, gemail]);
+  
+  useEffect(() => {
       getUserData()
 
   },[])
-
 
 
   const getUserData = async () => {
