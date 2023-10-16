@@ -54,7 +54,7 @@ export default function AddNewExpense( {gemail}) {
  // get expenseCategories, set response.data as expenseCategories 
  const getCategories = async () => {
   try {
-      const categories = await axios.get("http://localhost:8080/categories")
+      const categories = await axios.get("https://pennywise-backend-81abbbcf7b6a.herokuapp.com/categories")
       .then(categories => formatCategories(categories.data))
 
   } catch(err) {
