@@ -53,7 +53,7 @@ export default function LoginWithGoogle() {
           >
             Sign in
           </Button> */}
-        </Box>
+        
       </Box>
     </Container>
   </>
