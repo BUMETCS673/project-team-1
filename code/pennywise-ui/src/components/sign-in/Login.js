@@ -6,7 +6,7 @@ import GoogleSignIn from './OauthRedirect';
 import { postToken } from './postToken';
 import axios from 'axios';
 import GoogleIcon from '@mui/icons-material/Google';
-// import googleLogo from '../img/google.png'; 
+import googleLogo from '../img/google.png'; 
 
 
 export default function LoginWithGoogle() {
@@ -61,12 +61,11 @@ export default function LoginWithGoogle() {
               ml: 3,
             }}
           >
-            Google Sign in
-            {/* <img
+             <img
               src={googleLogo}
               alt="Google Logo"
               style={{ width: '20px', height: '20px', marginRight: '8px' }}
-            /> */}
+            /> 
             Log in with Google
           </Button>
         </Link>
