@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import GoogleSignIn from './OauthRedirect';
 import { postToken } from './postToken';
 import axios from 'axios';
+import GoogleIcon from '@mui/icons-material/Google';
 
 export default function LoginWithGoogle() {
   const navigate = useNavigate();
@@ -50,7 +51,7 @@ export default function LoginWithGoogle() {
           />
         </Box> */}
         <Box sx={{ mt: 2 }}>
-          <GoogleSignIn onGoogleSignIn={onGoogleSignIn} text="Sign in with Google"/>
+          {/* <GoogleSignIn onGoogleSignIn={onGoogleSignIn} text="Sign in with Google"/> */}
           {/* <Button
             onClick={handleLoginWithGoogle}
             style={{ zIndex: 2, backgroundColor: '#A2B575', color: 'white', padding: '8px 16px', border: 'none', cursor: 'pointer' }}
@@ -58,8 +59,13 @@ export default function LoginWithGoogle() {
             Sign in
           </Button> */}
            <Link href="http://localhost:8081">
-              <Button variant="outlined" color="primary" sx={{mt:4}}>
-                Google Sign-in
+              <Button variant="outlined" color="primary" sx={{mt:4, width:"100%"}}>
+                <Box sx={{display:"flex", justifyContent:"space-between"}}>
+                  <GoogleIcon sx={{mr:3, color:"#A2B575"}}/>
+                  <Typography sx={{color:"#A2B575"}}>Sign in with Google</Typography>
+
+                </Box>
+  
               </Button>
             </Link>
         </Box>
