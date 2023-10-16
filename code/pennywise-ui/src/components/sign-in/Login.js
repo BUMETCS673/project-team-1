@@ -6,6 +6,8 @@ import GoogleSignIn from './OauthRedirect';
 import { postToken } from './postToken';
 import axios from 'axios';
 import GoogleIcon from '@mui/icons-material/Google';
+import googleLogo from '../img/google.png'; 
+
 
 export default function LoginWithGoogle() {
   const navigate = useNavigate();
@@ -40,34 +42,33 @@ export default function LoginWithGoogle() {
         <Typography component="h1" variant="h6">
           Sign in
         </Typography>
-        {/* <Box sx={{ mt: 3 }}>
-          <TextField
-            fullWidth
-            variant="outlined"
-            value={googleSignInUrl}
-            InputProps={{
-              readOnly: true,
-            }}
-          />
-        </Box> */}
         <Box sx={{ mt: 2 }}>
-          {/* <GoogleSignIn onGoogleSignIn={onGoogleSignIn} text="Sign in with Google"/> */}
-          {/* <Button
-            onClick={handleLoginWithGoogle}
-            style={{ zIndex: 2, backgroundColor: '#A2B575', color: 'white', padding: '8px 16px', border: 'none', cursor: 'pointer' }}
+          {/* <GoogleSignIn onGoogleSignIn={onGoogleSignIn} text="Sign in with Google"/> */} 
+          
+          <Link href="http://localhost:8081">
+          <Button
+            style={{
+              zIndex: 2,
+              backgroundColor: 'transparent',
+              color: 'black',
+              padding: '8px 16px',
+              border: '2px solid #A2B575',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              textTransform: 'none',
+              mt: 2,
+              ml: 3,
+            }}
           >
-            Sign in
-          </Button> */}
-           <Link href="http://localhost:8081">
-              <Button variant="outlined" color="primary" sx={{mt:4, width:"100%"}}>
-                <Box sx={{display:"flex", justifyContent:"space-between"}}>
-                  <GoogleIcon sx={{mr:3, color:"#A2B575"}}/>
-                  <Typography sx={{color:"#A2B575"}}>Sign in with Google</Typography>
-
-                </Box>
-  
-              </Button>
-            </Link>
+            <img
+              src={googleLogo}
+              alt="Google Logo"
+              style={{ width: '20px', height: '20px', marginRight: '8px' }}
+            />
+            Log in with Google
+          </Button>
+        </Link>
         </Box>
       </Box>
     </Container>
