@@ -39,26 +39,12 @@ export default function LoginWithGoogle() {
         <Typography component="h1" variant="h6">
           Sign in
         </Typography>
-        {/* <Box sx={{ mt: 3 }}>
-          <TextField
-            fullWidth
-            variant="outlined"
-            value={googleSignInUrl}
-            InputProps={{
-              readOnly: true,
-            }}
-          />
-        </Box> */}
-        <Box sx={{ mt: 2 }}>
-
-
-        <Link href="http://localhost:8081">
-              <Button variant="contained" color="primary">
-                Visit localhost:8081
+    
+         <Link href="http://localhost:8081">
+              <Button variant="outlined" color="primary" sx={{mt:4}}>
+                Google Sign-in
               </Button>
-            </Link>
-
-        
+         </Link>
 
           <GoogleSignIn onGoogleSignIn={onGoogleSignIn} text="Sign in with Google"/>
           {/* <Button
