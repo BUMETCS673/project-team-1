@@ -1,85 +1,90 @@
-// package met.cs673.team1.controller;
+package met.cs673.team1.controller;
 
-// import com.fasterxml.jackson.databind.ObjectMapper;
-// import met.cs673.team1.domain.dto.ExpenseDto;
-// import met.cs673.team1.domain.entity.Expense;
-// import met.cs673.team1.domain.entity.ExpenseCategory;
-// import met.cs673.team1.domain.entity.User;
-// import met.cs673.team1.service.ExpenseCategoryService;
-// import met.cs673.team1.service.ExpenseService;
-// import org.junit.jupiter.api.BeforeEach;
-// import org.junit.jupiter.api.Test;
-// import org.junit.jupiter.api.extension.ExtendWith;
-// import org.mockito.ArgumentMatchers;
-// import org.mockito.MockitoAnnotations;
-// import org.mockito.junit.jupiter.MockitoExtension;
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-// import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-// import org.springframework.boot.test.mock.mockito.MockBean;
-// import org.springframework.http.MediaType;
-// import org.springframework.test.web.servlet.MockMvc;
-// import org.springframework.test.web.servlet.ResultActions;
-// import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-// import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-// import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-// import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import met.cs673.team1.domain.dto.ExpenseDto;
+import met.cs673.team1.domain.entity.Expense;
+import met.cs673.team1.domain.entity.ExpenseCategory;
+import met.cs673.team1.domain.entity.User;
+import met.cs673.team1.service.ExpenseCategoryService;
+import met.cs673.team1.service.ExpenseService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import met.cs673.team1.common.MonthYearFormatter;
 
-// import java.sql.Date;
-// import java.time.LocalDate;
-// import java.util.ArrayList;
-// import java.util.List;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
-// import static org.jboss.logging.NDC.get;
-// import static org.junit.jupiter.api.Assertions.*;
-// import static org.mockito.BDDMockito.given;
-// import static org.mockito.Mockito.*;
-// import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-// import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-// import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.jboss.logging.NDC.get;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-// @WebMvcTest(ExpenseCategoryController.class)
-// @AutoConfigureMockMvc()
+@WebMvcTest(ExpenseCategoryController.class)
+@AutoConfigureMockMvc()
 
-// class ExpenseCategoryControllerIntegrationTest {
-//     @Autowired
-//     private MockMvc mockMvc;
+class ExpenseCategoryControllerIntegrationTest {
+    @Autowired
+    private MockMvc mockMvc;
 
-//     @MockBean
-//     ExpenseCategoryService expenseCategoryService;
+    @MockBean
+    ExpenseCategoryService expenseCategoryService;
 
-//     @Autowired
-//     ObjectMapper objectMapper;
+    @MockBean
+    MonthYearFormatter formatter;
 
-//     @BeforeEach
-//     public void setUp() {
+    @Autowired
+    ObjectMapper objectMapper;
 
-//     }
+    @BeforeEach
+    public void setUp() {
 
-//     @Test
-//     public void testAddCategories() throws Exception {
-//         List categories = new ArrayList<String>();
-//         categories.add("Housing");
-//         categories.add("Loans");
-//         categories.add("Groceries");
+    }
 
-//         // Mock data to be returned by the categoryService.saveAll method
-//         List<ExpenseCategory> savedCategories = new ArrayList<>();
-//         savedCategories.add(new ExpenseCategory());
-//         savedCategories.add(new ExpenseCategory());
+    @Test
+    public void testAddCategories() throws Exception {
 
-//         // Mock expenseCategoryService saveAll method to return savedCategories
-//         when(expenseCategoryService.saveAll(categories)).thenReturn(savedCategories);
+        List<ExpenseCategory> categories = new ArrayList<>();
+        ExpenseCategory category1 = new ExpenseCategory();
+        ExpenseCategory category2 = new ExpenseCategory();
+        category1.setCategoryId(1);
+        category1.setName("Rent");
+        category2.setCategoryId(2);
+        category2.setName("Pet");
 
-//         mockMvc.perform(post("/addCategories")
-//                         .contentType(MediaType.APPLICATION_JSON)
-//                         .content(objectMapper.writeValueAsString(categories)))
-//                 .andExpect(status().isCreated())
-//                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-//                 .andExpect(jsonPath("$.size()").value(savedCategories.size()));
 
-//         // Verify that expenseCategoryService.saveAll was called with categories
-//         verify(expenseCategoryService, times(1)).saveAll(categories);
-//     }
+        given(expenseCategoryService.saveAll(ArgumentMatchers.anyList()))
+                .willReturn(categories);
 
-// }
+        String categoriesJson = new ObjectMapper().writeValueAsString(categories);
+
+
+        ResultActions result = mockMvc.perform(post("/addCategories")
+                .content(categoriesJson)
+                .contentType(MediaType.APPLICATION_JSON_VALUE));
+
+        result.andExpect(status().isCreated());
+    }
+    
+
+
+}
