@@ -51,7 +51,7 @@ const Dashboard = () => {
         roles: ['USER'],
       };
 
-      const response = await axios.post('http://localhost:8080/createUser', newUser);
+      const response = await axios.post('https://pennywise-backend-81abbbcf7b6a.herokuapp.com/createUser', newUser);
       console.log('New user created:', response.data);
     } catch (error) {
       console.error('Error creating user:', error);
@@ -83,7 +83,7 @@ const Dashboard = () => {
   useEffect(() => {
     const checkUserExistence = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/user", {
+        const response = await axios.get("https://pennywise-backend-81abbbcf7b6a.herokuapp.com/user", {
           params: {
             username: gemail,
           }
@@ -116,7 +116,7 @@ const Dashboard = () => {
 
   const getUserData = async () => {
     try {
-        const res = await axios.get("http://localhost:8080/home", {
+        const res = await axios.get("https://pennywise-backend-81abbbcf7b6a.herokuapp.com/home", {
             params: {
                 username: gemail,
             }
@@ -140,7 +140,7 @@ const Dashboard = () => {
  // get all user data by username 
   const loadExpenses = async () => {
     try {
-        const expenseData = await axios.get("http://localhost:8080/expenses", {
+        const expenseData = await axios.get("https://pennywise-backend-81abbbcf7b6a.herokuapp.com/expenses", {
             params: {
                 username: gemail, 
             }
@@ -154,7 +154,7 @@ const Dashboard = () => {
    // get filtered user data by username and dates 
     const getUserDataByDate = async () => {
         try {
-            const res = await axios.get("http://localhost:8080/home", {
+            const res = await axios.get("https://pennywise-backend-81abbbcf7b6a.herokuapp.com/home", {
                 params: {
                     username: gemail,
                     startDate: formattedStartDate, 

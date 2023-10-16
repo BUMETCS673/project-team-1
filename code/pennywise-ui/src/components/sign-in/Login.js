@@ -6,7 +6,7 @@ import GoogleSignIn from './OauthRedirect';
 import { postToken } from './postToken';
 import axios from 'axios';
 import GoogleIcon from '@mui/icons-material/Google';
-import googleLogo from '../img/google.png'; 
+// import googleLogo from '../img/google.png'; 
 
 
 export default function LoginWithGoogle() {
@@ -45,7 +45,7 @@ export default function LoginWithGoogle() {
         <Box sx={{ mt: 2 }}>
           {/* <GoogleSignIn onGoogleSignIn={onGoogleSignIn} text="Sign in with Google"/> */} 
           
-          <Link href="http://localhost:8081">
+          <Link href=" https://pennywise-oauth-aaa79e984b4d.herokuapp.com/">
           <Button
             style={{
               zIndex: 2,

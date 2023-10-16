@@ -37,7 +37,7 @@ export default function AddIncome( {gemail }) {
         const currentDate = new Date();
 
         try {
-            const response = await axios.post("http://localhost:8080/addIncome", {
+            const response = await axios.post("https://pennywise-backend-81abbbcf7b6a.herokuapp.com/addIncome", {
                 username: gemail,
                 name: selectedName,
                 amount: formattedAmount,
