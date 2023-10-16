@@ -61,11 +61,12 @@ export default function LoginWithGoogle() {
               ml: 3,
             }}
           >
-            <img
+            Google Sign in
+            {/* <img
               src={googleLogo}
               alt="Google Logo"
               style={{ width: '20px', height: '20px', marginRight: '8px' }}
-            />
+            /> */}
             Log in with Google
           </Button>
         </Link>
