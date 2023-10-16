@@ -122,7 +122,7 @@ const NavBar = () => {
     return(
         <>
             <ThemeProvider theme={theme}>
-      <Box sx={{ display: 'flex', width:"50px"}}>
+        <Box sx={{ display: 'flex', width:"50px"}}>
         <CssBaseline />
         <AppBar position="absolute" open={open} sx={{ pb: "15px", pt: "15px", display: "flex", justifyContent: "center", alignItems: "space-between"}}>
           <Toolbar   sx={{
@@ -159,10 +159,10 @@ const NavBar = () => {
                 display: "flex",
                 justifyContent: "center",
                 px: 6,
-                backgroundColor: "#646464", 
-                color: "#fff",
+                backgroundColor: "#fff", 
+                color: "#646464",
                 fontWeight: "bold", 
-                border: 1,
+                border: 2,
                 borderRadius: 1 
                 }} component={Link} to="/">
                   <LogoutIcon />
@@ -216,51 +216,6 @@ const NavBar = () => {
                 </StyledListItemButton>
               </ListItem>
 
-              {/* <ListItem  disablePadding sx={{ display: 'block' }} component={Link} to="/addIncome">
-                <StyledListItemButton
-                  sx={{
-                    minHeight: 60,
-                    justifyContent: open ? 'initial' : 'center',
-                    px: 2.5,
-                    color: "#3F4141", 
-                  }}
-                >
-                  <ListItemIcon
-                    sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : 'auto',
-                      justifyContent: 'center',
-                    }}
-                  >
-                  <AttachMoneyIcon /> 
-                  </ListItemIcon>
-                  <ListItemText primary="Add Income" sx={{ opacity: open ? 1 : 0 }} />
-                </StyledListItemButton>
-              </ListItem> */}
-{/* 
-              <ListItem  disablePadding sx={{ display: 'block' }} component={Link} to="/addExpense">
-                <StyledListItemButton
-                  sx={{
-                    minHeight: 60,
-                    justifyContent: open ? 'initial' : 'center',
-                    px: 2.5,
-                    color: "#646464", 
-                    backgrounfColor: "#F2F2F2"
-                  }}
-                >
-                  <ListItemIcon
-                    sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : 'auto',
-                      justifyContent: 'center',
-                    }}
-                  >
-                  <PaymentIcon /> 
-                  </ListItemIcon>
-                  <ListItemText primary="Add Expense" sx={{ opacity: open ? 1 : 0 }} />
-                </StyledListItemButton>
-              </ListItem> */}
-       
           </List>
           <Divider />
           <List>
@@ -291,74 +246,6 @@ const NavBar = () => {
                 </StyledListItemButton>
               </ListItem>
 
-              <ListItem  disablePadding sx={{ display: 'block' }} component={Link} to="/home">
-                <StyledListItemButton
-                  sx={{
-                    minHeight: 60,
-                    justifyContent: open ? 'initial' : 'center',
-                    px: 2.5,
-                    color: "#3F4141", 
-                  }}
-                >
-                  <ListItemIcon
-                    sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : 'auto',
-                      justifyContent: 'center',
-                    }}
-                  >
-                  <HomeIcon /> 
-                  </ListItemIcon>
-                  <ListItemText primary="Home" sx={{ opacity: open ? 1 : 0 }} />
-                </StyledListItemButton>
-              </ListItem>
-
-              <ListItem  disablePadding sx={{ display: 'block' }} component={Link} to="/setUp">
-                <StyledListItemButton
-                  sx={{
-                    minHeight: 60,
-                    justifyContent: open ? 'initial' : 'center',
-                    px: 2.5,
-                    color: "#646464", 
-                    backgrounfColor: "#F2F2F2"
-                  }}
-                >
-                  <ListItemIcon
-                    sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : 'auto',
-                      justifyContent: 'center',
-                    }}
-                  >
-                  <ChecklistIcon/> 
-                  </ListItemIcon>
-                  <ListItemText primary="Setup" sx={{ opacity: open ? 1 : 0 }} />
-                </StyledListItemButton>
-              </ListItem>
-
-                    
-             <ListItem  disablePadding sx={{ display: 'block' }} component={Link} to="/signup">
-                <StyledListItemButton
-                  sx={{
-                    minHeight: 60,
-                    justifyContent: open ? 'initial' : 'center',
-                    px: 2.5,
-                    color: "#646464", 
-                    backgrounfColor: "#F2F2F2"
-                  }}
-                >
-                  <ListItemIcon
-                    sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : 'auto',
-                      justifyContent: 'center',
-                    }}
-                  >
-                  <LockResetIcon/> 
-                  </ListItemIcon>
-                  <ListItemText primary="Sign up" sx={{ opacity: open ? 1 : 0 }} />
-                </StyledListItemButton>
-              </ListItem>
           </List>
 
         </Drawer>
