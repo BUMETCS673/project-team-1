@@ -1,6 +1,4 @@
 package googleAuth.googleAuth;
-import main.Expense;
-import main.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
