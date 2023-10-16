@@ -164,13 +164,9 @@ const NavBar = () => {
                 fontWeight: "bold", 
                 border: 1,
                 borderRadius: 1 
-                }}>
-
-                  
-
+                }} component={Link} to="/">
                   <LogoutIcon />
             </IconButton>
-
             
           </Toolbar>
         </AppBar>
