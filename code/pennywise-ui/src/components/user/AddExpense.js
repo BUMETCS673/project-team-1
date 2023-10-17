@@ -99,11 +99,11 @@ export default function AddNewExpense( {gemail}) {
         console.log('Data saved successfully');
         const responseData = await response.data;
         if (responseData.isOverBudget === true) {
-            setOverBudgetMessage("you went over budget!!")
+            setOverBudgetMessage("you went over budget!!!")
             console.log(overBudgetMessage)
-            console.log(responseData.isOverBudget)
+            console.log("res", responseData.isOverBudget)
         }        
-        setOverBudgetMessage("nice! you're within budget")  
+        // setOverBudgetMessage("nice! you're within budget")  
         console.log(overBudgetMessage)
         console.log('Response data:', responseData);
         setSnackbarSeverity('success');
