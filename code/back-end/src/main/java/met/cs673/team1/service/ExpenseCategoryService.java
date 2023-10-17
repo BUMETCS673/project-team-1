@@ -53,4 +53,8 @@ public class ExpenseCategoryService {
             return repository.save(category);
         }).toList();
     }
+
+    public List<ExpenseCategory> getCategories() {
+        return repository.findAll();
+    }
 }
