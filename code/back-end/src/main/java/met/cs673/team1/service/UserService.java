@@ -79,10 +79,11 @@ public class UserService {
         }
         return optUser.get();
     }
+
+    public UserGetDto updateBudget(String username, Double amount) {
+        User user = findUserEntityByUsername(username);
+        user.setBudget(amount);
+        User saved = userRepository.save(user);
+        return userMapper.userToUserGetDto(saved);
+    }
 }
-
-// if email not exists
-// else
-// create user
-
-
