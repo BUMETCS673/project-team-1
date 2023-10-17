@@ -3,7 +3,7 @@ import {Avatar, Button, CssBaseline, TextField, FormControlLabel, Link, Grid, Ty
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useNavigate } from 'react-router-dom';
 import GoogleSignIn from './OauthRedirect';
-import { postToken } from './postToken';
+import { postToken } from './PostToken';
 import axios from 'axios';
 import GoogleIcon from '@mui/icons-material/Google';
 import googleLogo from '../img/google.png'; 
