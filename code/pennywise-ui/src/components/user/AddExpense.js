@@ -257,9 +257,9 @@ export default function AddNewExpense( {gemail}) {
           >
           Submit
         </Button>
-        <Box sx={{p:3, border:1}}>
+        // <Box sx={{p:3, border:1}}>
             
-        </Box>
+        // </Box>
 {/* 
         <Button
             onClick={handleOpen}
