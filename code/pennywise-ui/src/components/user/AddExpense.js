@@ -136,7 +136,6 @@ export default function AddNewExpense( {gemail}) {
 
   const handleDialogSubmit = async (eventTwo) => {
     eventTwo.preventDefault();
-    const URL = process.env.REACT_APP_API_BASE_URL;
 
     try {
       const response = await axios.post("https://pennywise-backend-81abbbcf7b6a.herokuapp.com/addCategories", {
