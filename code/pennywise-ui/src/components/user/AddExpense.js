@@ -44,7 +44,7 @@ export default function AddNewExpense( {gemail}) {
   const [newCategory, setCategoryList] = useState([]);
   const [expenseCategories, setExpenseCategories] = useState([])
 
-  const [overBudgetMessage, setOverBudgetMessage] = useState(null)
+  const [overBudgetMessage, setOverBudgetMessage] = useState("")
   
   const formattedDate = selectedDate ? format(selectedDate, 'yyyy-MM-dd') : null;
 
@@ -101,6 +101,7 @@ export default function AddNewExpense( {gemail}) {
         if (responseData.isOverBudget === true) {
             setOverBudgetMessage("you went over budget!!")
             console.log(overBudgetMessage)
+            console.log(responseData.isOverBudget)
         }        
         setOverBudgetMessage("nice! you're within budget")  
         console.log(overBudgetMessage)
@@ -257,9 +258,13 @@ export default function AddNewExpense( {gemail}) {
           >
           Submit
         </Button>
-        // <Box sx={{p:3, border:1}}>
+        <Box sx={{p:3, border:1, pl:6, pr:6,}}>
+
+        { overBudgetMessage && (
+                <Typography sx={{color:"black", fontSize:16}}>{overBudgetMessage}</Typography>
+              )}
             
-        // </Box>
+        </Box>
 {/* 
         <Button
             onClick={handleOpen}
@@ -309,4 +314,6 @@ export default function AddNewExpense( {gemail}) {
   );
 
 }
+
+
 
