@@ -39,6 +39,5 @@ public class UserPostDto {
     private List<String> roles;
 
     @JsonProperty
-    @NotEmpty
     private Double budget;
 }
