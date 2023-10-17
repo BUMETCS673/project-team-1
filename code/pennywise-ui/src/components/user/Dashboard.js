@@ -83,7 +83,7 @@ const Dashboard = () => {
   useEffect(() => {
     const checkUserExistence = async () => {
       try {
-        const response = await axios.get("https://pennywise-backend-81abbbcf7b6a.herokuapp.com", {
+        const response = await axios.get("https://pennywise-backend-81abbbcf7b6a.herokuapp.com/user", {
           params: {
             username: gemail,
           }
@@ -116,7 +116,7 @@ const Dashboard = () => {
 
   const getUserData = async () => {
     try {
-        const res = await axios.get("https://pennywise-backend-81abbbcf7b6a.herokuapp.com", {
+        const res = await axios.get("https://pennywise-backend-81abbbcf7b6a.herokuapp.com/home", {
             params: {
                 username: gemail,
             }
