@@ -269,9 +269,9 @@ const Dashboard = () => {
 
               </Box>
 
-              { errorMessage && (
+              {/* { errorMessage && (
                 <Typography sx={{color:"red", fontSize:16}}>{errorMessage}</Typography>
-              )}
+              )} */}
               <Box sx={{ display: "flex", justifyContent: "space-around",
                height: "60vh", alignItems:"center", width:"80%", mt:"10px", p:4,}} >
                 <Typography sx={{fontSize:24, fontWeight:"bold", color:"#646464"}}>Expenses By Date</Typography>

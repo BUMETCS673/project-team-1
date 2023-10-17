@@ -258,7 +258,7 @@ export default function AddNewExpense( {gemail}) {
           >
           Submit
         </Button>
-        <Box sx={{p:3, border:1, pl:6, pr:6,}}>
+        <Box sx={{p:3, pl:6, pr:6,}}>
 
         { overBudgetMessage && (
                 <Typography sx={{color:"black", fontSize:16}}>{overBudgetMessage}</Typography>
