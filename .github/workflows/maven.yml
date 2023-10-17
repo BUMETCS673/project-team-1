@@ -113,15 +113,15 @@ jobs:
           dockerfile_name: Dockerfile
           process_type: web
 
-      - name: Build, Push and Release a Docker Back End container to Heroku.
-        uses: gonuit/heroku-docker-deploy@v1.3.3 
-        with:
-          email: ${{ secrets.HEROKU_EMAIL }}
-          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          heroku_app_name: ${{ secrets.HEROKU_APP_NAME_BACKEND }}
-          dockerfile_directory: ./code/container
-          dockerfile_name: Dockerfile
-          process_type: web
+      #- name: Build, Push and Release a Docker Back End container to Heroku.
+      #  uses: gonuit/heroku-docker-deploy@v1.3.3 
+      #  with:
+      #    email: ${{ secrets.HEROKU_EMAIL }}
+      #    heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+      #    heroku_app_name: ${{ secrets.HEROKU_APP_NAME_BACKEND }}
+      #    dockerfile_directory: ./code/container
+      #    dockerfile_name: Dockerfile
+      #   process_type: web
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
    # - name: Update dependency graph
