@@ -28,7 +28,7 @@ export default function SetBudget({ gemail }) {
         try {
             const response = await axios.post("https://pennywise-backend-81abbbcf7b6a.herokuapp.com/setUserBudget", {
                 username: gemail,
-                amount: formattedBudgetAmount,
+                amount: parseFloat(budgetAmount),
             });
 
             if (response.status === 201) {
