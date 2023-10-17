@@ -41,7 +41,7 @@ export default function AddNewExpense( {gemail}) {
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [open, setOpen] = useState(false);
-  const [newCategory, setNewCategoryName] = useState('');
+  const [newCategory, setCategoryList] = useState([]);
   const [expenseCategories, setExpenseCategories] = useState([])
   
   const formattedDate = selectedDate ? format(selectedDate, 'yyyy-MM-dd') : null;
@@ -86,7 +86,7 @@ export default function AddNewExpense( {gemail}) {
     const URL = process.env.REACT_APP_API_BASE_URL;
 
     try {
-      const response = await axios.post("http://localhost:8080/addExpense", {
+      const response = await axios.post("https://pennywise-backend-81abbbcf7b6a.herokuapp.com/addExpense", {
         username: gemail,
         name: selectedName,
         category: selectedCategory,
@@ -132,7 +132,7 @@ export default function AddNewExpense( {gemail}) {
   };
 
   const handleNewCategory = (event) => {
-    setNewCategoryName(event.target.value);
+    setCategoryList(event.target.value);
   }
 
   const handleDialogSubmit = async (eventTwo) => {
@@ -140,8 +140,8 @@ export default function AddNewExpense( {gemail}) {
     const URL = process.env.REACT_APP_API_BASE_URL;
 
     try {
-      const response = await axios.post(`${URL}/addExpense`, {
-        name: setNewCategory(newCategory),
+      const response = await axios.post("https://pennywise-backend-81abbbcf7b6a.herokuapp.com/addCategories", {
+        categories: newCategory,
       });
 
       if (response.status === 201) {
@@ -152,7 +152,7 @@ export default function AddNewExpense( {gemail}) {
         console.error('Failed to save data');
       }
     } catch (error) {
-      console.error('Error creating expense:', error);
+      console.error('Error creating category:', error);
     }
 
   };
