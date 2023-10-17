@@ -91,15 +91,19 @@ const Dashboard = () => {
 
         const userExists = response.data;
 
-        if (userExists) {
-          console.log("User exists.");
-          setUserExists(true);
-        } else {
-          console.log("User doesn't exist. Proceeding to create the user.");
-          createUser(); //create user in db
-        }
+        // if (userExists) {
+        //   console.log("User exists.");
+        //   setUserExists(true);
+        // } else {
+        //   console.log("User doesn't exist. Proceeding to create the user.");
+        //   createUser(); //create user in db
+        // }
       } catch (error) {
-        console.error(error);
+       if (response.status == "404") {
+          createUser();
+        } else {
+          console.error("catch error: ", error);
+        }
       }
     };
 
