@@ -47,7 +47,7 @@ const Dashboard = () => {
         lastName: glastName,
         email: gemail,
         username: gemail,
-        password: 'password',
+        // password: 'password',
         roles: ['USER'],
       };
 
