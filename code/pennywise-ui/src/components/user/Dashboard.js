@@ -203,6 +203,8 @@ const Dashboard = () => {
                             width:"100%", alignItems:"flex-start", mt:5}}>
                      <AddIncome gemail={gemail}/>
                      <AddNewExpense gemail={gemail}/>
+                      <SetBudget gemail={gemail} />
+
                 </Box>
 
             </Box>
