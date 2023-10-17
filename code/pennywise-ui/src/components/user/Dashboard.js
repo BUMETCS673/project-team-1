@@ -13,6 +13,7 @@ import { format } from 'date-fns';
 import NavBar from "./Navbar";
 import AddIncome from "./AddIncome";
 import AddNewExpense from "./AddExpense"
+import SetBudget from "./SetBudget";
 import Header from "./Header"
 
 import { Link } from "react-router-dom";
