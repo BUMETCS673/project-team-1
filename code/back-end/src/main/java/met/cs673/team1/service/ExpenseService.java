@@ -48,6 +48,11 @@ public class ExpenseService {
         return expenses.stream().map(expenseMapper::expenseToExpenseDto).collect(Collectors.toList());
     }
 
+    /**
+     * Find all expenses by username
+     * @param username username for search
+     * @return List of expenses
+     */
     public List<ExpenseDto> findAllExpensesByUsername(String username) {
         Optional<User> optUser = userRepository.findByUsername(username);
         if (optUser.isEmpty()) {

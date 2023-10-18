@@ -65,6 +65,12 @@ public class IncomeController {
         return new ResponseEntity<>(results, HttpStatus.OK);
     }
 
+    /**
+     * Get incomes by username and month/year
+     * @param username username for income search
+     * @param monthYear string representing a month abbreviation and a year (e.g. may2023)
+     * @return List of incomes
+     */
     @GetMapping(value = "/income", params = {"username", "month"}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<IncomeDto>> findIncomesByUsernameAndMonth(
             @RequestParam String username, @ValidMonthYear @RequestParam(name = "month") String monthYear) {

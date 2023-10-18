@@ -19,6 +19,12 @@ public class BudgetController {
         this.userService = userService;
     }
 
+    /**
+     * This method will set a user's budget in the system
+     * @param username username of the user in question
+     * @param amount double representing their total budget
+     * @return UserGetDto representing the user, with the budget field populated
+     */
     @GetMapping(value = "/setUserBudget", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserGetDto> setUserBudget(@RequestParam String username, @RequestParam Double amount) {
         return ResponseEntity.ok(userService.updateBudget(username, amount));
