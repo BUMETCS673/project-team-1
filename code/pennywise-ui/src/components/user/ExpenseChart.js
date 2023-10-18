@@ -1,6 +1,6 @@
 import 'chart.js/auto';
 import { Pie } from "react-chartjs-2" 
-import { Box } from "@mui/material"
+import { Box, Typography } from "@mui/material"
 import ExpenseTable from './ExpenseTable';
 import { useState } from "react"
 import axios from "axios"
@@ -85,7 +85,11 @@ const ExpenseChart = ( {expenses} ) => {
 
         <>
 
-        <Box sx={{height: 400, width: "100%", display: "flex", justifyContent:"center"}}>
+        <Box sx={{height: 400, width: "100%", display:"flex", flexDirection:"column", 
+        justifyContent:"center", alignItems:"center"}}>
+          <Typography sx={{fontSize:18, mb:1}}>
+            Expenses by Category
+          </Typography>
 
         <Pie data={data}/>
         </Box>

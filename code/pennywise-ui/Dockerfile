@@ -31,4 +31,5 @@ RUN npm install -g serve
 EXPOSE 3000
 
 #ENTRYPOINT ["./start_service.sh"]
-ENTRYPOINT ["serve", "-s", "build"]
+#ENTRYPOINT ["serve", "-s", "build"] 
+CMD serve -s build -l $PORT

@@ -7,10 +7,11 @@ CREATE TABLE User (
     username VARCHAR(255) NOT NULL UNIQUE,
     email VARCHAR(255) NOT NULL,
     first_name VARCHAR(255),
-    last_name VARCHAR(255));
+    last_name VARCHAR(255),
+    budget DECIMAL(10, 2));
 CREATE TABLE ExpenseCategory (
     category_id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL
+    name VARCHAR(255) NOT NULL UNIQUE
 );
 CREATE TABLE Expense (
     expense_id INT AUTO_INCREMENT PRIMARY KEY,

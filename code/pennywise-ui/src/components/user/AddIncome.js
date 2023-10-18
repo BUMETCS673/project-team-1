@@ -15,28 +15,33 @@ import {
 import axios from 'axios';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { format } from 'date-fns';
 
 const nameOptions = ['Income', 'Check', 'Salary', 'Job', 'Extra'];
 
-export default function AddIncome() {
-    const [amount, setAmount] = useState('');
+export default function AddIncome( {gemail }) {
+    const [amount, setAmount] = useState(null);
     const [selectedName, setSelectedName] = useState('');
     const [selectedDate, setSelectedDate] = useState(null);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
     const [snackbarMessage, setSnackbarMessage] = useState('');
+
+    const formattedDate = selectedDate ? format(selectedDate, 'yyyy-MM-dd') : null;
+    const formattedAmount = amount ? parseFloat(amount) : null;
+
+    const URL = process.env.REACT_APP_API_BASE_URL;
     
     const handleSubmit = async (event) => {
         event.preventDefault();
         const currentDate = new Date();
-        const URL = process.env.REACT_APP_API_BASE_URL;
 
         try {
-            const response = await axios.post(`${URL}/addIncome`, {
-                username,
+            const response = await axios.post("https://pennywise-backend-81abbbcf7b6a.herokuapp.com/addIncome", {
+                username: gemail,
                 name: selectedName,
-                amount: parseFloat(amount),
-                date: selectedDate,
+                amount: formattedAmount,
+                date: formattedDate,
             });
 
             if (response.status === 201) {
@@ -57,6 +62,9 @@ export default function AddIncome() {
             setSnackbarSeverity('error');
             setSnackbarMessage('An error occured. Please check again.');
             setSnackbarOpen(true);
+            console.log({
+                username, selectedName, amount, selectedDate
+            })
         }
     };
 
@@ -74,9 +82,9 @@ export default function AddIncome() {
 
     return (
         <>
-            <Container component="main" maxWidth="xs">
                 <CssBaseline />
-                <Box sx={{ marginTop: 15, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <Box  sx={{ display: 'flex', flexDirection: 'column', alignItems: "center",
+                     width:"35%", background:"#fff", p:5, boxShadow:1}}>
                     <Typography variant="h6" gutterBottom>
                         Add Income
                     </Typography>
@@ -161,8 +169,7 @@ export default function AddIncome() {
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                 >
                     <Alert severity={snackbarSeverity}>{snackbarMessage}</Alert>
-                </Snackbar>
-            </Container>
+                </Snackbar> 
         </>
     );
 }
