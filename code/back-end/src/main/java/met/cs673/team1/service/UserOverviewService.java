@@ -32,6 +32,16 @@ public class UserOverviewService {
         this.expenseService = expenseService;
     }
 
+    /**
+     * Get all user data for the user overview. This method is retryable, and will be retried twice
+     * more if there are any exceptions while it is running.
+     * @param id user id for search
+     * @param start start of date range
+     * @param end end of date range
+     * @return UserOverviewDto
+     * @throws InterruptedException
+     * @throws ExecutionException
+     */
     @Retryable(retryFor = {InterruptedException.class, ExecutionException.class})
     public UserOverviewDto getUserOverview(Integer id, LocalDate start, LocalDate end) throws InterruptedException, ExecutionException {
         User user = userService.findUserEntityById(id);
@@ -74,9 +84,8 @@ public class UserOverviewService {
     /**
      * If no financial data is available for this user, return a DTO that only contains
      * their name/email.
-     *
-     * @param id
-     * @return
+     * @param id user id for search
+     * @return UserOverviewDto
      */
     public UserOverviewDto getDtoWithoutFinancialsByUserId(Integer id) {
         UserGetDto dto = userService.findById(id);
@@ -120,6 +129,12 @@ public class UserOverviewService {
                 .build();
     }
 
+    /**
+     * Calculate a user's balance based on their incomes and expenses
+     * @param incomes list of incomes
+     * @param expenses list of expenses
+     * @return Double representing total balance
+     */
     public Double calculateBalance(List<IncomeDto> incomes, List<ExpenseDto> expenses) {
         Double totalIncome = incomes.stream().map(IncomeDto::getAmount).reduce(0.0, (total, amt) -> total + amt);
         Double totalExpenses = expenses.stream().map(ExpenseDto::getAmount).reduce(0.0, (total, amt) -> total + amt);

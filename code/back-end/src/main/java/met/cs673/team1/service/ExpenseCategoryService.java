@@ -57,5 +57,8 @@ public class ExpenseCategoryService {
     public List<ExpenseCategory> getCategories() {
         return repository.findAll();
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> dev
 }

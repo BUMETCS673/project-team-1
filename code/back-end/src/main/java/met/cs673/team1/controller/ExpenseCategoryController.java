@@ -26,10 +26,26 @@ public class ExpenseCategoryController {
         this.categoryService = categoryService;
     }
 
+    /**
+     * Add an expense category to the system
+     * @param categories List of categories to add
+     * @return The created list of categories, with their associated IDs in the database
+     */
     @PostMapping(value = "/addCategories", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ExpenseCategory>> addCategories(@NotEmpty @RequestBody List<String> categories) {
         List<ExpenseCategory> categoriesWithIds = categoryService.saveAll(categories);
         return new ResponseEntity<>(categoriesWithIds, HttpStatus.CREATED);
+
+    }
+
+    /**
+     * Get expenseCategories by username
+     * @return Response entity containing a list of expenseCategory objects
+     */
+    @GetMapping(value = "/categories", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<ExpenseCategory>> findExpenseCategories()  {
+        List<ExpenseCategory> categories = categoryService.getCategories();
+        return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
 

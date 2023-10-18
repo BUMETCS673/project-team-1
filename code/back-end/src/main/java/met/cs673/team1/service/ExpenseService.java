@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import met.cs673.team1.domain.dto.ExpenseDto;
 import met.cs673.team1.domain.entity.Expense;
+import met.cs673.team1.domain.entity.ExpenseCategory;
 import met.cs673.team1.domain.entity.User;
 import met.cs673.team1.exception.UserNotFoundException;
 import met.cs673.team1.mapper.ExpenseMapper;
@@ -48,6 +49,11 @@ public class ExpenseService {
         return expenses.stream().map(expenseMapper::expenseToExpenseDto).collect(Collectors.toList());
     }
 
+    /**
+     * Find all expenses by username
+     * @param username username for search
+     * @return List of expenses
+     */
     public List<ExpenseDto> findAllExpensesByUsername(String username) {
         Optional<User> optUser = userRepository.findByUsername(username);
         if (optUser.isEmpty()) {
@@ -85,4 +91,5 @@ public class ExpenseService {
         Expense savedExpense = expenseRepository.save(exp);
         return expenseMapper.expenseToExpenseDto(savedExpense);
     }
+
 }

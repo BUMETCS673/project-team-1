@@ -87,6 +87,10 @@
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 			<version>${springdoc.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-observation</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -169,7 +173,6 @@
 					<!-- define a language-specific format -->
 					<java>
 						<!-- no need to specify files, inferred automatically, but you can if you want -->
-						<importOrder />
 						<removeUnusedImports />
 					</java>
 				</configuration>
