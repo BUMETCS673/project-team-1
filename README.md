@@ -42,7 +42,7 @@ In order to run the code, the developer will need to open the repository in Visu
 # Frontend
 The application is built in the frontend utilizing ReactJS and MUI framework. On load, the user will open the 'Sign In' page where they are prompted to sign in via google. If this is the first sign in for a user, they will then be prompted to set up their profile. Once the profile is set, the user will be brought to the dashboard page where they can view all of their existing expenses, see how they compare to their income, and view a chart that displays how much of their total income is going to each of those expenses. The navigation allows users to add expenses, add income, and edit their profile. At any point, the user is able to log out of the application.
 
-With using React and JSX, we are able to utilize the following HTML template in order to build out our components:
+With using React and MUI, we are able to utilize the following template in order to build out our components:
 ````html
 <div className="app">
 
