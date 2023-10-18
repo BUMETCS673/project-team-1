@@ -36,7 +36,7 @@ jobs:
       - name: Build PennyWise OAuth with Maven
         #with:
         run: |
-          mvn -B package -e -X --file ./code/GoAuth/googleAuth/pom.xml -Dmaven.war.outputDirectory=./code/container/pennywise-oauth
+          mvn -B package -e -X --file ./code/goauth/googleauth/pom.xml -Dmaven.war.outputDirectory=./code/container/pennywise-oauth
       - name: Prep for building container
         run: |
           ls -la ./code/container 
