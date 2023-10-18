@@ -1,16 +1,9 @@
 package met.cs673.team1.controller;
 
 import jakarta.validation.constraints.NotEmpty;
-
-import java.time.LocalDate;
 import java.util.List;
-
-import met.cs673.team1.domain.dto.IncomeDto;
-import met.cs673.team1.domain.dto.UserGetDto;
 import met.cs673.team1.domain.entity.ExpenseCategory;
 import met.cs673.team1.service.ExpenseCategoryService;
-import met.cs673.team1.validation.ValidateDateRange;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -47,17 +40,4 @@ public class ExpenseCategoryController {
         List<ExpenseCategory> categories = categoryService.getCategories();
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
-
-
-    /**
-     * Get expenseCategories by username
-     * @return Response entity containing a list of expenseCategory objects
-     */
-
-    @GetMapping(value = "/categories", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<ExpenseCategory>> findExpenseCategories()  {
-        List<ExpenseCategory> categories = categoryService.getCategories();
-        return new ResponseEntity<>(categories, HttpStatus.OK);
-    }
-
 }
