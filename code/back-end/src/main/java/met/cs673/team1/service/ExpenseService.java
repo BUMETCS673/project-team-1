@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import met.cs673.team1.domain.dto.ExpenseDto;
 import met.cs673.team1.domain.entity.Expense;
+import met.cs673.team1.domain.entity.ExpenseCategory;
 import met.cs673.team1.domain.entity.User;
 import met.cs673.team1.exception.UserNotFoundException;
 import met.cs673.team1.mapper.ExpenseMapper;
@@ -90,4 +91,5 @@ public class ExpenseService {
         Expense savedExpense = expenseRepository.save(exp);
         return expenseMapper.expenseToExpenseDto(savedExpense);
     }
+
 }
