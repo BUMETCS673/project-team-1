@@ -13,4 +13,3 @@ public class GoogleAuthApplication {
 		SpringApplication.run(GoogleAuthApplication.class, args);
 	}
 }
-
