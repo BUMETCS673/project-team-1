@@ -19,18 +19,17 @@ export default function SetBudget({ gemail }) {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
     const [snackbarMessage, setSnackbarMessage] = useState('');
-
-
-
+  
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         try {
+          //post budget by using /setUserBudget endpoint
             const response = await axios.post("https://pennywise-backend-81abbbcf7b6a.herokuapp.com/setUserBudget", {
                 username: gemail,
                 amount: parseFloat(budgetAmount),
             });
-
+            //show snackbar if success or failed
             if (response.status === 201) {
                 console.log('Budget set successfully');
                 const responseData = await response.data;
@@ -39,6 +38,7 @@ export default function SetBudget({ gemail }) {
                 setSnackbarMessage('Budget set successfully');
                 setSnackbarOpen(true);
             } else {
+              //if failed
                 console.error('Failed to set budget');
                 setSnackbarSeverity('error');
                 setSnackbarMessage('Failed to set budget');
@@ -47,10 +47,10 @@ export default function SetBudget({ gemail }) {
         } catch (error) {
             console.error('An error occurred:', error);
             setSnackbarSeverity('error');
-            setSnackbarMessage('An error occurred. Please check again.');
+            setSnackbarMessage('Error occurred. Please check again.');
         }
     };
-
+    //event handler for budget from the user
     const handleBudgetAmountChange = (event) => {
         setBudgetAmount(event.target.value);
     };
