@@ -77,11 +77,39 @@ To set up the backend, open the project files in IntelliJ and navigate to the po
 - Automated Build will be launched after tested and merged to master branch
 - Maven will be used to handle the build process
 
-# Docker
-Container Name: pennywise_container
-• The pennywise_container in Docker is meant to be used to run both the database and backend code for local testing purposes
+## Deployment
 
-### Install and Setup
-• Install Docker on your machine
-• Run the pre-built image provided on Docker Hub, or, build the image yourself from the source code
+The application is deployed on Heroku Cloud Platform which is very simple to use. Although it is no longer free. After evaluation between Render and Heroku, we chose Heroku as it is a better fit for deployment since it provides better support of the components we need for our application.
 
+## Heroku Dyno
+
+Dyno is the Heroku term of container. We are building out 4 dynos for our project.
+- Front End (UI)
+- OAuth
+- Back End (REST API)
+- Database
+  The Database Dyno contains the mariaDB which is running as a separate instance on its own. We configure it with running the sqlscript   to build the database. The connection string, username, password are all stored in Github actions secret for subsequent deployment.     Secrets are not exposed.
+
+## Docker Container
+Docker container is used as our deployment vechicle. The following shows the Dockerfile for our Front End which is Nodejs/React app.
+<img width="618" alt="image" src="https://github.com/BUMETCS673/project-team-1/assets/33763916/9c5da594-58d1-486c-b82d-d9cdbd977bc4">
+
+
+## Configure Deployment with Git
+We use Github action to  orchestrate the build and deployment process. Besides the database, each components has its own Dockerfile. We will build the Dockerfile to make sure there are no issue
+<img width="720" alt="image" src="https://github.com/BUMETCS673/project-team-1/assets/33763916/33222489-a538-43ef-8cf3-a9e9432360f4">
+The Github Actions are automatically triggered when there is a push on the feture branches or a Pull Request on our dev/main branches. Making sure the latest code is deployed in our Heroku environment.
+
+
+## Pennywise UI on Heroku
+Upon successful deployment, we are able to access our application through the provided url.
+<img width="773" alt="image" src="https://github.com/BUMETCS673/project-team-1/assets/33763916/5cc732b1-c1db-4a81-a47f-783912f63194">
+
+## Secret Handling
+Sensitive information are all being store in secrets. Not exposed to anyone during build or deployment.
+
+## Tools to test Deployment
+- Insomnia
+  Used for manual test REST API
+- MySQL workbench
+  Used for manual testing Database to check if data is being saved properly
