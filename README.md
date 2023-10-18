@@ -44,20 +44,20 @@ The application is built in the frontend utilizing ReactJS and MUI framework. On
 
 With using React and JSX, we are able to utilize the following HTML template in order to build out our components:
 ````html
-<!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org">
-<head lang="en">
-    <meta charset="UTF-8"/>
-    <title>Trackr</title>
-</head>
-<body>
+<div className="app">
 
-<div id="react"></div>
+   <NavBar/>
+   
+    <Routes>
+      
+      <Route path="/" element={<Login/>}></Route>
+      <Route path="/dashboard" element={<Dashboard/>}></Route>
+  
 
-<script src="built/bundle.js"></script> // Load JS for the app
+    </Routes>
+    
 
-</body>
-</html>
+   </div>
 ````
 
 ## NPM
