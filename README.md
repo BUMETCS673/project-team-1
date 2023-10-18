@@ -90,6 +90,9 @@ Dyno is the Heroku term of container. We are building out 4 dynos for our projec
 - Database
   The Database Dyno contains the mariaDB which is running as a separate instance on its own. We configure it with running the sqlscript   to build the database. The connection string, username, password are all stored in Github actions secret for subsequent deployment.     Secrets are not exposed.
 
+<img width="528" alt="image" src="https://github.com/BUMETCS673/project-team-1/assets/33763916/eef0404f-d3ac-4c93-a2a2-fe21ed0b6a3c">
+
+
 ## Docker Container
 Docker container is used as our deployment vechicle. The following shows the Dockerfile for our Front End which is Nodejs/React app.
 <img width="618" alt="image" src="https://github.com/BUMETCS673/project-team-1/assets/33763916/9c5da594-58d1-486c-b82d-d9cdbd977bc4">
