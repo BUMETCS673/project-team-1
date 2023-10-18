@@ -10,26 +10,133 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ "KAN-13", "back-end", "back-end-1" ]
+    branches: [ "front-end", "back-end", "back-end-oauth" ]
   pull_request:
     branches: [ "dev", "main" ]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up JDK 17
-      uses: actions/setup-java@v3
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        cache: maven
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      - name: Build PennyWise Back End with Maven
+        #with:
+        run: |
+          sed -i'' -e 's@localhost:3306/pennywise_db@${{ secrets.HEROKU_CONNECTION_STRING }}:3306/${{ secrets.HEROKU_DB }}@g' ./code/back-end/src/main/resources/application.yml
+          sed -i'' -e 's/root/${{ secrets.HEROKU_DB_USER }}/g' ./code/back-end/src/main/resources/application.yml
+          sed -i'' -e 's/Password123!/${{ secrets.HEROKU_DB_PWD }}/g' ./code/back-end/src/main/resources/application.yml
+          mvn -B package -e -X --file ./code/back-end/pom.xml -Dmaven.war.outputDirectory=./code/container/pennywise
+          cat ./code/back-end/src/main/resources/application.yml
+      - name: Build PennyWise OAuth with Maven
+        #with:
+        run: |
+          mvn -B package -e -X --file ./code/goauth/googleauth/pom.xml -Dmaven.war.outputDirectory=./code/container/pennywise-oauth
+      - name: Prep for building container
+        run: |
+          ls -la ./code/container 
+          cp ./code/container/pennywise/*.jar ./code/container/pennywise.jar
+          cp ./code/container/pennywise-oauth/*.jar ./code/container/pennywise-oauth/pennywise-oauth.jar 
+          cp -r ./code/pennywise-ui ./code/container/pennywise-ui
+          ls -la ./code/container
+
+      - name: Build pennywise backend container
+        working-directory: ./code/container
+        run: docker build . -t registry.heroku.com/pennywise/web
+
+      - name: Build pennywise oauth container
+        working-directory: ./code/container
+        run: docker build -f Dockerfile-oauth . -t registry.heroku.com/pennywise-oauth/web  
+      
+      - name: Build pennywise frontend container
+        #working-directory: ./code/container
+        working-directory: ./code/pennywise-ui
+        run: |
+          docker build . -t registry.heroku.com/pennywise-ui/web
+      
+      #- name: Start containers
+      #  uses: isbang/compose-action@v1.5.1
+      #  with:
+      #    compose-file: "./code/container/docker-compose.yml"
+      #    up-flags: "-d"
+      
+      #- name: Save docker container to local image file
+      #  working-directory: ./code/container
+      #  run: |
+          #mkdir ./pennywise_container
+          #docker save -o ./pennywise_container/pennywise.tar pennywise:latest
+          #docker save -o ./pennywise_container/mariadb.tar mariadb:latest
+          #docker save -o ./pennywise_container/pennywise-ui.tar pennywise-ui:latest
+          #cp docker-compose.yml ./pennywise_container/docker-compse.yml
+          #cp Create_DB.sql ./pennywise_container/Create_DB.sql
+          #cp *.sh ./pennywise_container/
+          #tar -czvf  pennywise.tar.gz ./pennywise_container
+          #ls -la
+
+      #- name: Build, Push and Release a Docker container to Heroku. # Your custom step name
+      #  #uses: gonuit/heroku-docker-deploy@v1.3.3 # GitHub action name (leave it as it is).
+      #  uses: snithyanantham/docker-compose-multiple-apps-heroku-deploy@v1.0
+      #  with:
+
+      #    # The email address associated with your Heroku account.
+      #    email: ${{ secrets.HEROKU_EMAIL }}
+
+      #    # Heroku API key associated with provided user's email.
+      #    # Api Key is available under your Heroku account settings.
+      #    #heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+      #    api_key: ${{ secrets.HEROKU_API_KEY }}
+      #    # Name of the heroku application to which the build is to be sent.
+      #    heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
+
+      #    docker_compose_file: './code/container/docker-compose.yml'
+      #    heroku_apps: '[{"imagename":"registry.heroku.com/pennywise-ui/web","appname":"pennywise-ui"}]'
+      #    #heroku_apps: '[{"imagename":"pennywise","appname":"pennywise","apptype":"backend"},{"imagename":"pennywise-ui","appname":"pennywise-ui","apptype":"web"}]'
+
+      #- name: Upload Artifacts TO Google Drive
+      #  uses: Jodebu/upload-to-drive@master
+      #  #uses: Jumbo810/Upload_Github_Artifacts_TO_GDrive@v1.1.1
+      #  with:
+      #    target: ./code/container/pennywise.tar.gz
+      #    credentials: ${{ secrets.GDRIVE }}
+      #    folder: ${{ secrets.FOLDERID }}
+
+      - name: Build, Push and Release a Docker Front End container to Heroku. 
+        uses: gonuit/heroku-docker-deploy@v1.3.3
+        with:
+          email: ${{ secrets.HEROKU_EMAIL }}
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: ${{ secrets.HEROKU_APP_NAME_UI }}
+          dockerfile_directory: ./code/pennywise-ui
+          dockerfile_name: Dockerfile
+          process_type: web
+
+      - name: Build, Push and Release a Docker Back End container to Heroku.
+        uses: gonuit/heroku-docker-deploy@v1.3.3 
+        with:
+          email: ${{ secrets.HEROKU_EMAIL }}
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: ${{ secrets.HEROKU_APP_NAME_BACKEND }}
+          dockerfile_directory: ./code/container
+          dockerfile_name: Dockerfile
+          process_type: web
+
+      - name: Build, Push and Release a Docker OAuth container to Heroku.
+        uses: gonuit/heroku-docker-deploy@v1.3.3 
+        with:
+          email: ${{ secrets.HEROKU_EMAIL }}
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: ${{ secrets.HEROKU_APP_NAME_OAUTH }}
+          dockerfile_directory: ./code/container
+          dockerfile_name: Dockerfile-oauth
+          process_type: web
+
+
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
-    - name: Update dependency graph
-      uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
+   # - name: Update dependency graph
+    #  uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6

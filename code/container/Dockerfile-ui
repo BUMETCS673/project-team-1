@@ -1,0 +1,36 @@
+FROM tomcat:9.0
+
+#RUN apt-get update \
+#     && apt-get
+#     && apt-get install default-jre -y
+
+RUN apt-get update -yq && \
+      apt-get upgrade -yq && \
+      apt-get install default-jre -y
+RUN apt-get install -yq curl gnupg nano
+
+# install from nodesource using apt-get
+# https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-an-ubuntu-14-04-ser
+#RUN curl -sL https://deb.nodesource.com/setup | bash -
+RUN apt-get install -y nodejs npm
+
+#RUN npm install -g npm
+
+
+WORKDIR "/usr/local/pennywise-ui"
+ADD pennywise-ui/ /usr/local/pennywise-ui/
+RUN npm install @mui/x-date-pickers
+RUN npm install date-fns
+RUN npm install dayjs
+RUN npm install luxon
+RUN npm install moment
+RUN npm install @babel/plugin-proposal-private-property-in-object
+RUN npm install
+
+RUN npm run build
+
+EXPOSE 8080 3000
+
+RUN cp -r /usr/local/pennywise-ui/build /usr/local/tomcat/webapps/pennywise
+
+CMD ["catalina.sh", "run"]
