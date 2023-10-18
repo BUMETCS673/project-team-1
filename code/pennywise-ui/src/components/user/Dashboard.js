@@ -5,27 +5,26 @@ import ExpenseTable from "./ExpenseTable"
 import ExpenseChart from "./ExpenseChart"
 import ExpensePlot from "./ExpensePlot";
 import IncomeReport from "./IncomeReport";
-import { useParams } from 'react-router-dom';
 
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { format } from 'date-fns';
-import NavBar from "./Navbar";
 import AddIncome from "./AddIncome";
 import AddNewExpense from "./AddExpense"
 import SetBudget from "./SetBudget";
 import Header from "./Header"
 
-import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   const [expenses, setExpenses] = useState([]);
   const [startDate, setStartDate] = useState(null)
   const [endDate, setEndDate] = useState(null)
+
   const [errorMessage, setErrorMessage] = useState(null)
   const [username, setUsername] = useState("")
   const [firstName, setFirstName] = useState("")
   const [emailData, setEmail] = useState("")
+
   const [balance, setBalance] = useState(null)
   const [incomes, setIncomes] = useState([])
 
@@ -82,6 +81,7 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
+    // check if user is in db 
     const checkUserExistence = async () => {
       try {
         const response = await axios.get("https://pennywise-backend-81abbbcf7b6a.herokuapp.com/user", {
@@ -89,15 +89,14 @@ const Dashboard = () => {
             username: gemail,
           }
         });
-
         const userExists = response.data;
-
         if (userExists) {
           console.log("User exists.");
           setUserExists(true);
+          // if not in db -> create user 
         } else {
           console.log("User doesn't exist. Proceeding to create the user.");
-          createUser(); //create user in db
+          createUser(); 
         }
       } catch (error) {
        if (error.response.status === 404) {
@@ -120,6 +119,7 @@ const Dashboard = () => {
   },[])
 
 
+  // get user overview data 
   const getUserData = async () => {
     try {
         const res = await axios.get("https://pennywise-backend-81abbbcf7b6a.herokuapp.com/home", {
@@ -189,30 +189,27 @@ const Dashboard = () => {
   }
 
 
-
-
     return (
         <>
         <Box sx={{display:"flex", flexDirection:"column", justifyContent:"flex-start", alignItems: "center",
                 background:"#f2f2f2", height:"130vh"}}>
-            
             <Header balance={balance} gemail={gemail} gname={gname}/>
             <Box  sx={{display:"flex", flexDirection:"column", width:"80%", mt:5, justifyContent:"space-around", 
                         alignItems:"flex-start", p:4,}}>
                 <Typography sx={{fontSize:20}}>Enter Income and Expense Information Here: </Typography>
                 <Box sx={{display: "flex", justifyContent:"flex-start", background:"#f2f2f2",
                             width:"100%", alignItems:"flex-start", mt:5}}>
-                     <AddIncome gemail={gemail}/>
-                     <AddNewExpense gemail={gemail}/>
-                      <SetBudget gemail={gemail} />
+                    <AddIncome gemail={gemail}/>
+                    <AddNewExpense gemail={gemail}/>
+                    <SetBudget gemail={gemail} />
 
                 </Box>
 
             </Box>
-        <Box sx={{ display: "flex", height: "250vh", width: "100vw", display: "flex", flexDirection:"column",
+            <Box sx={{ display: "flex", height: "250vh", width: "100vw", display: "flex", flexDirection:"column",
             justifyContent: "flex-start", alignItems: "center", background:"#F2F2F2"}}>
 
-        <Toolbar />
+                <Toolbar />
                 <Box sx={{width:"80%", display:"flex", justifyContent:"space-between", alignItems:"flex-start", height:"5vh", 
                     mt:7}}>
                     <Box sx={{width: "30%"}}>
@@ -254,34 +251,25 @@ const Dashboard = () => {
 
               <Box sx={{ display: "flex", justifyContent: "center",
                height: "60vh", alignItems:"center", width:"80%", boxShadow:1, p:4, mt:5}} >
-                <Grid item xs={12} md={8} lg={9} mb={5} display="flex" justifyContent="center" width="60%">
+                    <Grid item xs={12} md={8} lg={9} mb={5} display="flex" justifyContent="center" width="60%">
+                        <ExpenseTable expenses={expenses}/>
+                    </Grid>
 
-                <ExpenseTable expenses={expenses}/>
-
-                </Grid>
-
-                <Grid item xs={12} md={8} lg={9} mb={5} display="flex" justifyContent="center" width="40%"
-                alignItems="center" >
-
-                <ExpenseChart expenses={expenses}/>
-
-              </Grid>
+                    <Grid item xs={12} md={8} lg={9} mb={5} display="flex" justifyContent="center" width="40%"
+                    alignItems="center" >
+                        <ExpenseChart expenses={expenses}/>
+                    </Grid>
 
               </Box>
-
-              {/* { errorMessage && (
-                <Typography sx={{color:"red", fontSize:16}}>{errorMessage}</Typography>
-              )} */}
               <Box sx={{ display: "flex", justifyContent: "space-around",
                height: "60vh", alignItems:"center", width:"80%", mt:"10px", p:4,}} >
                 <Typography sx={{fontSize:24, fontWeight:"bold", color:"#646464"}}>Expenses By Date</Typography>
-              <ExpensePlot expenses={expenses}/>
+                <ExpensePlot expenses={expenses}/>
 
               </Box>
               <Box sx={{ display: "flex", justifyContent: "space-around",
                height: "60vh", alignItems:"center", width:"80%", mt:"10px", p:4,}} >
                     <Typography sx={{fontSize:24, fontWeight:"bold", color:"#646464"}}>Incomes By Date</Typography>
-       
                     <IncomeReport incomes={incomes} startDate={formattedStartDate} endDate={formattedEndDate}/>
 
               </Box>
@@ -289,10 +277,8 @@ const Dashboard = () => {
 
               </Box>
         
+            </Box>
         </Box>
-        </Box>
-     
-        
         </>
     )
 }
