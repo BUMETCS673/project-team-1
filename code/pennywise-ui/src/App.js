@@ -1,4 +1,3 @@
-// import Home from "./components/home/Home"
 import Login from "./components/sign-in/Login"
 import SetUp from "./components/sign-in/SetUp"
 import AddExpense from "./components/user/AddExpense"
@@ -20,7 +19,6 @@ function App() {
       
       <Route path="/" element={<Login/>}></Route>
       <Route path="/dashboard" element={<Dashboard/>}></Route>
-  
 
     </Routes>
     
