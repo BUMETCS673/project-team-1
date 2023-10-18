@@ -35,6 +35,10 @@ public class ExpenseCategoryController {
      * Get expenseCategories by username
      * @return Response entity containing a list of expenseCategory objects
      */
+<<<<<<< HEAD
+=======
+
+>>>>>>> dev
     @GetMapping(value = "/categories", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ExpenseCategory>> findExpenseCategories()  {
         List<ExpenseCategory> categories = categoryService.getCategories();
