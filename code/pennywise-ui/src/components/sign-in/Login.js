@@ -43,7 +43,6 @@ export default function LoginWithGoogle() {
           Sign in
         </Typography>
         <Box sx={{ mt: 2 }}>
-          {/* <GoogleSignIn onGoogleSignIn={onGoogleSignIn} text="Sign in with Google"/> */} 
           
           <Link href=" https://pennywise-oauth-aaa79e984b4d.herokuapp.com/">
           <Button
