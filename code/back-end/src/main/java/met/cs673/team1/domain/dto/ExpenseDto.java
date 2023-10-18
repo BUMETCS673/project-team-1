@@ -44,8 +44,7 @@ public class ExpenseDto {
 
     
     @JsonProperty
-    @NotBlank
     @Builder.Default
-     Boolean isOverBudget = false; 
+    private Boolean isOverBudget = false;
 
 }

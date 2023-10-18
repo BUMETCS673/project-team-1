@@ -24,11 +24,10 @@ public class SampleController {
     Map<String, Object> attributes = new HashMap<>();
     attributes.put("email", email);
     attributes.put("name", name);
-    String redirectUrl = "http://localhost:3000/dashboard?email=" + email+ "&name=" + name; // Include the email as a query parameter
+    String redirectUrl = "https://pennywise-ui-2c247d5cd417.herokuapp.com/dashboard?email=" + email+ "&name=" + name; // Include the email as a query parameter
     return new RedirectView(redirectUrl,true);
 
     }
 }
-
 
 

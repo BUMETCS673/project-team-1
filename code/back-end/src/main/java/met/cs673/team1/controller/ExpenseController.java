@@ -62,6 +62,13 @@ public class ExpenseController {
         return new ResponseEntity<>(expenses, HttpStatus.OK);
     }
 
+    /**
+     * Get all user expenses within a date range
+     * @param username username for the expense search
+     * @param startDate beginning of the date range
+     * @param endDate end of the date range
+     * @return List of expenses
+     */
     @ValidateDateRange(start = "startDate", end = "endDate")
     @GetMapping(value = "/expenses", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ExpenseDto>> getAllUserExpenses(
@@ -73,6 +80,12 @@ public class ExpenseController {
         return getAllUserExpenses(user.getUserId(), startDate, endDate);
     }
 
+    /**
+     * Get all user expenses by username and month
+     * @param username username for the expense search
+     * @param monthYear string representing a month and year
+     * @return List of expenses
+     */
     @GetMapping(value = "/expenses", params = {"username", "month"}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ExpenseDto>> getAllUserExpenses(
             @RequestParam String username,

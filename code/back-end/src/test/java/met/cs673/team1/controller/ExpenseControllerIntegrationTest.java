@@ -1,5 +1,6 @@
 package met.cs673.team1.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import met.cs673.team1.common.MonthYearFormatter;
 import met.cs673.team1.domain.dto.ExpenseDto;
@@ -16,16 +17,16 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.time.Month;
+import java.time.YearMonth;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -57,10 +58,6 @@ class ExpenseControllerIntegrationTest {
     private UserService userService;
 
 
-    @BeforeEach
-    void setUp() {
-    }
-
     @Test
     void testFindAllByUserId() throws Exception {
         // create mock userId
@@ -86,7 +83,7 @@ class ExpenseControllerIntegrationTest {
         // mock findAllByUserId to return  mockExpenses
         when(expenseService.findAllByUserId(userId)).thenReturn(mockExpenses);
 
-        // simulate HTTP GET request to /expenses/{userId}
+        // simulate GET request to /expenses/{userId}
         ResultActions response = mockMvc.perform(get("/expenses/{userId}", userId)
                 .param("startDate", "2023-01-01")
                 .param("endDate", "2023-12-31")
@@ -113,7 +110,7 @@ class ExpenseControllerIntegrationTest {
         // mock expenseService to return expenses
         when(expenseService.findAllByUserId(user.getUserId())).thenReturn(expenses);
 
-        // Perform GET request to /expenses
+        // simulate GET request to /expenses
         ResultActions response = mockMvc.perform(get("/expenses")
                 .param("username", username)
                 .param("startDate", "2023-10-01")
@@ -126,30 +123,95 @@ class ExpenseControllerIntegrationTest {
 
     }
 
-//    @Test
-//    public void addExpense() throws Exception {
-//        // create mock expense data
-//        ExpenseDto expenseDto = new ExpenseDto();
-//        expenseDto.setName("Groceries");
-//        expenseDto.setExpenseId(1);
-//        expenseDto.setUsername("testUser");
-//        expenseDto.setCategory("Food");
-//        expenseDto.setAmount(200.00);
-//        expenseDto.setDate(LocalDate.of(2023, 10, 10 ));
-//
-//        // mock expenseService to return expense
-//        given(expenseService.save(ArgumentMatchers.any()))
-//                .willReturn(expenseDto);
-//
-//        String expenseJson = new ObjectMapper().writeValueAsString(expenseDto);
-//
-//
-//        ResultActions result = mockMvc.perform(post("/addExpense")
-//                .content(expenseJson)
-//                .contentType(MediaType.APPLICATION_JSON_VALUE));
-//
-//        result.andExpect(status().isCreated());
-//
-//    }
+    @Test
+    public void testInvalidDateParam() throws Exception {
+            // create mock userData
+            String username = "testUser";
+            User user = new User();
+            user.setUserId(1);
+            user.setUsername(username);
+
+            // create mock expense data
+            List<ExpenseDto> expenses = new ArrayList<>();
+
+            // mock userService to return user
+            when(userService.findUserEntityByUsername(username)).thenReturn(user);
+            // mock expenseService to return expenses
+            when(expenseService.findAllByUserId(user.getUserId())).thenReturn(expenses);
+
+        // Test with invalid date parameters (e.g., using an invalid format)
+        ResultActions invalidDateResponse = mockMvc.perform(get("/expenses")
+                .param("username", username)
+                .param("startDate", "invalid-date")
+                .param("endDate", "2023-10-31")
+                .contentType(MediaType.APPLICATION_JSON));
+
+        // Assert the expected status and content for invalid date parameters
+        invalidDateResponse.andExpect(status().isBadRequest());
+        }
+
+    @Test
+    public void testGetAllUserExpensesByUsernameAndMonth() throws Exception {
+        // create mock userData
+        String username = "testUser";
+        User user = new User();
+        user.setUserId(1);
+        user.setUsername(username);
+
+        // create mock expense data
+        List<ExpenseDto> expenses = new ArrayList<>();
+
+        // mock userService to return user
+        when(userService.findUserEntityByUsername(username)).thenReturn(user);
+        // mock expenseService to return expenses
+        when(expenseService.findAllExpensesByUsername(user.getUsername())).thenReturn(expenses);
+
+        // mock the MonthYearFormatter to return a valid YearMonth
+        String monthYear = "Oct2023";
+        YearMonth yearMonth = YearMonth.of(2023, Month.OCTOBER);
+        when(formatter.formatMonthYearString(monthYear)).thenReturn(yearMonth);
+
+
+        // simulate  GET request to /expenses
+        ResultActions response = mockMvc.perform(get("/expenses")
+                .param("username", username)
+                .param("month", monthYear)
+                .contentType(MediaType.APPLICATION_JSON));
+
+        // Assert the expected status and content
+        response.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+
+    }
+
+    @Test
+    public void testInvalidMonthYearRequest() throws Exception {
+        String username = "testUser";
+
+        // mock invalid 'monthYear' parameter
+        String invalidMonthYear = "invalidMonth";
+
+        // mock the userService to return a user
+        when(userService.findUserEntityByUsername(username)).thenReturn(new User());
+
+        // simulate GET request to /expenses with invalid 'monthYear'
+        MvcResult result = mockMvc.perform(get("/expenses")
+                        .param("username", username)
+                        .param("month", invalidMonthYear)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+
+        // convert response to JSON
+        String responseContent = result.getResponse().getContentAsString();
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map<String, Object> responseMap = objectMapper.readValue(responseContent, new TypeReference<Map<String, Object>>() {
+        });
+
+        // check result is bad request
+        assertEquals("BAD_REQUEST", responseMap.get("status"));
+    }
+
 
 }
+

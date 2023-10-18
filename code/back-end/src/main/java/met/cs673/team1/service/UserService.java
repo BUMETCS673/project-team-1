@@ -64,6 +64,12 @@ public class UserService {
         return userMapper.userToUserGetDto(savedUser);
     }
 
+    /**
+     * Find user entity by user id. This method is used as a utility methods for other services
+     * that need access specifically to the User entity, not a UserGetDto.
+     * @param id user id for search
+     * @return User object
+     */
     public User findUserEntityById(Integer id) {
         Optional<User> optUser = userRepository.findById(id);
         if (optUser.isEmpty()) {
@@ -72,6 +78,11 @@ public class UserService {
         return optUser.get();
     }
 
+    /**
+     * Find user entity by username. Used as a utility method for other services.
+     * @param username username for search
+     * @return User object
+     */
     public User findUserEntityByUsername(String username) {
         Optional<User> optUser = userRepository.findByUsername(username);
         if (optUser.isEmpty()) {
@@ -79,10 +90,17 @@ public class UserService {
         }
         return optUser.get();
     }
+
+    /**
+     * Update a user's budget in the system
+     * @param username username for user search
+     * @param amount new budget amount
+     * @return UserGetDto, with new budget set
+     */
+    public UserGetDto updateBudget(String username, Double amount) {
+        User user = findUserEntityByUsername(username);
+        user.setBudget(amount);
+        User saved = userRepository.save(user);
+        return userMapper.userToUserGetDto(saved);
+    }
 }
-
-// if email not exists
-// else
-// create user
-
-

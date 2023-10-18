@@ -4,8 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 import java.util.Optional;
 import met.cs673.team1.domain.dto.UserGetDto;
@@ -137,5 +136,26 @@ class UserServiceTest {
         Optional<User> optUser = Optional.empty();
         doReturn(optUser).when(userRepository).findByUsername(anyString());
         assertThrows(UserNotFoundException.class, () -> userService.findUserEntityByUsername(USERNAME));
+    }
+
+    @Test
+    void testSetUserBudget() {
+        UserService spyService = spy(userService);
+        Double budget = 100.0;
+        User user = new User();
+        user.setUsername(USERNAME);
+        user.setBudget(budget);
+
+        doReturn(user).when(spyService).findUserEntityByUsername(anyString());
+        doReturn(user).when(userRepository).save(any(User.class));
+        doReturn(UserGetDto.builder().username(USERNAME).budget(budget).build()).when(userMapper).userToUserGetDto(any(User.class));
+
+        UserGetDto result = spyService.updateBudget(USERNAME, budget);
+        verify(spyService).findUserEntityByUsername(USERNAME);
+        verify(userRepository).save(user);
+        verify(userMapper).userToUserGetDto(user);
+
+        assertThat(result.getBudget()).isEqualTo(budget);
+        assertThat(result.getUsername()).isEqualTo(USERNAME);
     }
 }

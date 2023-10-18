@@ -42,6 +42,15 @@ public class UserController {
         this.formatter = formatter;
     }
 
+    /**
+     * Get a user overview containing all user incomes and expenses, with optional date range.
+     * @param id user id to user for search
+     * @param startDate optional, beginning of date range
+     * @param endDate optional, end of date range
+     * @return UserOverviewDto representing all user info based on the search parameters
+     * @throws InterruptedException
+     * @throws ExecutionException
+     */
     @ValidateDateRange(start = "startDate", end = "endDate")
     @GetMapping(value = "/home/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserOverviewDto> loadHomePage(
@@ -53,6 +62,15 @@ public class UserController {
         return ResponseEntity.ok(overviewDto);
     }
 
+    /**
+     * Get a user overview by username, with optional date range.
+     * @param username username for search
+     * @param startDate optional, beginning of date range
+     * @param endDate optional, end of date range
+     * @return UserOverviewDto with all incomes and expenses
+     * @throws InterruptedException
+     * @throws ExecutionException
+     */
     @ValidateDateRange(start = "startDate", end = "endDate")
     @GetMapping(value = "/home", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserOverviewDto> loadHomePage(
@@ -64,6 +82,14 @@ public class UserController {
         return loadHomePage(u.getUserId(), startDate, endDate);
     }
 
+    /**
+     * Get user overview by month and year
+     * @param username username for search
+     * @param monthYear string representing a month and a year (e.g. "jun2023")
+     * @return UserOverviewDto
+     * @throws InterruptedException
+     * @throws ExecutionException
+     */
     @GetMapping(value = "/home", params = {"username", "month"}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserOverviewDto> loadHomePage(
             @RequestParam String username,
@@ -84,6 +110,11 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
+    /**
+     * Find a user by username
+     * @param username username for search
+     * @return UserGetDto representing user information (excluding income/expenses)
+     */
     @GetMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserGetDto> findUserByUsername(@RequestParam String username) {
         UserGetDto user = userService.findByUsername(username);

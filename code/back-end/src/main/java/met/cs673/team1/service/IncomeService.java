@@ -39,11 +39,23 @@ public class IncomeService {
         return incomeMapper.incomeToIncomeDto(savedIncome);
     }
 
+    /**
+     * Find all incomes by user id
+     * @param id user id
+     * @return List of incomes
+     */
     public List<IncomeDto> findAllByUserId(Integer id) {
         List<Income> incomes = incomeRepository.findAllByUserUserId(id);
         return incomes.stream().map(incomeMapper::incomeToIncomeDto).toList();
     }
 
+    /**
+     * Find all incomes by user id within a date range
+     * @param id user id
+     * @param start beginning of date range
+     * @param end end of date range
+     * @return list of incomes
+     */
     public List<IncomeDto> findAllByUserIdAndDateRange(Integer id, LocalDate start, LocalDate end) {
         List<Income> incomes = incomeRepository.findAllByUserUserIdAndDateBetween(id, start, end);
         return incomes.stream().map(incomeMapper::incomeToIncomeDto).toList();
@@ -59,6 +71,13 @@ public class IncomeService {
         return findAllByUserId(u.getUserId());
     }
 
+    /**
+     * find all incomes by username and date range
+     * @param username username for search
+     * @param start beginning of range
+     * @param end end of range
+     * @return list of incomes
+     */
     public List<IncomeDto> findAllByUsernameAndDateRange(String username, LocalDate start, LocalDate end) {
         User u = userService.findUserEntityByUsername(username);
         List<Income> incomes = incomeRepository.findAllByUserUserIdAndDateBetween(u.getUserId(), start, end);
