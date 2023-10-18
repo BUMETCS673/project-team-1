@@ -310,4 +310,3 @@ class ExpenseControllerTest {
         assertThat(response.getBody().getAmount()).isEqualTo(GROCERIES_AMOUNT);
     }
 }
-

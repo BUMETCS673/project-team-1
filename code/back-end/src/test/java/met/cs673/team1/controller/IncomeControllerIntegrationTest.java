@@ -3,10 +3,7 @@ package met.cs673.team1.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import met.cs673.team1.common.MonthYearFormatter;
 import met.cs673.team1.domain.dto.IncomeDto;
-<<<<<<< HEAD
-=======
 import met.cs673.team1.domain.entity.User;
->>>>>>> dev
 import met.cs673.team1.service.IncomeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,21 +15,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-<<<<<<< HEAD
-=======
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
->>>>>>> dev
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 
 import java.time.LocalDate;
-<<<<<<< HEAD
-import java.time.format.DateTimeFormatter;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-=======
 import java.time.Month;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
@@ -47,7 +35,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.core.type.TypeReference;
 
 
->>>>>>> dev
 
 
 @WebMvcTest(IncomeController.class)
@@ -82,16 +69,6 @@ class IncomeControllerIntegrationTest {
 
         // Convert the IncomeDto to JSON
         String jsonRequest = objectMapper.writeValueAsString(incomeDto);
-<<<<<<< HEAD
-
-        // Perform a POST request to the "/addIncome" endpoint
-        mockMvc.perform(MockMvcRequestBuilders.post("/addIncome")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(jsonRequest))
-                .andExpect(status().isCreated());
-    }
-}
-=======
 
         // Perform a POST request to the "/addIncome" endpoint
         mockMvc.perform(MockMvcRequestBuilders.post("/addIncome")
@@ -170,4 +147,3 @@ class IncomeControllerIntegrationTest {
 
 
 }
->>>>>>> dev
